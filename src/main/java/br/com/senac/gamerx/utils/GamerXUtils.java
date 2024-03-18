@@ -6,18 +6,15 @@ import br.com.senac.gamerx.model.UserModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Utils {
-    public static List<UserDTO> convertModelToUserDTO(List<UserModel> userModels) {
-        List<UserDTO> userListDTO = new ArrayList<>();
-        for (UserModel userModel : userModels) {
+public class GamerXUtils {
+
+        public static UserDTO convertModelToUserDTO(UserModel userModel) {
             UserDTO userDTO = new UserDTO();
             userDTO.setName(userModel.getNome());
             userDTO.setEmail(userModel.getEmail());
             userDTO.setRole(String.valueOf(userModel.getRole()));
             userDTO.setActive(userModel.isActive());
-            userListDTO.add(userDTO);
+            return userDTO;
         }
-
-        return userListDTO;
     }
-}
+

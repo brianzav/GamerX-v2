@@ -3,28 +3,23 @@ package br.com.senac.gamerx.service;
 import br.com.senac.gamerx.model.UserModel;
 import br.com.senac.gamerx.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final HashingService hashingService;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserService(UserRepository userRepository, HashingService hashingService) {
+        this.userRepository = userRepository;
+        this.hashingService = hashingService;
+    }
 
-    public UserModel registerUser(String nome, String email, String password, String cpf, UserModel.Role role) {
-        UserModel newUser = new UserModel();
-        newUser.setNome(nome);
-        newUser.setEmail(email);
-        newUser.setPassword(passwordEncoder.encode(password));
-        newUser.setCpf(cpf);
-        newUser.setRole(role);
-        newUser.setActive(true);
+    public UserModel createUser(String nome, String email, String password, String cpf, UserModel.Role role) {
+        String hashedPassword = hashingService.hashPassword(password);
+        UserModel newUser = new UserModel(nome, email, hashedPassword, cpf, role, true);
         return userRepository.save(newUser);
     }
 
