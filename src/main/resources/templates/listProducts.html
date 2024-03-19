@@ -2,17 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Lista de Produtos</title>
+  <link rel="stylesheet" href="css/styleLisUsuario.css">
   <!-- Adicione aqui seus links CSS -->
 </head>
 <body>
-<h1>Produtos</h1>
 
-<!-- Formulário de busca -->
-<form th:action="@{/admin/products}" method="get">
-  <input type="text" name="search" placeholder="Buscar produtos...">
-  <button type="submit">Buscar</button>
-</form>
 
+<div id="mainBusca">
+
+    <h1>Produtos</h1>
+    <!-- Formulário de busca -->
+    <form th:action="@{/admin/products}" method="get" id="divBusca">
+      <input type="text" name="search" placeholder="Buscar produtos..." id="txtBusca">
+      <button type="submit" id="btnBusca">Buscar</button>
+    </form>
+</div>
 <!-- Tabela de produtos -->
 <table>
   <tr>
@@ -39,7 +43,7 @@
 </table>
 
 <!-- Link para adicionar novo produto -->
-<a href="/admin/products/new">Adicionar Novo Produto</a>
+<a href="/admin/products/new" class="btnBusca">Adicionar Novo Produto</a>
 
 <!-- Paginação aqui -->
 <nav aria-label="Page navigation example">
