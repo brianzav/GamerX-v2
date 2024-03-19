@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Lista de Produtos</title>
+  <!-- Adicione aqui seus links CSS -->
+</head>
+<body>
+<h1>Produtos</h1>
+
+<!-- Formulário de busca -->
+<form th:action="@{/admin/products}" method="get">
+  <input type="text" name="search" placeholder="Buscar produtos...">
+  <button type="submit">Buscar</button>
+</form>
+
+<!-- Tabela de produtos -->
+<table>
+  <tr>
+    <th>Código</th>
+    <th>Nome</th>
+    <th>Quantidade em Estoque</th>
+    <th>Valor</th>
+    <th>Status</th>
+    <th>Ações</th>
+  </tr>
+  <tr th:each="product : ${products}">
+    <td th:text="${product.productID}"></td>
+    <td th:text="${product.productName}"></td>
+    <td th:text="${product.storage}"></td>
+    <td th:text="${product.price}"></td>
+    <td th:text="${product.active ? 'Ativo' : 'Desativado'}"></td>
+    <td>
+      <!-- Ícones ou links para as ações -->
+      <a th:href="@{/admin/products/edit/{productID}(productID=${product.productID})}">Editar</a>
+      <a th:href="@{/admin/products/toggle-status/{productID}(productID=${product.productID})}" th:text="${product.active ? 'Desativar' : 'Ativar'}"></a>
+      <a th:href="@{/admin/products/view/{productID}(productID=${product.productID})}">Visualizar</a>
+    </td>
+  </tr>
+</table>
+
+<!-- Link para adicionar novo produto -->
+<a href="/admin/products/new">Adicionar Novo Produto</a>
+
+<!-- Paginação aqui -->
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+      <a class="page-link" th:href="@{/admin/products(page=${currentPage - 1})}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
+      <a class="page-link" th:href="@{/admin/products(page=${i})}" th:text="${i + 1}">1</a>
+    </li>
+    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+      <a class="page-link" th:href="@{/admin/products(page=${currentPage + 1})}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+</body>
+</html>
