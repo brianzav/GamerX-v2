@@ -10,9 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +29,7 @@ public class AdminController {
     public String listUsers(Model model) {
         List<UserModel> users = userRepository.findAll();
         model.addAttribute("users", users.stream().map(GamerXUtils::convertModelToUserDTO).collect(Collectors.toList()));
-        return "listUsers"; // Template com a lista de usuários
+        return "listUsers";
     }
 
     @GetMapping("/products")
@@ -39,13 +38,34 @@ public class AdminController {
         model.addAttribute("products", productPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", productPage.getTotalPages());
-        return "listProducts"; // Template com a lista de produtos
+        return "listProducts";
+    }
+
+    @PostMapping("/products")
+    public String saveProduct(@ModelAttribute ProductModel product, RedirectAttributes redirectAttributes) {
+        productRepository.save(product);
+        redirectAttributes.addFlashAttribute("successMessage", "Produto adicionado com sucesso!");
+        return "redirect:/admin/products";
+    }
+
+    @PostMapping("/products/toggle-status/{id}")
+    public String toggleProductStatus(@PathVariable("id") Long productId, RedirectAttributes redirectAttributes) {
+        ProductModel product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Produto inválido: " + productId));
+
+        product.setActive(!product.isActive());
+        productRepository.save(product);
+
+        String message = product.isActive() ? "Produto ativado com sucesso!" : "Produto desativado com sucesso!";
+        redirectAttributes.addFlashAttribute("successMessage", message);
+        return "redirect:/admin/products";
     }
 
 
 
 
 
-    // Aqui vão os outros métodos para edição, ativação e desativação de usuários.
+
+
 }
 

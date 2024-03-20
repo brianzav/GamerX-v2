@@ -2,12 +2,12 @@
 <html lang="pt" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/styleLogin.css">
+    <link rel="stylesheet" th:href="@{/css/styleLogin.css}">
     <title>Registro de Usuário</title>
 </head>
 <body>
 
-<!-- Exibindo mensagens de erro ou sucesso -->
+<!-- Mensagens de erro -->
 <div th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></div>
 <div th:if="${successMessage}" th:text="${successMessage}" style="color:green;"></div>
 
@@ -16,77 +16,66 @@
 <section class="forms-section">
     <div class="forms">
         <div class="form-wrapper is-active">
+            <button type="button" class="switcher switcher-login">
+                Login
+                <span class="underline"></span>
+            </button>
 
-			<button type="button" class="switcher switcher-login">
-			  Login
-			  <span class="underline"></span>
-			</button>
-
-			<form class="form form-login" th:action="@{/auth/login}" method="post">
-			  <fieldset>
-				<legend>Por favor, digite seu e-mail e senha para login.</legend>
-
-                <div class="input-block">
-				  <label for="email">Email</label>
-				  <input id="email" name="email" type="text" required>
-				</div>
-
-                <div class="input-block">
-				  <label for="password">Senha</label>
-				  <input id="password" name="password" type="password" required>
-				</div>
-
-             </fieldset>
-			  <button type="submit" class="btn">Login</button>
-			</form>
-
-		  </div>
-
-
- <div class="form-wrapper">
-    <button type="button" class="switcher switcher-signup">
-        Cadastra-se
-        <span class="underline"></span>
-    </button>
-
-<form class="form form-signup" th:action="@{/auth/register}" th:object="${registerDTO}" method="post">
-    <fieldset>
-        <legend>Por favor, insira seu e-mail, senha e confirmação de senha para se inscrever.</legend>
-
-        <div class="input-block">
-                <label for="nome">Nome:</label><br>
-                <input type="text" id="nome" th:field="*{nome}" required><br>
+            <form class="form form-login" th:action="@{/auth/login}" method="post">
+                <fieldset>
+                    <legend>Por favor, digite seu e-mail e senha para login.</legend>
+                    <div class="input-block">
+                        <label for="email">Email</label>
+                        <input id="email" name="email" type="text" required>
+                    </div>
+                    <div class="input-block">
+                        <label for="password">Senha</label>
+                        <input id="password" name="password" type="password" required>
+                    </div>
+                </fieldset>
+                <button type="submit" class="btn">Login</button>
+            </form>
         </div>
 
-        <div class="input-block">
-                <label for="email">Email:</label><br>
-                <input type="email" id="email" th:field="*{email}" required><br>
-        </div>
+        <div class="form-wrapper">
+            <button type="button" class="switcher switcher-signup">
+                Cadastra-se
+                <span class="underline"></span>
+            </button>
 
-        <div class="input-block">
-                <label for="password">Senha:</label><br>
-                <input type="password" id="password" th:field="*{password}" required><br>
+            <form class="form form-signup" th:action="@{/auth/register}" th:object="${registerDTO}" method="post">
+                <fieldset>
+                    <legend>Por favor, insira seu e-mail, senha e confirmação de senha para se inscrever.</legend>
+                    <div class="input-block">
+                        <label for="nome">Nome:</label><br>
+                        <input type="text" id="nome" th:field="*{nome}" required><br>
+                    </div>
+                    <div class="input-block">
+                        <label for="email">Email:</label><br>
+                        <input type="email" id="email" th:field="*{email}" required><br>
+                    </div>
+                    <div class="input-block">
+                        <label for="password">Senha:</label><br>
+                        <input type="password" id="password" th:field="*{password}" required><br>
+                    </div>
+                    <div class="input-block">
+                        <label for="cpf">CPF:</label><br>
+                        <input type="text" id="cpf" th:field="*{cpf}" required><br>
+                    </div>
+                    <div class="input-block">
+                        <label for="role">Função:</label><br>
+                        <select id="role" th:field="*{role}">
+                            <option value="ADMIN">Administrador</option>
+                            <option value="ESTOQUISTA">Estoquista</option>
+                        </select>
+                    </div>
+                    <br>
+                </fieldset>
+                <input type="submit" value="Registrar" class="btn">
+            </form>
         </div>
-
-        <div class="input-block">
-                <label for="cpf">CPF:</label><br>
-                <input type="text" id="cpf" th:field="*{cpf}" required><br>
-        </div>
-
-        <div class="input-block">
-                <label for="role">Função:</label><br>
-                <select id="role" th:field="*{role}">
-                    <option value="ADMIN">Administrador</option>
-                    <option value="ESTOQUISTA">Estoquista</option>
-                </select>
-        </div>
-    <br>
-</fieldset>
-
-    <input type="submit" value="Registrar" class="btn">
-</form>
-</div>
+    </div>
 </section>
-<script src="js/scriptLogin.js"></script>
+<script th:src="@{/js/scriptLogin.js}"></script>
 </body>
 </html>

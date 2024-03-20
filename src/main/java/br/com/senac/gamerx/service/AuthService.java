@@ -21,7 +21,7 @@ public class AuthService {
 
     public boolean authenticate(String email, String password, HttpSession session) {
         Optional<UserModel> user = userRepository.findByEmail(email);
-        if (user.isPresent() && user.get().getPassword().equals(password)) { // Simplificando para fins educacionais
+        if (user.isPresent() && user.get().getPassword().equals(password)) {
             session.setAttribute("user", user.get());
             return true;
         }

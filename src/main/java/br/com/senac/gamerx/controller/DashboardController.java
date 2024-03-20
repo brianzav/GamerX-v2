@@ -22,11 +22,11 @@ public class DashboardController {
         UserModel loggedInUser = (UserModel) session.getAttribute("user");
 
         if (loggedInUser != null && loggedInUser.getRole() == UserModel.Role.ADMIN) {
-            return "adminDashboard"; // O nome do template que mostra as opções para o admin
+            return "adminDashboard";
         } else if (loggedInUser != null) {
-            return "userDashboard"; // Dashboard do usuário comum
+            return "userDashboard";
         } else {
-            return "redirect:/auth/login"; // Se não estiver logado, redireciona
+            return "redirect:/auth/login";
         }
     }
 }

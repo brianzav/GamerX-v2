@@ -1,8 +1,7 @@
-<!-- listUsers.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link rel="stylesheet" href="css/styleLisUsuario.cs">
+  <link rel="stylesheet" th:href="@{/css/styleLisUsuario.css}">
   <title>Lista de Usuários</title>
 </head>
 <body>
@@ -21,14 +20,14 @@
     <td th:text="${user.email}">Email</td>
     <td th:text="${user.active ? 'Ativo' : 'Desativado'}">Status</td>
     <td>
-      <!-- Usamos email para o link de alterar -->
-      <a th:href="@{/admin/users/edit/(email=${user.email})}">Alterar</a>
-      <!-- Botões ou links para habilitar/desabilitar -->
+
+      <a th:href="@{/admin/users/edit/{email}(email=${user.email})}">Alterar</a>
+
     </td>
   </tr>
 </table>
 
-<a href="/admin/users/new">Cadastrar Novo Usuário</a>
+<a th:href="@{/admin/users/new}">Cadastrar Novo Usuário</a>
 
 </body>
 </html>
