@@ -11,14 +11,15 @@ header{
     display: flex;
     justify-content: center;
     align-items: center;
+    
 
 }
-div{
+.divHeader{
     position: relative;
     width: 100%;
     height: 50px;
     background: #222;
-    border-radius: 0px 0px 10px 10px;
+    
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,10 +27,8 @@ div{
 
 nav{
     position: relative;
-   
     height: 50px;
     background: #222;
-    border-radius: 0px 0px 10px 10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -76,4 +75,51 @@ nav a:nth-child(4):hover~span{
 nav a:nth-child(5):hover~span{
     left: 530px;
     width: 75px;
+}
+
+
+.slider{
+    overflow: hidden;
+
+}
+.slider > .slider-content{
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    transition: all 500ms ease;
+
+}
+
+.slider > .slider-content > .slider-item {
+    flex: 0 0 auto;
+    width: 100%;
+}
+
+.slider > input:nth-child(1):checked ~ .slider-content{
+    transform: translateX(0%);
+}
+
+.slider > input:nth-child(2):checked ~ .slider-content{
+    transform: translateX(-100%);
+}
+.slider > input:nth-child(3):checked ~ .slider-content{
+    transform: translateX(-200%);
+}
+
+.slider > input:nth-child(4):checked ~ .slider-content{
+    transform: translateX(-300%);
+}
+
+
+.main-tela{
+    background-color: #FF6500;
+   
+    width:94%;
+    display: flex;
+    margin-left: 3%;
+    
+}
+
+.div-main{
+    
 }

@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tela de Opções</title>
     <link rel="stylesheet" href="../static/css/opcoes.css">
+    <script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
 </head>
 <body>
     
         <header>
-          <div>
+          <div class="divHeader">
             
             <nav>
               <a href="./telaOpcoes.html">Início</a>
@@ -21,11 +23,33 @@
             </nav>
           </div>
           </header>
-          <main>
-  
-          </main>
+
+          <div class="swiffy-slider">
+            <ul class="slider-container">
+                <li><img src="../assets/Banners/A50.png" style="max-width: 100%;height: auto;"></li>
+                <li><img src="../assets/Banners/lianli.png" style="max-width: 100%;height: auto;"></li>
+                <li><img src="../assets/Banners/Wooting 60HE.png" style="max-width: 100%;height: auto;"></li>
+            </ul>
+        
+            <button type="button" class="slider-nav"></button>
+            <button type="button" class="slider-nav slider-nav-next"></button>
+        
+            <div class="slider-indicators">
+                <button class="active"></button>
+                <button></button>
+                <button></button>
+            </div>
+        </div>
+
+        <main class="main-tela">
+          <div class="div-main">
+            <h1>salve</h1>
+          </div>
+          
+
+        </main>
 
     
-<script src="../static/js/scriptOpcoes.js"></script>
+<script src="./JS/scriptOpcoes.js"></script>
 </body>
 </html>
