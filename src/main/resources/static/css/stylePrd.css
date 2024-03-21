@@ -1,0 +1,145 @@
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+
+header{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+
+}
+.divHeader{
+    position: relative;
+    width: 100%;
+    height: 50px;
+    background: #222;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav{
+    position: relative;
+    height: 50px;
+    background: #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav a{
+    position: relative;
+    display: inline-block;
+    font-size: 1em;
+    font-weight: 500;
+    color: #fff;
+    text-decoration: none;
+    padding: 3% 23px;
+    z-index: 1;
+}
+
+nav span{
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 90px;
+    height: 100%;
+    background: linear-gradient(45deg, #020202, #FF6500);
+    border-radius: 10px;
+    transition: .5s;
+}
+
+nav a:nth-child(1):hover~span{
+    left: 0;
+}
+nav a:nth-child(2):hover~span{
+    left: 95px;
+    width: 125px;
+}
+nav a:nth-child(3):hover~span{
+    left: 240px;
+    width: 125px;
+}
+nav a:nth-child(4):hover~span{
+    left: 390px;
+    width: 120px;
+}
+nav a:nth-child(5):hover~span{
+    left: 530px;
+    width: 75px;
+}
+
+
+.main-tela{
+    background-color: #d3d3d3;
+    width:94%;
+    display: flex;
+    margin-left: 3%;
+    flex-direction: column;
+}
+
+.descricao{
+    color: #fff;
+    
+}
+
+/*IMAGENS*/
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;   
+    width: 100%;
+    height: calc(100vh - 85px);
+}
+
+.left-side{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.items{
+    align-self:center ;
+}
+
+.select-image{
+    max-width: 500px;
+
+}
+
+.select-image img{
+    width: 100%;
+
+}
+
+.thumbnails{
+    display: flex;
+    justify-content: space-evenly;
+    max-width: 500px;
+    gap: 10px;
+    border-radius: 8px;
+}
+
+.thumbnail img{
+    width: 100%;
+
+}
+
+.right-side{
+
+    width: 100%;
+}
+
+
+.right-side h6{
+    color: #FF6500;
+
+}
