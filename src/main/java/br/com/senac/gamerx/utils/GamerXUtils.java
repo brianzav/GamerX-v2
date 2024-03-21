@@ -3,9 +3,6 @@ package br.com.senac.gamerx.utils;
 import br.com.senac.gamerx.dto.UserDTO;
 import br.com.senac.gamerx.model.UserModel;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class GamerXUtils {
 
         public static UserDTO convertModelToUserDTO(UserModel userModel) {

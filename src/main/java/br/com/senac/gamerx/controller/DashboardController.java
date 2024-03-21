@@ -10,11 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class DashboardController {
-    private final UserRepository userRepository;
-
     @Autowired
     public DashboardController(UserRepository userRepository) {
-        this.userRepository = userRepository;
     }
 
     @GetMapping("/dashboard")
