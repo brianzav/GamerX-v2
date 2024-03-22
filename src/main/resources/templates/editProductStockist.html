@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Produto</title>
+    <link rel="stylesheet" th:href="@{/css/editProduct.css}">
+</head>
+<body>
+<h1>Editar Produto</h1>
+<div class="container">
+    <form th:action="@{/stockist/products/update}" method="post">
+        <label for="productName">Nome do Produto:</label><br>
+        <input type="text" id="productName" name="productName" th:value="${product.productName}" readonly><br><br>
+
+        <label for="price">Preço:</label><br>
+        <input type="text" id="price" name="price" th:value="${product.price}" readonly><br><br>
+
+        <label for="storage">Estoque:</label><br>
+        <input type="text" id="storage" name="storage" th:value="${product.storage}"><br><br>
+
+        <label for="description">Descrição:</label><br>
+        <textarea id="description" name="description" th:text="${product.description}" readonly></textarea><br><br>
+
+        <input type="hidden" id="productID" name="productID" th:value="${product.productID}">
+        <button type="submit">Salvar</button>
+    </form>
+</div>
+</body>
+</html>
