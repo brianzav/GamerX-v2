@@ -41,8 +41,6 @@ public class ProductModel {
 
     private double rating;
 
-    private int storage;
-
     @CreationTimestamp
     private LocalDateTime createdAt;
 
