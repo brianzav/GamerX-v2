@@ -20,10 +20,10 @@ public class DashboardController {
 
         if (loggedInUser != null && loggedInUser.getRole() == UserModel.Role.ADMIN) {
             return "adminDashboard";
-        } else if (loggedInUser != null) {
-            return "userDashboard";
+        } else if (loggedInUser != null && loggedInUser.getRole() == UserModel.Role.STOCKIST ) {
+            return "stockistDashboard";
         } else {
-            return "redirect:/auth/login";
+            return "redirect:/auth/register";
         }
     }
 }
