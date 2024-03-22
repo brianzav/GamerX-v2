@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Lista de Produtos</title>
-  <link rel="stylesheet" th:href="@{/css/styleLisUsuario.css}">
-  
+    <title>Lista de Produtos</title>
+    <link rel="stylesheet" th:href="@{/css/styleLisUsuario.css}">
+
 </head>
 <body>
 
-  <dialog id="loginDialog" class="caixaDialog">
-    <form >
+<dialog id="loginDialog" class="caixaDialog">
+    <form>
         <h6>LOGIN</h6>
         <label>E-mail: </label>
         <input type="email" name="login-email" id="login-email">
@@ -16,7 +16,7 @@
         <input type="password" name="pass-word" id="login-password">
         <button type="button" class="botaoVoltar" onclick="fecharLoginDialog()">🡨</button>
         <button type="submit" class="botao">Entrar</button>
-        
+
 
     </form>
 
@@ -24,24 +24,21 @@
 </dialog>
 
 
-
 <div id="mainBusca">
-  <h1>Produtos</h1>
-  <form th:action="@{/admin/products}" method="get" id="divBusca">
-    <input type="text" name="search" placeholder="Buscar produtos..." id="txtBusca">
-    <button type="submit" id="btnBusca">Buscar</button>
-  </form>
-  <button id="showAddProductFormBtn" onclick="showAddProductForm()">Adicionar Novo Produto +</button>
-  <button class="botaoLogin" id="loginBotao" onclick="abrirLoginDialog()">LoginTest</button>
+    <h1>Produtos</h1>
+    <form th:action="@{/admin/products}" method="get" id="divBusca">
+        <input type="text" name="search" placeholder="Buscar produtos..." id="txtBusca">
+        <button type="submit" id="btnBusca">Buscar</button>
+    </form>
+    <button id="showAddProductFormBtn" onclick="showAddProductForm()">Adicionar Novo Produto +</button>
+    <button class="botaoLogin" id="loginBotao" onclick="abrirLoginDialog()">LoginTest</button>
 </div>
 
 <div id="addProductForm" style="display: none;">
-  <h2>Adicionar Novo Produto</h2>
+    <h2>Adicionar Novo Produto</h2>
 
 
-
-
-      <form class="login-form" th:action="@{/admin/products}" method="post">
+    <form class="login-form" th:action="@{/admin/products}" method="post">
         <label for="productName">Nome do Produto:</label>
         <input type="text" id="productName" name="productName" required>
 
@@ -55,52 +52,54 @@
         <textarea id="description" name="description"></textarea>
 
         <button type="submit">Salvar Produto</button>
-      </form>
+    </form>
 </div>
 
 <table>
-  <tr>
-    <th>Código</th>
-    <th>Nome</th>
-    <th>Quantidade em Estoque</th>
-    <th>Valor</th>
-    <th>Status</th>
-    <th>Ações</th>
-  </tr>
+    <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Quantidade em Estoque</th>
+        <th>Valor</th>
+        <th>Status</th>
+        <th>Ações</th>
+    </tr>
 
-  <tr th:each="product : ${products}">
-    <td th:text="${product.productID}"></td>
-    <td th:text="${product.productName}"></td>
-    <td th:text="${product.storage}"></td>
-    <td th:text="${product.price}"></td>
-    <td th:text="${product.active ? 'Ativo' : 'Desativado'}"></td>
-    <td>
-      <a th:href="@{/admin/products/edit/{id}(id=${product.productID})}">Editar</a>
-      <form th:action="@{/admin/products/toggle-status/{id}(id=${product.productID})}" method="post" style="display: inline;">
-        <input type="submit" th:value="${product.active ? 'Desativar' : 'Ativar'}" />
-      </form>
-      <a th:href="@{/admin/products/view/{id}(id=${product.productID})}">Visualizar</a>
-    </td>
-  </tr>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.productID}"></td>
+        <td th:text="${product.productName}"></td>
+        <td th:text="${product.storage}"></td>
+        <td th:text="${product.price}"></td>
+        <td th:text="${product.active ? 'Ativo' : 'Desativado'}"></td>
+        <td>
+            <a th:href="@{/admin/products/edit/{id}(id=${product.productID})}">Editar</a>
+            <form th:action="@{/admin/products/toggle-status/{id}(id=${product.productID})}" method="post"
+                  style="display: inline;">
+                <input type="submit" th:value="${product.active ? 'Desativar' : 'Ativar'}"/>
+            </form>
+            <a th:href="@{/admin/products/view/{id}(id=${product.productID})}">Visualizar</a>
+        </td>
+    </tr>
 
 </table>
 
 <nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-      <a class="page-link" th:href="@{/admin/products(page=${currentPage - 1})}" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
-      <a class="page-link" th:href="@{/admin/products(page=${i})}" th:text="${i + 1}">1</a>
-    </li>
-    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
-      <a class="page-link" th:href="@{/admin/products(page=${currentPage + 1})}" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
+    <ul class="pagination">
+        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+            <a class="page-link" th:href="@{/admin/products(page=${currentPage - 1})}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${i == currentPage} ? 'active'">
+            <a class="page-link" th:href="@{/admin/products(page=${i})}" th:text="${i + 1}">1</a>
+        </li>
+        <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+            <a class="page-link" th:href="@{/admin/products(page=${currentPage + 1})}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
 </nav>
 
 <script>
@@ -108,6 +107,7 @@ function showAddProductForm() {
 var form = document.getElementById("addProductForm");
 form.style.display = form.style.display === "none" ? "block" : "none";
 }
+
 </script>
 
 <script th:src="@{/js/scriptTest.js}"></script>
