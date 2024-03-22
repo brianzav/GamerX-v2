@@ -1,77 +1,33 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tela de Opções</title>
-    <link rel="stylesheet" href="../static/css/stylePrd.css">
-    <script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
-    <link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
+    <title th:text="${product.productName}">Nome do Produto</title>
+    <link rel="stylesheet" th:href="@{/css/stylePrd.css}">
 </head>
 <body>
-    
-        <header>
-          <div class="divHeader">
-            <nav>
-              <a href="./telaOpcoes.html">Início</a>
-              <a href="./listProducts.html"> Listar Produto</a>
-              <a href="./listUsers.html"> Listar Usuário</a>
-              <a href="./listarPedidos.html">Listar Pedidos</a>
-              <a href="./register.html">Login</a>
-              <span></span>
-            </nav>
-          </div>
-          </header>
+<main class="container">
+    <div class="left-side">
+        <div class="select-image">
+            <img th:src="@{assets/Periféricos/Headsets/HyperX_Cloud3/BackPic.jpg}" alt="Descrição da Imagem"/>
 
+        </div>
+        <!--
+        <div class="thumbnails">
+            <div class="thumbnail" th:each="image : ${product.images}">
+                <img th:src="${image}" alt="Thumbnail do Produto" onclick="document.querySelector('.select-image img').src = this.src"/>
+            </div>
+        </div>
+        -->
+    </div>
+    <div class="right-side">
+        <h1 th:text="${product.productName}">Nome do Produto</h1>
+        <p th:text="${product.description}">Descrição do Produto</p>
+        <span class="price" th:text="${product.price}">Preço do Produto</span>
 
-        <main class="main-tela">
-            <section>
-                <div class="container">
-                    <div class="left-side">
-                        <div  class="items">
-                            <div class="select-image">
-                                <img src="../assets/Hardwares/CPUs/AMD_Ryzen7_5700x/FrontAndBoxPic.jpg">
-                            </div>
-                            <div class="thumbnails">
-                                <div class="thumbnail">
-                                    <img src="../assets/Hardwares/CPUs/AMD_Ryzen7_5700x/FrontLeftPic.jpg">
-                                </div>
-                                <div class="thumbnail">
-                                    <img src="../assets/Hardwares/CPUs/AMD_Ryzen7_5700x/FrontUpPic.jpg">
-                                </div>
-                                <div class="thumbnail">
-                                    <img src="../assets/Hardwares/CPUs/AMD_Ryzen7_5700x/UpPic.jpg">
-                                </div>
-                                <div class="thumbnail">
-                                    <img src="../assets/Hardwares/CPUs/AMD_Ryzen7_5700x/FrontLeftPic.jpg">
-                                </div>
-                            </div>
-                        </div>
-                    
-                    </div>
-                    <div class="right-side">
-                        <h6>Hardware AMD</h6>
-                        <h1>PROCESSADOR AMD RYZEN 7 5700X, 8-CORE, 16-THREADS, 3.4GHZ (4.6GHZ TURBO), CACHE 36MB, AM4, 100-100000926WOF</h1>
-                        <p>O Ryzen 7 5700 conta com 8 núcleos incríveis para quem quer apenas jogar.
-                             Os processadores AMD Ryzen série 5000 capacitam a próxima geração de 
-                             jogos exigentes, proporcionando experiências imersivas únicas e
-                              dominando qualquer tarefa multithread como 3D e renderização de
-                               vídeo e compilação de software.</p>
-                        <span class="price">R$1000.00</span>
-                        <span class="off">R$200.00</span>
-                        <div class="options">
-                                <div class="amount">
-                                    <div class="minus">
-                                        <img>
-                                    </div>
-                                </div>
-                        </div>
-                    </div>
-                </div>
-        </section>
-        </main>
-
-    
+    </div>
+</main>
 
 </body>
 </html>
