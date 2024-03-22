@@ -61,9 +61,31 @@ public class AdminController {
         return "redirect:/admin/products";
     }
 
+    @PostMapping("/products/update")
+    public String updateProduct(@ModelAttribute ProductModel product, RedirectAttributes redirectAttributes) {
+        ProductModel existingProduct = productRepository.findById(product.getProductID()).orElse(null);
+        if (existingProduct != null) {
+            existingProduct.setProductName(product.getProductName());
+            existingProduct.setPrice(product.getPrice());
+            existingProduct.setStorage(product.getStorage());
+            existingProduct.setDescription(product.getDescription());
 
+            productRepository.save(existingProduct);
+            redirectAttributes.addFlashAttribute("successMessage", "Produto atualizado com sucesso!");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Produto não encontrado.");
+        }
+        return "redirect:/admin/products";
+    }
 
-
+    @GetMapping("/products/view/{id}")
+    public String viewProduct(@PathVariable Long id, Model model) {
+        ProductModel product = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado."));
+        model.addAttribute("product", product);
+        // model.addAttribute("images", product.getproductImages());
+        return "telaProd";
+    }
 
 
 
