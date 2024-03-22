@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tela de Opções</title>
-    <link rel="stylesheet" href="../static/css/opcoes.css">
+    <link rel="stylesheet" th:href="@{/css/opcoes.css}">
     <script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
     <link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
 </head>
@@ -15,9 +15,9 @@
             
             <nav>
               <a href="./telaOpcoes.html">Início</a>
-              <a href="./listProducts.html"> Listar Produto</a>
-              <a href="./listUsers.html"> Listar Usuário</a>
-              <a href="./listarPedidos.html">Listar Pedidos</a>
+              <a href="/admin/products"> Listar Produto</a>
+              <a href="/admin/users"> Listar Usuário</a>
+              <a href="/admin/orders">Listar Pedidos</a>
               <a href="./register.html">Login</a>
               <span></span>
             </nav>
