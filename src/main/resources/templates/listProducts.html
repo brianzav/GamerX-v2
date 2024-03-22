@@ -73,9 +73,8 @@
         <td th:text="${product.active ? 'Ativo' : 'Desativado'}"></td>
         <td>
             <a th:href="@{/admin/products/edit/{id}(id=${product.productID})}">Editar</a>
-            <form th:action="@{/admin/products/toggle-status/{id}(id=${product.productID})}" method="post"
-                  style="display: inline;">
-                <input type="submit" th:value="${product.active ? 'Desativar' : 'Ativar'}"/>
+            <form th:action="@{/admin/products/toggle-status/{id}(id=${product.productID})}" method="post" style="display: inline;">
+                <input type="submit" th:value="${product.active ? 'Desativar' : 'Ativar'}" onclick="return confirm('Tem certeza que deseja alterar o status deste produto?')"/>
             </form>
             <a th:href="@{/admin/products/view/{id}(id=${product.productID})}">Visualizar</a>
         </td>
