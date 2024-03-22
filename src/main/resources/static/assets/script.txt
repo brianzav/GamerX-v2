@@ -1,0 +1,15 @@
+INSERT INTO products (product_name, price, description, rating, storage, created_at, active) VALUES ('Produto 1', 99.90, 'Descrição do Produto 1', 4.5, 10, CURRENT_TIMESTAMP, true);
+INSERT INTO products (product_name, price, description, rating, storage, created_at, active) VALUES ('Produto 2', 199.90, 'Descrição do Produto 2', 4.0, 20, CURRENT_TIMESTAMP, true);
+INSERT INTO products (product_name, price, description, rating, storage, created_at, active) VALUES ('Produto 3', 299.90, 'Descrição do Produto 3', 5.0, 5, CURRENT_TIMESTAMP, true);
+INSERT INTO products (product_name, price, description, rating, storage, created_at, active) VALUES ('Produto 4', 89.90, 'Descrição do Produto 4', 3.5, 8, CURRENT_TIMESTAMP, true);
+INSERT INTO products (product_name, price, description, rating, storage, created_at, active) VALUES ('Produto 5', 150.00, 'Descrição do Produto 5', 4.2, 15, CURRENT_TIMESTAMP, true);
+INSERT INTO products (product_name, price, description, rating, storage, created_at, active) VALUES ('Produto 6', 250.50, 'Descrição do Produto 6', 4.8, 7, CURRENT_TIMESTAMP, true);
+INSERT INTO products (product_name, price, description, rating, storage, created_at, active) VALUES ('Produto 7', 75.00, 'Descrição do Produto 7', 4.0, 9, CURRENT_TIMESTAMP, true);
+INSERT INTO products (product_name, price, description, rating, storage, created_at, active) VALUES ('Produto 8', 180.20, 'Descrição do Produto 8', 3.9, 18, CURRENT_TIMESTAMP, true);
+INSERT INTO products (product_name, price, description, rating, storage, created_at, active) VALUES ('Produto 9', 220.40, 'Descrição do Produto 9', 4.3, 4, CURRENT_TIMESTAMP, true);
+INSERT INTO products (product_name, price, description, rating, storage, created_at, active) VALUES ('Produto 10', 130.99, 'Descrição do Produto 10', 4.1, 11, CURRENT_TIMESTAMP, true);
+INSERT INTO products (product_name, price, description, rating, storage, created_at, active) VALUES ('Produto 11', 310.00, 'Descrição do Produto 11', 5.0, 6, CURRENT_TIMESTAMP, true);
+INSERT INTO products (product_name, price, description, rating, storage, created_at, active) VALUES ('Produto 12', 45.99, 'Descrição do Produto 12', 3.8, 12, CURRENT_TIMESTAMP, true);
+INSERT INTO products (product_name, price, description, rating, storage, created_at, active) VALUES ('Produto 13', 205.75, 'Descrição do Produto 13', 4.6, 3, CURRENT_TIMESTAMP, true);
+INSERT INTO products (product_name, price, description, rating, storage, created_at, active) VALUES ('Produto 14', 175.45, 'Descrição do Produto 14', 4.4, 20, CURRENT_TIMESTAMP, true);
+INSERT INTO products (product_name, price, description, rating, storage, created_at, active) VALUES ('Produto 15', 90.00, 'Descrição do Produto 15', 3.7, 14, CURRENT_TIMESTAMP, true);
