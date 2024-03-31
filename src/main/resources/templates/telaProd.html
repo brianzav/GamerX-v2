@@ -6,45 +6,51 @@
     <title th:text="${product.productName}">Nome do Produto</title>
     <link rel="stylesheet" th:href="@{/css/stylePrd.css}">
     <link rel="stylesheet" th:href="@{/css/opcoes.css}">
+    <!-- Adicione o CSS do Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-
-    <header>
-        <div class="divHeader">
-          
-          <nav>
+<header>
+    <div class="divHeader">
+        <nav>
             <a href="#">Início</a>
-            <a href="/admin/products"> Listar Produto</a>
-            <a href="/admin/users"> Listar Usuário</a>
+            <a href="/admin/products">Listar Produto</a>
+            <a href="/admin/users">Listar Usuário</a>
             <a href="#">Listar Pedidos</a>
             <a href="/auth/register">Login</a>
-            <span></span>
-          </nav>
-        </div>
-        </header>
-
+        </nav>
+    </div>
+</header>
 
 <main class="container">
     <div class="left-side">
-        <div class="select-image">
-            <img th:src="@{/assets/Hardwares/CPUs/AMD_Ryzen7_5700x/FrontAndBoxPic.jpg}" alt="Descrição da Imagem"/>
-
-        </div>
-        <!--
-        <div class="thumbnails">
-            <div class="thumbnail" th:each="image : ${product.images}">
-                <img th:src="${image}" alt="Thumbnail do Produto" onclick="document.querySelector('.select-image img').src = this.src"/>
+        <!-- Carrossel de Imagens -->
+        <div id="productCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div th:each="image, stat : ${images}" class="carousel-item" th:classappend="${stat.first} ? 'active' : ''">
+                    <img th:src="@{${image.imagePath}}" class="d-block w-100" alt="Imagem do Produto"/>
+                </div>
             </div>
+            <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Anterior</span>
+            </a>
+            <a class="carousel-control-next" href="#productCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Próximo</span>
+            </a>
         </div>
-        -->
     </div>
     <div class="right-side">
         <h1 th:text="${product.productName}">Nome do Produto</h1>
         <p th:text="${product.description}">Descrição do Produto</p>
         <span class="price" th:text="${product.price}">Preço do Produto</span>
-
     </div>
 </main>
 
+<!-- Adicione os JS do Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
