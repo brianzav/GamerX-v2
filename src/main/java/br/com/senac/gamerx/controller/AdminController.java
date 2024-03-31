@@ -1,16 +1,20 @@
 package br.com.senac.gamerx.controller;
 
+import br.com.senac.gamerx.model.ProductImages;
 import br.com.senac.gamerx.model.ProductModel;
 import br.com.senac.gamerx.model.UserModel;
 import br.com.senac.gamerx.repository.ProductRepository;
 import br.com.senac.gamerx.repository.UserRepository;
+import br.com.senac.gamerx.service.StorageService;
 import br.com.senac.gamerx.utils.GamerXUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -24,6 +28,8 @@ public class AdminController {
     private UserRepository userRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private StorageService storageService;
 
     @GetMapping("/users")
     public String listUsers(Model model) {
@@ -42,7 +48,22 @@ public class AdminController {
     }
 
     @PostMapping("/products")
-    public String saveProduct(@ModelAttribute ProductModel product, RedirectAttributes redirectAttributes) {
+    public String saveProduct(@ModelAttribute ProductModel product, @RequestParam("images") MultipartFile[] images, RedirectAttributes redirectAttributes) {
+        for (MultipartFile image : images) {
+            if (!image.isEmpty()) {
+                String filename = StringUtils.cleanPath(image.getOriginalFilename());
+
+                // Use a instância injetada de StorageService
+                storageService.store(image, filename);
+
+                // Criação e associação de ProductImages
+                ProductImages productImage = new ProductImages();
+                productImage.setImagePath("/assets/" + filename);
+                product.getProductImages().add(productImage);
+                productImage.setProduct(product);
+            }
+        }
+
         productRepository.save(product);
         redirectAttributes.addFlashAttribute("successMessage", "Produto adicionado com sucesso!");
         return "redirect:/admin/products";
@@ -90,11 +111,9 @@ public class AdminController {
         ProductModel product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado."));
         model.addAttribute("product", product);
-        // model.addAttribute("images", product.getproductImages());
+        model.addAttribute("images", product.getProductImages());
         return "telaProd";
     }
-
-
 
 }
 
