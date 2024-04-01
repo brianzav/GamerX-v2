@@ -11,6 +11,7 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class StorageService {
+    //Sempre trocar o path pro computador local
     private final Path rootLocation = Paths.get("/Users/brianzavala/Projetos/gamerx/src/main/resources/static/assets");
 
     public void store(MultipartFile file, String filename) {
