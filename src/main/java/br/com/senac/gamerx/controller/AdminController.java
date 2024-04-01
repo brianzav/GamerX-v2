@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,12 +56,24 @@ public class AdminController {
             if (!image.isEmpty()) {
                 String filename = StringUtils.cleanPath(image.getOriginalFilename());
 
+                LocalDateTime agora = LocalDateTime.now();
+
+                // Criando um formatador de data e hora
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd_MM_yyyyHHmmss");
+
+                // Formatando a data e hora atual usando o formatador
+                String dataHoraFormatada = agora.format(formatter);
+
+                // Exibindo a data e hora formatada
+                System.out.println("Data e hora formatada: " + dataHoraFormatada);
+                System.out.println(dataHoraFormatada + filename);
+                filename = dataHoraFormatada+filename;
                 // Use a instância injetada de StorageService
                 storageService.store(image, filename);
 
                 // Criação e associação de ProductImages
                 ProductImages productImage = new ProductImages();
-                productImage.setImagePath("/assets/" + filename);
+                productImage.setImagePath("assets/" + filename);
                 product.getProductImages().add(productImage);
                 productImage.setProduct(product);
             }
