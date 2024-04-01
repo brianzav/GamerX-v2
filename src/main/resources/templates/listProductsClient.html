@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Produtos</title>
+    <!-- Adicione seu CSS aqui -->
+</head>
+<body>
+
+<header>
+    <!-- Aqui você pode colocar seu logo e ícones de carrinho e login -->
+    <h1>Logo da Loja</h1>
+    <nav>
+        <!-- Placeholder para o logo -->
+        <div>Logo</div>
+
+        <!-- Links para login e carrinho -->
+        <a href="#">Login</a>
+        <a href="#">Carrinho</a>
+    </nav>
+</header>
+
+<main>
+    <section id="products">
+        <div class="container">
+            <div class="row">
+                <!-- ... -->
+                <div th:each="product : ${products}" class="col-md-4">
+                    <div class="card">
+                        <img th:if="${product.mainImageUrl}" th:src="@{${product.mainImageUrl}}" class="card-img-top" alt="Imagem Principal">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${product.name}">Nome do Produto</h5>
+                            <p class="card-text" th:text="${product.price}">Preço do Produto</p>
+                            <a th:href="@{/client/products/view/{id}(id=${product.id})}" class="btn btn-primary">Detalhe</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- ... -->
+
+            </div>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>
