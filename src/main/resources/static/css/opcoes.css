@@ -3,6 +3,11 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+}
+
+body{
+    background: #FAFAFB;
 
 }
 
@@ -112,9 +117,8 @@ nav a:nth-child(5):hover~span{
 
 
 .main-tela{
-    background-color: #FF6500;
-   
-    width:94%;
+    
+    width:90%;
     display: flex;
     margin-left: 3%;
     
@@ -123,3 +127,20 @@ nav a:nth-child(5):hover~span{
 .div-main{
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
