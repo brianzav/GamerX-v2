@@ -6,7 +6,6 @@
     <title th:text="${product.productName}">Nome do Produto</title>
     <link rel="stylesheet" th:href="@{/css/stylePrd.css}">
     <link rel="stylesheet" th:href="@{/css/opcoes.css}">
-    <!-- Adicione o CSS do Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
@@ -24,7 +23,7 @@
 
 <main class="container">
     <div class="left-side">
-        <!-- Carrossel de Imagens -->
+
         <div id="productCarousel" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                 <div th:each="image, stat : ${images}" class="carousel-item" th:classappend="${stat.first} ? 'active' : ''">
@@ -64,7 +63,6 @@
         
 </main>
 
-<!-- Adicione os JS do Bootstrap -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

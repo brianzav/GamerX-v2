@@ -43,7 +43,7 @@
                 <span class="underline"></span>
             </button>
 
-            <form class="form form-signup" th:action="@{/auth/register}" th:object="${registerDTO}" method="post">
+            <form class="form form-signup" th:action="@{/auth/register}" th:object="${registerDTO}" method="post" onsubmit="return validateForm()">
                 <fieldset>
                     <legend>Por favor, insira seu e-mail, senha e confirmação de senha para se inscrever.</legend>
                     <div class="input-block">
@@ -76,6 +76,25 @@
         </div>
     </div>
 </section>
+
 <script th:src="@{/js/scriptLogin.js}"></script>
+<script>
+    function validateForm() {
+        var cpfInput = document.getElementById('cpf').value;
+
+        if (cpfInput.length !== 11) {
+            alert("O CPF deve conter exatamente 11 caracteres.");
+            return false;
+        }
+
+        if (!/^\d+$/.test(cpfInput)) {
+            alert("O CPF deve conter apenas números.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
 </body>
 </html>
