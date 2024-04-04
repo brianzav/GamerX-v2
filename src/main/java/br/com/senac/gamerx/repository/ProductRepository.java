@@ -12,5 +12,6 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<ProductModel, Long>{
     Page<ProductModel> findAllByOrderByCreatedAtDesc(Pageable pageable);
     Optional<ProductModel> findById(Long id);
+    Page<ProductModel> findByProductNameContainingIgnoreCaseOrderByCreatedAtDesc(String name, Pageable pageable);
 
 }
