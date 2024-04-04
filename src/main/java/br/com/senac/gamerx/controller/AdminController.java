@@ -5,6 +5,7 @@ import br.com.senac.gamerx.model.ProductModel;
 import br.com.senac.gamerx.model.UserModel;
 import br.com.senac.gamerx.repository.ProductRepository;
 import br.com.senac.gamerx.repository.UserRepository;
+import br.com.senac.gamerx.service.HashingService;
 import br.com.senac.gamerx.service.StorageService;
 import br.com.senac.gamerx.utils.GamerXUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,18 +25,49 @@ import java.util.stream.Collectors;
 @RequestMapping("/admin")
 public class AdminController {
 
+    private final HashingService hashingService;
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private ProductRepository productRepository;
     @Autowired
     private StorageService storageService;
+    @Autowired
+    public AdminController(HashingService hashingService) {
+        this.hashingService = hashingService;
+    }
 
     @GetMapping("/users")
     public String listUsers(Model model) {
         List<UserModel> users = userRepository.findAll();
         model.addAttribute("users", users.stream().map(GamerXUtils::convertModelToUserDTO).collect(Collectors.toList()));
         return "listUsers";
+    }
+
+    @PostMapping("/users/update")
+    public String updateUser(@ModelAttribute UserModel user, RedirectAttributes redirectAttributes) {
+        UserModel existingUser = userRepository.findByEmail(user.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com email: " + user.getEmail()));
+        user.setActive(existingUser.isActive());
+
+        if (!user.getPassword().isEmpty()) {
+            String hashedPassword = hashingService.hashPassword(user.getPassword());
+            user.setPassword(hashedPassword);
+        } else {
+            user.setPassword(existingUser.getPassword());
+        }
+
+        userRepository.save(user);
+        redirectAttributes.addFlashAttribute("successMessage", "Usuário atualizado com sucesso!");
+        return "redirect:/admin/users"; // Redireciona para a lista de usuários
+    }
+
+    @GetMapping("/users/edit/{email}")
+    public String editUser(@PathVariable String email, Model model) {
+        UserModel user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com email: " + email));
+        model.addAttribute("user", user);
+        return "editUser";
     }
 
     @GetMapping("/products")
@@ -55,11 +84,7 @@ public class AdminController {
         for (MultipartFile image : images) {
             if (!image.isEmpty()) {
                 String filename = StringUtils.cleanPath(image.getOriginalFilename());
-
-                // Use a instância injetada de StorageService
                 storageService.store(image, filename);
-
-                // Criação e associação de ProductImages
                 ProductImages productImage = new ProductImages();
                 productImage.setImagePath("/assets/" + filename);
                 product.getProductImages().add(productImage);
