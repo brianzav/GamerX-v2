@@ -50,6 +50,10 @@ public class AdminController {
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com email: " + user.getEmail()));
         user.setActive(existingUser.isActive());
 
+        if (user.getRole() == null || user.getRole().describeConstable().isEmpty()) {
+
+            user.setRole(existingUser.getRole());
+        }
         if (!user.getPassword().isEmpty()) {
             String hashedPassword = hashingService.hashPassword(user.getPassword());
             user.setPassword(hashedPassword);
@@ -59,7 +63,7 @@ public class AdminController {
 
         userRepository.save(user);
         redirectAttributes.addFlashAttribute("successMessage", "Usuário atualizado com sucesso!");
-        return "redirect:/admin/users"; // Redireciona para a lista de usuários
+        return "redirect:/admin/users";
     }
 
     @GetMapping("/users/edit/{email}")
@@ -71,8 +75,13 @@ public class AdminController {
     }
 
     @GetMapping("/products")
-    public String listProducts(Model model, @RequestParam(defaultValue = "0") int page) {
-        Page<ProductModel> productPage = productRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(page, 10));
+    public String listProducts(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(required = false) String search) {
+        Page<ProductModel> productPage;
+        if (search != null && !search.isEmpty()) {
+            productPage = productRepository.findByProductNameContainingIgnoreCaseOrderByCreatedAtDesc(search, PageRequest.of(page, 10));
+        } else {
+            productPage = productRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(page, 10));
+        }
         model.addAttribute("products", productPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", productPage.getTotalPages());
