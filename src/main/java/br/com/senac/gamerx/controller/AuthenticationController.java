@@ -52,11 +52,6 @@ public class AuthenticationController {
         return "register";
     }
 
-    @GetMapping("/login")
-    public String showLoginForm() {
-        return "loginUser";
-    }
-
     @PostMapping("/login")
     public String login(@RequestParam String email, @RequestParam String password, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
         Optional<UserModel> userOptional = userRepository.findByEmail(email);
@@ -68,11 +63,11 @@ public class AuthenticationController {
                 return "redirect:/dashboard";
             } else {
                 model.addAttribute("loginError", "Senha incorreta");
-                return "loginUser";
+                return "register";
             }
         } else {
             model.addAttribute("loginError", "Usuário não encontrado");
-            return "loginUser";
+            return "register";
         }
     }
 
