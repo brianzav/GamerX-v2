@@ -42,10 +42,26 @@
         </div>
     </div>
     <div class="right-side">
-        <h1 th:text="${product.productName}">Nome do Produto</h1>
+        <div class="content">
+            <h1 th:text="${product.productName}">Nome do Produto</h1>
         <p th:text="${product.description}">Descrição do Produto</p>
         <span class="price" th:text="${product.price}">Preço do Produto</span>
+        <div class="options">
+            <div class="amount">
+                <div class="minus">
+                    <img src="/assets/Svg/icon-minus.svg">
+                </div>
+                <span>0</span>
+                <div class="plus">
+                    <img src="/assets/Svg/icon-plus.svg">
+                </div>
+                <a href="" class="button"><img src="/assets/Svg/icon-cart.svg">add to cart</a>
+            </div>
+        </div>
+        
     </div>
+        </div>
+        
 </main>
 
 <!-- Adicione os JS do Bootstrap -->
