@@ -7,19 +7,16 @@ import br.com.senac.gamerx.repository.ProductRepository;
 import br.com.senac.gamerx.repository.UserRepository;
 import br.com.senac.gamerx.service.HashingService;
 import br.com.senac.gamerx.service.StorageService;
-import br.com.senac.gamerx.utils.GamerXUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -38,11 +35,25 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public String listUsers(Model model) {
-        List<UserModel> users = userRepository.findAll();
-        model.addAttribute("users", users.stream().map(GamerXUtils::convertModelToUserDTO).collect(Collectors.toList()));
+    public String listUsers(@RequestParam(required = false) String keyword, Model model) {
+        if (keyword != null && !keyword.isEmpty()) {
+            Pageable pageable = PageRequest.of(0, 10); // Define o número de resultados por página
+            Page<UserModel> usersPage = userRepository.findByNomeContainingIgnoreCase(keyword, pageable);
+            model.addAttribute("users", usersPage.getContent());
+        } else {
+            model.addAttribute("users", userRepository.findAll());
+        }
         return "listUsers";
     }
+
+
+    //PENDENTE CADASTRAR NOVO USUARIO
+    /*@PostMapping("/new")
+    public String createUser(@ModelAttribute UserModel user) {
+        // Aqui você pode adicionar a lógica para salvar o novo usuário no banco de dados
+        // userRepository.save(user);
+        return "redirect:/admin/users"; // Redireciona de volta para a lista de usuários
+    }*/
 
     @PostMapping("/users/update")
     public String updateUser(@ModelAttribute UserModel user, RedirectAttributes redirectAttributes) {
@@ -50,6 +61,10 @@ public class AdminController {
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com email: " + user.getEmail()));
         user.setActive(existingUser.isActive());
 
+        if (user.getRole() == null || user.getRole().describeConstable().isEmpty()) {
+
+            user.setRole(existingUser.getRole());
+        }
         if (!user.getPassword().isEmpty()) {
             String hashedPassword = hashingService.hashPassword(user.getPassword());
             user.setPassword(hashedPassword);
@@ -59,7 +74,7 @@ public class AdminController {
 
         userRepository.save(user);
         redirectAttributes.addFlashAttribute("successMessage", "Usuário atualizado com sucesso!");
-        return "redirect:/admin/users"; // Redireciona para a lista de usuários
+        return "redirect:/admin/users";
     }
 
     @PostMapping("/users/toggle-status/{email}")
@@ -84,8 +99,13 @@ public class AdminController {
     }
 
     @GetMapping("/products")
-    public String listProducts(Model model, @RequestParam(defaultValue = "0") int page) {
-        Page<ProductModel> productPage = productRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(page, 10));
+    public String listProducts(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(required = false) String search) {
+        Page<ProductModel> productPage;
+        if (search != null && !search.isEmpty()) {
+            productPage = productRepository.findByProductNameContainingIgnoreCaseOrderByCreatedAtDesc(search, PageRequest.of(page, 10));
+        } else {
+            productPage = productRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(page, 10));
+        }
         model.addAttribute("products", productPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", productPage.getTotalPages());
