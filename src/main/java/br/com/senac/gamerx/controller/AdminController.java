@@ -62,6 +62,19 @@ public class AdminController {
         return "redirect:/admin/users"; // Redireciona para a lista de usuários
     }
 
+    @PostMapping("/users/toggle-status/{email}")
+    public String toggleUserStatus(@PathVariable("email") String userEmail, RedirectAttributes redirectAttributes) {
+        UserModel user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com email: " + userEmail));
+
+        user.setActive(!user.isActive());
+        userRepository.save(user);
+
+        String message = user.isActive() ? "Usuário ativado com sucesso!" : "Usuário desativado com sucesso!";
+        redirectAttributes.addFlashAttribute("successMessage", message);
+        return "redirect:/admin/users";
+    }
+
     @GetMapping("/users/edit/{email}")
     public String editUser(@PathVariable String email, Model model) {
         UserModel user = userRepository.findByEmail(email)
