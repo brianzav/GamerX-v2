@@ -6,6 +6,7 @@
     <title>Registro de Usuário</title>
 </head>
 <body>
+<img src="../assets/Banners/logo.png"style="max-width: 50%;height: auto;">
 
 <!-- Mensagens de erro -->
 <div th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></div>
@@ -14,7 +15,9 @@
 <div th:if="${loginError}" th:text="${loginError}" class="alert alert-danger"></div>
 
 <section class="forms-section">
+    
     <div class="forms">
+        
         <div class="form-wrapper is-active">
             <button type="button" class="switcher switcher-login">
                 Login

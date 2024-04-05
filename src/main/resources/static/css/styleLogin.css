@@ -13,7 +13,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background: radial-gradient(ellipse at bottom, #9b6d29 0%, #1d1a12 100%);
+	background: radial-gradient(ellipse at bottom, #FF6500 0%, #1d1a12 100%);
 }
 
 .forms-section {
