@@ -7,35 +7,39 @@
 </head>
 <body>
 <!-- Mensagens de erro -->
-<div th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></div>
-<div th:if="${successMessage}" th:text="${successMessage}" style="color:green;"></div>
+<div id="alertBox" th:if="${errorMessage != null || successMessage != null || loginError != null}" class="alert"
+     th:classappend="${errorMessage != null ? 'alert-danger' : (successMessage != null ? 'alert-success' : '')}">
+    <span th:if="${errorMessage}" th:text="${errorMessage}"></span>
+    <span th:if="${successMessage}" th:text="${successMessage}"></span>
+    <span th:if="${loginError}" th:text="${loginError}"></span>
+</div>
 
-<div th:if="${loginError}" th:text="${loginError}" class="alert alert-danger"></div>
 
 <div class="login-page">
-  <div class="form">
-    <form class="login-form" th:action="@{/auth/register}" th:object="${registerDTO}" method="post" onsubmit="return validateForm()">
-      <h2>Cadastrar Usuario</h2>
-      <input type="text" placeholder="Nome" id="nome" th:field="*{nome}" required/>
-      <input type="text" placeholder="CPF" id="cpf" th:field="*{cpf}" required/>
-      <input type="email" placeholder="Email" id="email" th:field="*{email}" required/>
-      <input type="password" placeholder="Password" id="password" th:field="*{password}" required/>
-      <div class="custom-select">
-      <select id="role" th:field="*{role}">
-          <option value="ADMIN">Administrador</option>
-          <option value="STOCKIST">Estoquista</option>
-      </select>
-    </div>
-    <input type="submit" value="Registrar" class="btn">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        Criar
-      </a>
+    <div class="form">
+        <form class="login-form" th:action="@{/auth/register}" th:object="${registerDTO}" method="post"
+              onsubmit="return validateForm()">
+            <h2>Cadastrar Usuario</h2>
+            <input type="text" placeholder="Nome" id="nome" th:field="*{nome}" required/>
+            <input type="text" placeholder="CPF" id="cpf" th:field="*{cpf}" required/>
+            <input type="email" placeholder="Email" id="email" th:field="*{email}" required/>
+            <input type="password" placeholder="Password" id="password" th:field="*{password}" required/>
+            <div class="custom-select">
+                <select id="role" th:field="*{role}">
+                    <option value="ADMIN">Administrador</option>
+                    <option value="STOCKIST">Estoquista</option>
+                </select>
+            </div>
+            <input type="submit" value="Registrar" class="btn">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Criar
+            </a>
 
-    </form>
-  </div>
+        </form>
+    </div>
 </div>
 
 
@@ -56,6 +60,31 @@
 
         return true;
     }
+
+    window.onload = function() {
+  // Se existir uma mensagem de alerta, mostra-a.
+  var alertBox = document.getElementById("alertBox");
+  if (alertBox) {
+    showAlert();
+  }
+};
+
+function showAlert() {
+  var alertBox = document.getElementById("alertBox");
+  alertBox.classList.add("show");
+
+  // Após 5 segundos, esconde o alerta.
+  setTimeout(function() {
+    alertBox.classList.remove("show");
+  }, 5000);
+}
+
+// Adicionar uma função de fechamento se você quiser um botão de fechar.
+function closeAlert() {
+  var alertBox = document.getElementById("alertBox");
+  alertBox.classList.remove("show");
+}
+
 </script>
 
 </body>
