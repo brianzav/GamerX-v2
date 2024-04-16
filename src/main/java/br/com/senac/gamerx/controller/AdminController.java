@@ -46,15 +46,6 @@ public class AdminController {
         return "listUsers";
     }
 
-
-    //PENDENTE CADASTRAR NOVO USUARIO
-    /*@PostMapping("/new")
-    public String createUser(@ModelAttribute UserModel user) {
-        // Aqui você pode adicionar a lógica para salvar o novo usuário no banco de dados
-        // userRepository.save(user);
-        return "redirect:/admin/users"; // Redireciona de volta para a lista de usuários
-    }*/
-
     @PostMapping("/users/update")
     public String updateUser(@ModelAttribute UserModel user, RedirectAttributes redirectAttributes) {
         UserModel existingUser = userRepository.findByEmail(user.getEmail())
