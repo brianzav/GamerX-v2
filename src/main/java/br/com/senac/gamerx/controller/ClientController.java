@@ -1,14 +1,16 @@
 package br.com.senac.gamerx.controller;
 
 import br.com.senac.gamerx.dto.ProductDTO;
+import br.com.senac.gamerx.model.AddressModel;
+import br.com.senac.gamerx.model.ClientModel;
 import br.com.senac.gamerx.model.ProductModel;
+import br.com.senac.gamerx.repository.ClientRepository;
 import br.com.senac.gamerx.repository.ProductRepository;
+import br.com.senac.gamerx.service.HashingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,9 +18,14 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/client")
 public class ClientController {
-
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
+
+    @Autowired
+    private HashingService hashingService;
 
     @GetMapping("/products")
     public String listProducts(Model model) {
@@ -45,4 +52,37 @@ public class ClientController {
         model.addAttribute("images", product.getProductImages());
         return "telaProdClient";
     }
+
+
+    @GetMapping("/register")
+    public String showRegistrationForm(Model model) {
+        ClientModel cliente = new ClientModel();
+        AddressModel enderecoInicial = new AddressModel();
+        enderecoInicial.setEnderecoPadrao(true);
+        cliente.getEnderecos().add(enderecoInicial);
+        model.addAttribute("cliente", cliente);
+        return "registerClient";
+    }
+
+    @PostMapping("/register")
+    public String registerClient(@ModelAttribute ClientModel client, Model model) {
+        if (clientRepository.findByEmail(client.getEmail()).isPresent() ||
+                clientRepository.findByCpf(client.getCpf()).isPresent()) {
+            model.addAttribute("errorMessage", "Email ou CPF já está em uso.");
+            return "registerClient";
+        }
+        client.setSenha(hashingService.hashPassword(client.getSenha()));
+
+        if (!client.getEnderecos().isEmpty()) {
+            client.getEnderecos().forEach(endereco -> {
+                endereco.setCliente(client);
+                endereco.setEnderecoPadrao(true);
+            });
+        }
+
+        clientRepository.save(client);
+        model.addAttribute("successMessage", "Cadastro realizado com sucesso!");
+        return "redirect:/client/login";
+    }
+
 }

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cadastro de Cliente</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>Cadastro de Cliente</h1>
+<form th:action="@{/client/register}" th:object="${cliente}" method="post">
+    <div>
+        <label>Nome Completo:</label>
+        <input type="text" th:field="*{nomeCompleto}" required minlength="7">
+    </div>
+    <div>
+        <label>Email:</label>
+        <input type="email" th:field="*{email}" required>
+    </div>
+    <div>
+        <label>CPF:</label>
+        <input type="text" th:field="*{cpf}" required pattern="\d{11}">
+    </div>
+    <div>
+        <label>Data de Nascimento:</label>
+        <input type="date" th:field="*{dataNascimento}" required>
+    </div>
+    <div>
+        <label>Gênero:</label>
+        <select th:field="*{genero}" required>
+            <option value="M">Masculino</option>
+            <option value="F">Feminino</option>
+        </select>
+    </div>
+    <div>
+        <label>Senha:</label>
+        <input type="password" th:field="*{senha}" required>
+    </div>
+    <!-- Campos de Endereço de Faturamento -->
+    <div>
+        <label>CEP:</label>
+        <input type="text" id="cep" th:field="*{enderecos[0].cep}" required pattern="\d{5}-?\d{3}" placeholder="00000-000">
+        <button type="button" onclick="buscarCep()">Buscar CEP</button>
+    </div>
+    <div>
+        <label>Logradouro:</label>
+        <input type="text" id="logradouro" th:field="*{enderecos[0].logradouro}" required>
+    </div>
+    <div>
+        <label>Número:</label>
+        <input type="text" id="numero" th:field="*{enderecos[0].numero}" required>
+    </div>
+    <div>
+        <label>Complemento:</label>
+        <input type="text" id="complemento" th:field="*{enderecos[0].complemento}">
+    </div>
+    <div>
+        <label>Bairro:</label>
+        <input type="text" id="bairro" th:field="*{enderecos[0].bairro}" required>
+    </div>
+    <div>
+        <label>Cidade:</label>
+        <input type="text" id="cidade" th:field="*{enderecos[0].cidade}" required>
+    </div>
+    <div>
+        <label>UF:</label>
+        <input type="text" id="uf" th:field="*{enderecos[0].uf}" required>
+    </div>
+    <div>
+        <button type="submit">Cadastrar</button>
+    </div>
+</form>
+
+<script>
+    function buscarCep() {
+        var cep = document.getElementById('cep').value.replace(/\D/g, ''); // Limpa o valor do CEP
+        if (cep.length === 8) {
+            $.ajax({
+                url: `https://viacep.com.br/ws/${cep}/json/`,
+                type: 'GET',
+                success: function(data) {
+                    if (!data.erro) {
+                        document.getElementById('logradouro').value = data.logradouro;
+                        document.getElementById('bairro').value = data.bairro;
+                        document.getElementById('cidade').value = data.localidade;
+                        document.getElementById('uf').value = data.uf;
+                    } else {
+                        alert('CEP não encontrado!');
+                    }
+                },
+                error: function() {
+                    alert('Erro ao buscar o CEP!');
+                }
+            });
+        } else {
+            alert('CEP deve conter 8 dígitos.');
+        }
+    }
+</script>
+</body>
+</html>
