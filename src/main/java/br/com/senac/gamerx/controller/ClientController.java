@@ -7,12 +7,15 @@ import br.com.senac.gamerx.model.ProductModel;
 import br.com.senac.gamerx.repository.ClientRepository;
 import br.com.senac.gamerx.repository.ProductRepository;
 import br.com.senac.gamerx.service.HashingService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -83,6 +86,31 @@ public class ClientController {
         clientRepository.save(client);
         model.addAttribute("successMessage", "Cadastro realizado com sucesso!");
         return "redirect:/client/login";
+    }
+
+    @GetMapping("/home")
+    public String homePage(HttpSession session, Model model) {
+        // Passa o usuário logado para a view, se existir
+        model.addAttribute("loggedUser", session.getAttribute("loggedUser"));
+        return "home";  // Nome do arquivo HTML da página principal
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestParam String email, @RequestParam String password, HttpSession session, RedirectAttributes redirectAttributes) {
+        Optional<ClientModel> optionalClient = clientRepository.findByEmail(email);
+        if (optionalClient.isPresent() && hashingService.checkPassword(password, optionalClient.get().getSenha())) {
+            session.setAttribute("loggedUser", optionalClient.get());
+            return "redirect:/client/home";
+        } else {
+            redirectAttributes.addFlashAttribute("loginError", "Credenciais inválidas");
+            return "redirect:/login";
+        }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();  // Encerra a sessão
+        return "redirect:/login";
     }
 
 }
