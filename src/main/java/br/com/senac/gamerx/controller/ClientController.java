@@ -69,8 +69,7 @@ public class ClientController {
 
     @PostMapping("/register")
     public String registerClient(@ModelAttribute ClientModel client, Model model) {
-        if (clientRepository.findByEmail(client.getEmail()).isPresent() ||
-                clientRepository.findByCpf(client.getCpf()).isPresent()) {
+        if (clientRepository.findByEmail(client.getEmail()).isPresent() || clientRepository.findByCpf(client.getCpf()).isPresent()) {
             model.addAttribute("errorMessage", "Email ou CPF já está em uso.");
             return "registerClient";
         }
@@ -85,14 +84,14 @@ public class ClientController {
 
         clientRepository.save(client);
         model.addAttribute("successMessage", "Cadastro realizado com sucesso!");
-        return "redirect:/client/login";
+        return "redirect:/client/home";
     }
 
     @GetMapping("/home")
     public String homePage(HttpSession session, Model model) {
-        // Passa o usuário logado para a view, se existir
-        model.addAttribute("loggedUser", session.getAttribute("loggedUser"));
-        return "home";  // Nome do arquivo HTML da página principal
+        ClientModel loggedUser = (ClientModel) session.getAttribute("loggedUser");
+        model.addAttribute("loggedUser", loggedUser);
+        return "home";
     }
 
     @PostMapping("/login")
@@ -100,17 +99,35 @@ public class ClientController {
         Optional<ClientModel> optionalClient = clientRepository.findByEmail(email);
         if (optionalClient.isPresent() && hashingService.checkPassword(password, optionalClient.get().getSenha())) {
             session.setAttribute("loggedUser", optionalClient.get());
+            redirectAttributes.addFlashAttribute("loginSuccess", "Login successful");
             return "redirect:/client/home";
         } else {
             redirectAttributes.addFlashAttribute("loginError", "Credenciais inválidas");
-            return "redirect:/login";
+            return "redirect:/client/home";
         }
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();  // Encerra a sessão
-        return "redirect:/login";
+        return "redirect:/client/home";
     }
+
+    @PostMapping("/addAddress")
+    public String addAddress(@ModelAttribute AddressModel address, HttpSession session, Model model) {
+        ClientModel loggedInClient = (ClientModel) session.getAttribute("loggedUser");
+        if (loggedInClient != null) {
+            address.setCliente(loggedInClient);
+            address.setEnderecoPadrao(loggedInClient.getEnderecos().isEmpty());
+            loggedInClient.getEnderecos().add(address);
+            clientRepository.save(loggedInClient);
+            model.addAttribute("successMessage", "Endereço adicionado com sucesso!");
+            return "redirect:/client/profile";
+        } else {
+            model.addAttribute("errorMessage", "Não autorizado.");
+            return "login";
+        }
+    }
+
 
 }
