@@ -32,9 +32,9 @@
                     Bem-vindo, <span th:text="${loggedUser.nomeCompleto}">Usuário</span>
                 </a>
                 <div class="user-options" style="display: none;">
-                    <a th:href="@{/client/profile}">Alterar dados pessoais</a>
-                    <a th:href="@{/client/manage-addresses}">Administrar endereços</a>
-                    <a th:href="@{/client/logout}">Logout</a>
+                    <a th:href="@{/client/profile}" class="action-link">Alterar dados pessoais</a>
+                    <a th:href="@{/client/manage-addresses}" class="action-link">Administrar endereços</a>
+                    <a th:href="@{/client/logout}" class="action-link">Logout</a>
                 </div>
             </div>
             <div th:if="${loggedUser == null}" class="login-container">
