@@ -52,10 +52,14 @@ public class AuthenticationController {
         return "register";
     }
 
+    @GetMapping("/login")
+    public String showLoginForm(Model model) {
+        return "loginAdmin";
+    }
+
     @PostMapping("/login")
     public String login(@RequestParam String email, @RequestParam String password, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
         Optional<UserModel> userOptional = userRepository.findByEmail(email);
-
         if (userOptional.isPresent()) {
             UserModel user = userOptional.get();
             if (hashingService.checkPassword(password, user.getPassword())) {
@@ -63,11 +67,11 @@ public class AuthenticationController {
                 return "redirect:/dashboard";
             } else {
                 model.addAttribute("loginError", "Senha incorreta");
-                return "register";
+                return "loginAdmin";
             }
         } else {
             model.addAttribute("loginError", "Usuário não encontrado");
-            return "register";
+            return "loginAdmin";
         }
     }
 

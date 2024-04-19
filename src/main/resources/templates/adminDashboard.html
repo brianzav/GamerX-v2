@@ -8,137 +8,35 @@
     <link rel="stylesheet" th:href="@{/css/dash.css}">
     <link rel="stylesheet" th:href="@{/css/styleCard.css}">
     <link rel="stylesheet" th:href="@{/css/swiper-bundle.min.css}">
-    
+
     <link th:href="@{https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css}" rel="stylesheet" crossorigin="anonymous">
 
     <script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
     <link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
-    
+
 </head>
 <body>
-    
-   <header>
-      
-      <div class="divHeader">
-         <img src="../assets/Banners/logo.png"style="max-width: 7%;height: auto;">
+
+<header>
+
+    <div class="divHeader">
+        <img src="../assets/Banners/logo.png"style="max-width: 7%;height: auto;">
         <nav>
-         
-          <a href="/admin/products"> Listar Produto</a>
-          <a href="/admin/users"> Listar Usuário</a>
-          <a href="/admin/orders">Listar Pedidos</a>
-          <span></span>
-          
+
+            <a href="/admin/products"> Listar Produto</a>
+            <a href="/admin/users"> Listar Usuário</a>
+            <a href="/admin/orders">Listar Pedidos</a>
+            <span></span>
+
         </nav>
-      </div>
-      </header>
-
-      <div class="swiffy-slider">
-        <ul class="slider-container">
-            <li><img src="../assets/Banners/A50.png" style="max-width: 100%;height: auto;"></li>
-            <li><img src="../assets/Banners/lianli.png" style="max-width: 100%;height: auto;"></li>
-            <li><img src="../assets/Banners/Wooting 60HE.png" style="max-width: 100%;height: auto;"></li>
-        </ul>
-    
-        <button type="button" class="slider-nav"></button>
-        <button type="button" class="slider-nav slider-nav-next"></button>
-    
-        <div class="slider-indicators">
-            <button class="active"></button>
-            <button></button>
-            <button></button>
-        </div>
     </div>
+</header>
 
-        
+<!-- Removido o carrossel e os cards de produtos -->
 
-        <section class="container">
-          <div class="card__container swiper">
-             <div class="card__content">
-                <div class="swiper-wrapper">
-                   <article class="card__article swiper-slide">
-                      <div class="card__image">
-                         <img src="../assets/Hardwares/CPUs/AMD_Ryzen7_5700x/FrontAndBoxPic.jpg" alt="image" class="card__img">
-                         <div class="card__shadow"></div>
-                      </div>
-       
-                      <div class="card__data">
-                        <span class="card__description">Processador AMD Ryzen 7 5800X, 3.8GHz (4.7GHz Max Turbo)</span>
-                        <h2 class="card__title">R$ 1.200,00</h2>
-                        <a href="#" class="card__button">Saiba mais</a>
-                      </div>
-                   </article>
-       
-                   <article class="card__article swiper-slide">
-                      <div class="card__image">
-                         <img src="../assets/Periféricos/Headsets/Logitech_G733/FrontPic.jpg" alt="image" class="card__img">
-                         <div class="card__shadow"></div>
-                      </div>
-       
-                      <div class="card__data">
-                        <span class="card__description">Processador AMD Ryzen 7 5800X, 3.8GHz (4.7GHz Max Turbo)</span>
-                        <h2 class="card__title">R$ 1.200,00</h2>
-                        <a href="#" class="card__button">Saiba mais</a>
-                      </div>
+<!-- Mantido o restante do seu HTML sem os cards de produtos -->
 
-                   </article>
-       
-                   <article class="card__article swiper-slide">
-                      <div class="card__image">
-                         <img src="../assets/Periféricos/Headsets/HyperX_Cloud3/FrontPic.jpg" alt="image" class="card__img">
-                         <div class="card__shadow"></div>
-                      </div>
-       
-                        <div class="card__data">
-                        <span class="card__description">Processador AMD Ryzen 7 5800X, 3.8GHz (4.7GHz Max Turbo)</span>
-                        <h2 class="card__title">R$ 1.200,00</h2>
-                        <a href="#" class="card__button">Saiba mais</a>
-                      </div>
-
-                   </article>
-       
-                   <article class="card__article swiper-slide">
-                      <div class="card__image">
-                         <img src="../assets/Hardwares/GPUs/MSI_RTX_4060TI_8GB/FrontLeftAndBoxPic.jpg" alt="image" class="card__img">
-                         <div class="card__shadow"></div>
-                      </div>
-       
-                        <div class="card__data">
-                        <span class="card__description">Processador AMD Ryzen 7 5800X, 3.8GHz (4.7GHz Max Turbo)</span>
-                        <h2 class="card__title">R$ 1.200,00</h2>
-                        <a href="#" class="card__button">Saiba mais</a>
-                      </div>
-                   </article>
- 
-                   <article class="card__article swiper-slide">
-                      <div class="card__image">
-                         <img src="../assets/Hardwares/CPUs/Intel_i5_12400F/FrontLeftPic.jpg" alt="image" class="card__img">
-                         <div class="card__shadow"></div>
-                      </div>
-       
-                      <div class="card__data">
-                        <span class="card__description">Processador AMD Ryzen 7 5800X, 3.8GHz (4.7GHz Max Turbo)</span>
-                        <h2 class="card__title">R$ 1.200,00</h2>
-                        <a href="#" class="card__button">Saiba mais</a>
-                      </div>
-                   </article>
-                </div>
-             </div>
- 
-
-             <div class="swiper-button-next">
-                <i class="ri-arrow-right-line"></i>
-             </div>
-             
-             <div class="swiper-button-prev">
-                <i class="ri-arrow-left-line"></i>
-             </div>
- 
-
-             <div class="swiper-pagination"></div>
-          </div>
-       </section>
-
-       <script th:src="@{/js/swiper-bundle.min.js}"></script>
-       <script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/swiper-bundle.min.js}"></script>
+<script th:src="@{/js/main.js}"></script>
 </body>
 </html>
