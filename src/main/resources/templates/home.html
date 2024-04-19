@@ -19,6 +19,7 @@
             padding: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
+
     </style>
 </head>
 <body>
@@ -34,7 +35,15 @@
                 <div class="user-options" style="display: none;">
                     <a th:href="@{/client/profile}" class="action-link">Alterar dados pessoais</a>
                     <a th:href="@{/client/manage-addresses}" class="action-link">Administrar endereços</a>
-                    <a th:href="@{/client/logout}" class="action-link">Logout</a>
+                    <a th:href="@{/client/logout}" class="action-link" onclick="return confirmLogout()">Logout</a>
+
+                    <script>
+    function confirmLogout() {
+        return confirm('Tem certeza de que deseja sair?');
+    }
+
+                    </script>
+
                 </div>
             </div>
             <div th:if="${loggedUser == null}" class="login-container">
@@ -63,6 +72,7 @@
         var menu = document.querySelector('.user-options');
         menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
     }
+
 </script>
 
 <div class="swiffy-slider">
