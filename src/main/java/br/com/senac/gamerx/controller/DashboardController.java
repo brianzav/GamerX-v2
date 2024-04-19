@@ -23,7 +23,7 @@ public class DashboardController {
         } else if (loggedInUser != null && loggedInUser.getRole() == UserModel.Role.STOCKIST ) {
             return "stockistDashboard";
         } else {
-            return "redirect:/auth/register";
+            return "redirect:/auth/login";
         }
     }
 }

@@ -6,14 +6,12 @@
     <title>Registro de Usuário</title>
 </head>
 <body>
-<!-- Mensagens de erro -->
 <div id="alertBox" th:if="${errorMessage != null || successMessage != null || loginError != null}" class="alert"
      th:classappend="${errorMessage != null ? 'alert-danger' : (successMessage != null ? 'alert-success' : '')}">
     <span th:if="${errorMessage}" th:text="${errorMessage}"></span>
     <span th:if="${successMessage}" th:text="${successMessage}"></span>
     <span th:if="${loginError}" th:text="${loginError}"></span>
 </div>
-
 
 <div class="login-page">
     <div class="form">
@@ -30,62 +28,43 @@
                     <option value="STOCKIST">Estoquista</option>
                 </select>
             </div>
-            <input type="submit" value="Registrar" class="btn">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            Criar
-            </a>
-
+            <button type="submit" class="btn">Registrar</button>
+            <a th:href="@{/admin/users}" class="btn">Voltar para Usuários</a>
         </form>
     </div>
 </div>
-
 
 <script th:src="@{/js/scriptLogin.js}"></script>
 <script>
     function validateForm() {
         var cpfInput = document.getElementById('cpf').value;
-
         if (cpfInput.length !== 11) {
             alert("O CPF deve conter exatamente 11 caracteres.");
             return false;
         }
-
         if (!/^\d+$/.test(cpfInput)) {
             alert("O CPF deve conter apenas números.");
             return false;
         }
-
         return true;
     }
-
     window.onload = function() {
-  // Se existir uma mensagem de alerta, mostra-a.
-  var alertBox = document.getElementById("alertBox");
-  if (alertBox) {
-    showAlert();
-  }
-};
-
-function showAlert() {
-  var alertBox = document.getElementById("alertBox");
-  alertBox.classList.add("show");
-
-  // Após 5 segundos, esconde o alerta.
-  setTimeout(function() {
-    alertBox.classList.remove("show");
-  }, 5000);
-}
-
-// Adicionar uma função de fechamento se você quiser um botão de fechar.
-function closeAlert() {
-  var alertBox = document.getElementById("alertBox");
-  alertBox.classList.remove("show");
-}
-
+        var alertBox = document.getElementById("alertBox");
+        if (alertBox) {
+            showAlert();
+        }
+    };
+    function showAlert() {
+        var alertBox = document.getElementById("alertBox");
+        alertBox.classList.add("show");
+        setTimeout(function() {
+            alertBox.classList.remove("show");
+        }, 5000);
+    }
+    function closeAlert() {
+        var alertBox = document.getElementById("alertBox");
+        alertBox.classList.remove("show");
+    }
 </script>
-
 </body>
 </html>
