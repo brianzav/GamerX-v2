@@ -9,6 +9,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(name = "Address")
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddressModel {
@@ -38,6 +39,9 @@ public class AddressModel {
 
     @Column(nullable = false)
     private boolean enderecoPadrao = true;
+
+    @Column(nullable = false)
+    private boolean enderecoAtivo = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id")

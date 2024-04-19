@@ -24,7 +24,7 @@ public class ClientModel {
     private String genero;
     private String senha;
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<AddressModel> enderecos;
 
     public ClientModel() {
