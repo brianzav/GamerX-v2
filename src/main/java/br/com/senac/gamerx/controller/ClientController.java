@@ -113,21 +113,34 @@ public class ClientController {
         return "redirect:/client/home";
     }
 
-    @PostMapping("/addAddress")
-    public String addAddress(@ModelAttribute AddressModel address, HttpSession session, Model model) {
-        ClientModel loggedInClient = (ClientModel) session.getAttribute("loggedUser");
-        if (loggedInClient != null) {
-            address.setCliente(loggedInClient);
-            address.setEnderecoPadrao(loggedInClient.getEnderecos().isEmpty());
-            loggedInClient.getEnderecos().add(address);
-            clientRepository.save(loggedInClient);
-            model.addAttribute("successMessage", "Endereço adicionado com sucesso!");
-            return "redirect:/client/profile";
-        } else {
-            model.addAttribute("errorMessage", "Não autorizado.");
-            return "login";
+    @GetMapping("/profile")
+    public String showProfile(HttpSession session, Model model) {
+        ClientModel loggedUser = (ClientModel) session.getAttribute("loggedUser");
+        if (loggedUser == null) {
+            return "redirect:/client/home";
         }
+        model.addAttribute("client", loggedUser);
+        return "updateClientProfile";
     }
 
+    @PostMapping("/profile")
+    public String updateProfile(@ModelAttribute("client") ClientModel client, HttpSession session, RedirectAttributes redirectAttributes) {
+        ClientModel loggedUser = (ClientModel) session.getAttribute("loggedUser");
+        if (loggedUser == null) {
+            return "redirect:/client/home";
+        }
+
+        loggedUser.setNomeCompleto(client.getNomeCompleto());
+        loggedUser.setDataNascimento(client.getDataNascimento());
+        loggedUser.setGenero(client.getGenero());
+
+        if (!client.getSenha().isEmpty()) {
+            loggedUser.setSenha(hashingService.hashPassword(client.getSenha()));
+        }
+
+        clientRepository.save(loggedUser);
+        redirectAttributes.addFlashAttribute("successMessage", "Profile updated successfully!");
+        return "redirect:/client/profile";
+    }
 
 }
