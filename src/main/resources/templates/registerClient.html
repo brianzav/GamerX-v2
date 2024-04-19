@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" th:href="@{/css/registerClient.css}">
     <title>Cadastro de Cliente</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -34,7 +35,6 @@
         <label>Senha:</label>
         <input type="password" th:field="*{senha}" required>
     </div>
-    <!-- Campos de Endereço de Faturamento -->
     <div>
         <label>CEP:</label>
         <input type="text" id="cep" th:field="*{enderecos[0].cep}" required pattern="\d{5}-?\d{3}" placeholder="00000-000">

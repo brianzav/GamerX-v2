@@ -180,10 +180,10 @@ select {
 
 .alert {
   padding: 20px;
-  background-color: #f44336; /* Vermelho */
+  background-color: #f44336;
   color: white;
   opacity: 0;
-  transition: opacity 0.6s; /* 600ms para desaparecer o alerta */
+  transition: opacity 0.6s;
   position: fixed;
   right: 0;
   top: 20px;
@@ -193,15 +193,14 @@ select {
 }
 
 .alert-success {
-  background-color: #04AA6D; /* Verde */
+  background-color: #04AA6D;
 }
 
-/* Mostra o alerta */
+
 .show {
-  opacity: 1; /* Visibilidade completa */
+  opacity: 1;
 }
 
-/* Quando clicado no botão fechar */
 .closebtn {
   margin-left: 15px;
   color: white;
@@ -216,5 +215,3 @@ select {
 .closebtn:hover {
   color: black;
 }
-
-
