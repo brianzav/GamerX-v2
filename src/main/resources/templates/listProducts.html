@@ -30,11 +30,11 @@
         <input type="text" name="search" placeholder="Buscar produtos..." id="txtBusca">
         <button type="submit" id="btnBusca">Buscar</button>
     </form>
-    <button id="showAddProductFormBtn" onclick="showAddProductForm()">Adicionar Novo Produto +</button>
+    <button id="showAddProductFormBtn" class="buttonProd" onclick="showAddProductForm()">Novo Produto</button>
 </div>
 
-<div id="addProductForm" style="display: none;">
-    <h2>Adicionar Novo Produto</h2>
+<div id="addProductForm" style="display: none;" class="caixaDialog">
+    <h6>Adicionar Novo Produto</h6>
     <form th:action="@{/admin/products}" method="post" enctype="multipart/form-data">
         <label for="productName">Nome do Produto:</label>
         <input type="text" id="productName" name="productName" required>
@@ -51,7 +51,7 @@
         <label for="images">Imagens:</label>
         <input type="file" id="images" name="images" accept="image/*" multiple>
 
-        <button type="submit">Salvar Produto</button>
+        <button type="submit" class="botao">Salvar Produto</button>
     </form>
 </div>
 
@@ -110,6 +110,5 @@ form.style.display = form.style.display === "none" ? "block" : "none";
 
 </script>
 
-<script th:src="@{/js/scriptTest.js}"></script>
 </body>
 </html>
