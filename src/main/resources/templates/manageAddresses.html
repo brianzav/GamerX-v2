@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerenciar Endereços</title>
+  <link rel="stylesheet" th:href="@{/css/manageAddresses.css}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>Gerenciar Endereços</h1>
+<div th:if="${error}" style="color: red;">
+  <p th:text="${error}"></p>
+</div>
+<div>
+  <h2>Adicionar novo endereço</h2>
+  <form th:action="@{/client/manage-addresses/add}" method="post">
+    <input type="text" name="cep" id="cep" placeholder="CEP" required>
+    <input type="text" name="logradouro" id="logradouro" placeholder="Logradouro" required>
+    <input type="text" name="numero" placeholder="Número" required>
+    <input type="text" name="complemento" placeholder="Complemento">
+    <input type="text" name="bairro" id="bairro" placeholder="Bairro" required>
+    <input type="text" name="cidade" id="cidade" placeholder="Cidade" required>
+    <input type="text" name="uf" id="uf" placeholder="UF" required>
+    <input type="hidden" name="enderecoPadrao" value="false">
+    <button type="submit">Adicionar</button>
+  </form>
+  <button onclick="buscarCep()">Buscar CEP</button>
+</div>
+
+<div>
+  <h2>Lista de Endereços</h2>
+  <table>
+    <tr>
+      <th>Logradouro</th>
+      <th>Número</th>
+      <th>Complemento</th>
+      <th>Bairro</th>
+      <th>Cidade</th>
+      <th>UF</th>
+      <th>Padrão</th>
+      <th>Ativo</th>
+      <th>Ações</th>
+    </tr>
+    <tr th:each="endereco : ${enderecos}">
+      <td th:text="${endereco.logradouro}"></td>
+      <td th:text="${endereco.numero}"></td>
+      <td th:text="${endereco.complemento}"></td>
+      <td th:text="${endereco.bairro}"></td>
+      <td th:text="${endereco.cidade}"></td>
+      <td th:text="${endereco.uf}"></td>
+      <td th:text="${endereco.enderecoPadrao ? 'Sim' : 'Não'}"></td>
+      <td th:text="${endereco.enderecoAtivo ? 'Sim' : 'Não'}"></td>
+      <td>
+        <form th:action="@{/client/manage-addresses/update}" method="post">
+          <input type="hidden" name="addressId" th:value="${endereco.id}">
+          <input type="checkbox" name="isDefault" th:checked="${endereco.enderecoPadrao}">
+          <button type="submit">Atualizar</button>
+        </form>
+        <form th:action="@{/client/manage-addresses/delete}" method="post">
+          <input type="hidden" name="addressId" th:value="${endereco.id}">
+          <button type="submit">Desativar</button>
+        </form>
+      </td>
+
+    </tr>
+  </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+function buscarCep() {
+    var cep = document.getElementById('cep').value.replace(/\D/g, ''); // Remove caracteres não numéricos
+    if (cep.length === 8) {
+        $.ajax({
+            url: `https://viacep.com.br/ws/${cep}/json/`,
+            type: 'GET',
+            success: function(data) {
+                if (!data.erro) {
+                    document.getElementById('logradouro').value = data.logradouro;
+                    document.getElementById('bairro').value = data.bairro;
+                    document.getElementById('cidade').value = data.localidade;
+                    document.getElementById('uf').value = data.uf;
+                } else {
+                    alert('CEP não encontrado!');
+                }
+            },
+            error: function() {
+                alert('Erro ao buscar o CEP!');
+            }
+        });
+    } else {
+        alert('CEP deve conter 8 dígitos.');
+    }
+}
+</script>
+
+
+</body>
+</html>

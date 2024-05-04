@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestão de Perfil</title>
+  <link rel="stylesheet" th:href="@{/css/updateClientProfile.css}">
+</head>
+<body>
+<h1>Gestão de Perfil</h1>
+<form th:action="@{/client/profile}" th:object="${client}" method="post">
+  <div>
+    <label for="nomeCompleto">Nome Completo:</label>
+    <input type="text" id="nomeCompleto" th:field="*{nomeCompleto}" required>
+  </div>
+  <div>
+    <label for="dataNascimento">Data de Nascimento:</label>
+    <input type="date" id="dataNascimento" th:field="*{dataNascimento}" required>
+  </div>
+  <div>
+    <label for="genero">Gênero:</label>
+    <select id="genero" th:field="*{genero}">
+      <option value="M">Masculino</option>
+      <option value="F">Feminino</option>
+    </select>
+  </div>
+  <div>
+    <label for="senha">Nova Senha (deixe em branco se inalterada):</label>
+    <input type="password" id="senha" th:field="*{senha}">
+  </div>
+  <button type="submit">Atualizar Perfil</button>
+</form>
+
+<a th:href="@{/client/home}">Voltar para o Início</a>
+</body>
+</html>

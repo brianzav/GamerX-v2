@@ -8,6 +8,15 @@
 
 <h1>Lista de Usuários</h1>
 
+<div id="mainBusca">
+  <form th:action="@{/admin/users}" method="get" id="divBusca">
+    <input type="text" name="keyword" placeholder="Buscar usuários..." id="txtBusca">
+    <button type="submit" id="btnBusca">Buscar</button>
+  </form>
+  <!-- TODO-->
+  <a th:href="@{/auth/register}" class="button" id="showAddUserFormBtn">Cadastrar Usuário</a>
+</div>
+
 <table id="">
   <tr>
     <th>Nome</th>
@@ -16,18 +25,21 @@
     <th>Ações</th>
   </tr>
   <tr th:each="user : ${users}">
-    <td th:text="${user.name}">Nome</td>
+    <td th:text="${user.nome}">Nome</td>
     <td th:text="${user.email}">Email</td>
     <td th:text="${user.active ? 'Ativo' : 'Desativado'}">Status</td>
     <td>
-
       <a th:href="@{/admin/users/edit/{email}(email=${user.email})}">Alterar</a>
-
     </td>
   </tr>
 </table>
 
-<a th:href="@{/admin/users/new}">Cadastrar Novo Usuário</a>
+<script>
+  function showAddUserForm() {
+      var form = document.getElementById("addUserForm");
+      form.style.display = form.style.display === "none" ? "block" : "none";
+  }
+</script>
 
 </body>
 </html>

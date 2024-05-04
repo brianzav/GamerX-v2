@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${product.productName}">Nome do Produto</title>
+    <link rel="stylesheet" th:href="@{/css/stylePrd.css}">
+    <link rel="stylesheet" th:href="@{/css/opcoes.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<header>
+    <div class="divHeader">
+        <nav>
+            <a href="#">Início</a>
+            <a href="/admin/products">Listar Produto</a>
+            <a href="/admin/users">Listar Usuário</a>
+            <a href="#">Listar Pedidos</a>
+            <a href="/auth/register">Login</a>
+            <span></span>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    <div class="left-side">
+
+        <div id="productCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div th:each="image, stat : ${images}" class="carousel-item" th:classappend="${stat.first} ? 'active' : ''">
+                    <img th:src="@{${image.imagePath}}" class="d-block w-100" alt="Imagem do Produto"/>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Anterior</span>
+            </a>
+            <a class="carousel-control-next" href="#productCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Próximo</span>
+            </a>
+        </div>
+    </div>
+    <div class="right-side">
+        <div class="content">
+            <h1 th:text="${product.productName}">Nome do Produto</h1>
+        <p th:text="${product.description}">Descrição do Produto</p>
+        <span class="price" th:text="${product.price}">Preço do Produto</span>
+        <div class="options">
+            <div class="amount">
+                <div class="minus">
+                    <img src="/assets/Svg/icon-minus.svg">
+                </div>
+                <span>0</span>
+                <div class="plus">
+                    <img src="/assets/Svg/icon-plus.svg">
+                </div>
+                <a href="" class="button"><img src="/assets/Svg/icon-cart.svg">add to cart</a>
+            </div>
+        </div>
+        
+    </div>
+        </div>
+        
+</main>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

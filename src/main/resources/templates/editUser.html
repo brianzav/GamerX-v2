@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Usuário</title>
+    <link rel="stylesheet" th:href="@{/css/editUser.css}">
+</head>
+<body>
+<h1>Editar Usuário</h1>
+
+<div th:if="${errorMessage}" style="color:red;" th:text="${errorMessage}"></div>
+<div th:if="${successMessage}" style="color:green;" th:text="${successMessage}"></div>
+
+<form action="/admin/users/update" method="post" th:object="${user}">
+    <input type="hidden" th:field="*{id}">
+    <div>
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" th:field="*{nome}" required>
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" th:field="*{email}" readonly>
+    </div>
+    <div>
+        <label for="cpf">CPF:</label>
+        <input type="text" id="cpf" th:field="*{cpf}" required>
+    </div>
+    <div>
+        <label for="password">Nova Senha:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+        <label for="confirmPassword">Confirmar Nova Senha:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+    </div>
+    <div>
+        <button type="submit">Atualizar</button>
+        <a th:href="@{/admin/users}" class="cancel-link">Cancelar</a>
+    </div>
+</form>
+
+<form th:action="@{/admin/users/toggle-status/{email}(email=${user.email})}" method="post" id="toggleForm">
+    <input type="hidden" name="email" th:value="${user.email}" />
+    <button type="submit" onclick="return confirm('Tem certeza que deseja alterar o status deste usuário?')">
+        Ativar/Desativar
+    </button>
+</form>
+
+</body>
+</html>

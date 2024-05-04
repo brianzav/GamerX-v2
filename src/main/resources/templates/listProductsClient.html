@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Produtos</title>
+    <link rel="stylesheet" th:href="@{/css/listProductsClient.css}">
+    <link rel="stylesheet" th:href="@{/css/dashListClient.css}">
+</head>
+<body>
+
+<header>
+
+    <div class="divHeader">
+        <img src="../assets/Banners/logo.png"style="max-width: 7%;height: auto;">
+        <nav>
+
+            <a href="/client/home"> Home</a>
+            <a href="/client/products"> Listar Produto</a>
+            <a href="#">Carrinho</a>
+            <span></span>
+
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section id="products">
+        <div class="container">
+            <div class="row">
+                <div th:each="product, iterStat : ${products}" class="card">
+                    <img th:if="${product.mainImageUrl}" th:src="@{${product.mainImageUrl}}" class="card-img-top" alt="Imagem Principal">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${product.name}">Nome do Produto</h5>
+                        <p class="card-text" th:text="'R$'+${product.price}">Preço do Produto</p>
+                        <a th:href="@{/client/products/view/{id}(id=${product.id})}" class="btn btn-primary">Detalhe</a>
+                    </div>
+                </div>
+                <div th:if="${products.size() % 5 == 0 and iterStat != null and iterStat.count != products.size()}" class="w-100"></div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2024 GamerX</p>
+</footer>
+
+</body>
+</html>

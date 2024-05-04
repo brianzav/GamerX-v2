@@ -6,76 +6,65 @@
     <title>Registro de Usuário</title>
 </head>
 <body>
+<div id="alertBox" th:if="${errorMessage != null || successMessage != null || loginError != null}" class="alert"
+     th:classappend="${errorMessage != null ? 'alert-danger' : (successMessage != null ? 'alert-success' : '')}">
+    <span th:if="${errorMessage}" th:text="${errorMessage}"></span>
+    <span th:if="${successMessage}" th:text="${successMessage}"></span>
+    <span th:if="${loginError}" th:text="${loginError}"></span>
+</div>
 
-<!-- Mensagens de erro -->
-<div th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></div>
-<div th:if="${successMessage}" th:text="${successMessage}" style="color:green;"></div>
-
-<div th:if="${loginError}" th:text="${loginError}" class="alert alert-danger"></div>
-
-<section class="forms-section">
-    <div class="forms">
-        <div class="form-wrapper is-active">
-            <button type="button" class="switcher switcher-login">
-                Login
-                <span class="underline"></span>
-            </button>
-
-            <form class="form form-login" th:action="@{/auth/login}" method="post">
-                <fieldset>
-                    <legend>Por favor, digite seu e-mail e senha para login.</legend>
-                    <div class="input-block">
-                        <label for="email">Email</label>
-                        <input id="email" name="email" type="text" required>
-                    </div>
-                    <div class="input-block">
-                        <label for="password">Senha</label>
-                        <input id="password" name="password" type="password" required>
-                    </div>
-                </fieldset>
-                <button type="submit" class="btn">Login</button>
-            </form>
-        </div>
-
-        <div class="form-wrapper">
-            <button type="button" class="switcher switcher-signup">
-                Cadastra-se
-                <span class="underline"></span>
-            </button>
-
-            <form class="form form-signup" th:action="@{/auth/register}" th:object="${registerDTO}" method="post">
-                <fieldset>
-                    <legend>Por favor, insira seu e-mail, senha e confirmação de senha para se inscrever.</legend>
-                    <div class="input-block">
-                        <label for="nome">Nome:</label><br>
-                        <input type="text" id="nome" th:field="*{nome}" required><br>
-                    </div>
-                    <div class="input-block">
-                        <label for="email">Email:</label><br>
-                        <input type="email" id="email" th:field="*{email}" required><br>
-                    </div>
-                    <div class="input-block">
-                        <label for="password">Senha:</label><br>
-                        <input type="password" id="password" th:field="*{password}" required><br>
-                    </div>
-                    <div class="input-block">
-                        <label for="cpf">CPF:</label><br>
-                        <input type="text" id="cpf" th:field="*{cpf}" required><br>
-                    </div>
-                    <div class="input-block">
-                        <label for="role">Função:</label><br>
-                        <select id="role" th:field="*{role}">
-                            <option value="ADMIN">Administrador</option>
-                            <option value="ESTOQUISTA">Estoquista</option>
-                        </select>
-                    </div>
-                    <br>
-                </fieldset>
-                <input type="submit" value="Registrar" class="btn">
-            </form>
-        </div>
+<div class="login-page">
+    <div class="form">
+        <form class="login-form" th:action="@{/auth/register}" th:object="${registerDTO}" method="post"
+              onsubmit="return validateForm()">
+            <h2>Cadastrar Usuario</h2>
+            <input type="text" placeholder="Nome" id="nome" th:field="*{nome}" required/>
+            <input type="text" placeholder="CPF" id="cpf" th:field="*{cpf}" required/>
+            <input type="email" placeholder="Email" id="email" th:field="*{email}" required/>
+            <input type="password" placeholder="Password" id="password" th:field="*{password}" required/>
+            <div class="custom-select">
+                <select id="role" th:field="*{role}">
+                    <option value="ADMIN">Administrador</option>
+                    <option value="STOCKIST">Estoquista</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">Registrar</button>
+            <a th:href="@{/admin/users}" class="btn">Voltar para Usuários</a>
+        </form>
     </div>
-</section>
+</div>
+
 <script th:src="@{/js/scriptLogin.js}"></script>
+<script>
+    function validateForm() {
+        var cpfInput = document.getElementById('cpf').value;
+        if (cpfInput.length !== 11) {
+            alert("O CPF deve conter exatamente 11 caracteres.");
+            return false;
+        }
+        if (!/^\d+$/.test(cpfInput)) {
+            alert("O CPF deve conter apenas números.");
+            return false;
+        }
+        return true;
+    }
+    window.onload = function() {
+        var alertBox = document.getElementById("alertBox");
+        if (alertBox) {
+            showAlert();
+        }
+    };
+    function showAlert() {
+        var alertBox = document.getElementById("alertBox");
+        alertBox.classList.add("show");
+        setTimeout(function() {
+            alertBox.classList.remove("show");
+        }, 5000);
+    }
+    function closeAlert() {
+        var alertBox = document.getElementById("alertBox");
+        alertBox.classList.remove("show");
+    }
+</script>
 </body>
 </html>

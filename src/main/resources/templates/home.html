@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard do cliente</title>
+    <link rel="stylesheet" th:href="@{/css/dash.css}">
+    <link rel="stylesheet" th:href="@{/css/styleCard.css}">
+    <link rel="stylesheet" th:href="@{/css/swiper-bundle.min.css}">
+    <script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
+    <style>
+        .login-form, .user-options {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 60px;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    <div class="divHeader">
+        <img src="../assets/Banners/logo.png" style="max-width: 7%; height: auto;">
+        <nav>
+            
+            <a href="/client/products">Listar Produtos</a>
+            <a href="javascript:void(0)" onclick="toggleLoginForm()">Fazer Login</a>
+            <span></span>
+            <div th:if="${loggedUser != null}">
+                <a href="javascript:void(0)" onclick="toggleUserMenu()">
+                    Bem-vindo, <span th:text="${loggedUser.nomeCompleto}">Usuário</span>
+                </a>
+                <div class="user-options" style="display: none;">
+                    <a th:href="@{/client/profile}" class="action-link">Alterar dados pessoais</a>
+                    <a th:href="@{/client/manage-addresses}" class="action-link">Administrar endereços</a>
+                    <a th:href="@{/client/logout}" class="action-link" onclick="return confirmLogout()">Logout</a>
+
+                    <script>
+    function confirmLogout() {
+        return confirm('Tem certeza de que deseja sair?');
+    }
+
+                    </script>
+
+                </div>
+            </div>
+            <div th:if="${loggedUser == null}" class="login-container">
+                
+                <div class="login-form">
+                    <form th:action="@{/client/login}" method="post">
+                        <input type="email" name="email" placeholder="Email" required>
+                        <input type="password" name="password" placeholder="Senha" required>
+                        <button type="submit">Entrar</button>
+                    </form>
+                    <a th:href="@{/client/forgot-password}" class="action-link">Esqueci minha senha</a> |
+                    <a th:href="@{/client/register}" class="action-link">Cadastrar</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<script>
+    function toggleLoginForm() {
+        var form = document.querySelector('.login-form');
+        form.style.display = form.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function toggleUserMenu() {
+        var menu = document.querySelector('.user-options');
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+</script>
+
+<div class="swiffy-slider">
+    <ul class="slider-container">
+        <li><img src="../assets/Banners/A50.png" style="max-width: 100%;height: auto;"></li>
+        <li><img src="../assets/Banners/lianli.png" style="max-width: 100%;height: auto;"></li>
+        <li><img src="../assets/Banners/Wooting 60HE.png" style="max-width: 100%;height: auto;"></li>
+    </ul>
+    <button type="button" class="slider-nav"></button>
+    <button type="button" class="slider-nav slider-nav-next"></button>
+    <div class="slider-indicators">
+        <button class="active"></button>
+        <button></button>
+        <button></button>
+    </div>
+</div>
+
+<section class="container">
+    <div class="card__container swiper">
+        <div class="card__content">
+            <div class="swiper-wrapper">
+                <article class="card__article swiper-slide">
+                    <div class="card__image">
+                        <img src="../assets/Hardwares/CPUs/AMD_Ryzen7_5700x/FrontAndBoxPic.jpg" alt="image"
+                             class="card__img">
+                        <div class="card__shadow"></div>
+                    </div>
+
+                    <div class="card__data">
+                        <span class="card__description">Processador AMD Ryzen 7 5800X, 3.8GHz (4.7GHz Max Turbo)</span>
+                        <h2 class="card__title">R$ 1.200,00</h2>
+                        <a href="#" class="card__button">Saiba mais</a>
+                    </div>
+                </article>
+
+                <article class="card__article swiper-slide">
+                    <div class="card__image">
+                        <img src="../assets/Periféricos/Headsets/Logitech_G733/FrontPic.jpg" alt="image"
+                             class="card__img">
+                        <div class="card__shadow"></div>
+                    </div>
+
+                    <div class="card__data">
+                        <span class="card__description">Processador AMD Ryzen 7 5800X, 3.8GHz (4.7GHz Max Turbo)</span>
+                        <h2 class="card__title">R$ 1.200,00</h2>
+                        <a href="#" class="card__button">Saiba mais</a>
+                    </div>
+
+                </article>
+
+                <article class="card__article swiper-slide">
+                    <div class="card__image">
+                        <img src="../assets/Periféricos/Headsets/HyperX_Cloud3/FrontPic.jpg" alt="image"
+                             class="card__img">
+                        <div class="card__shadow"></div>
+                    </div>
+
+                    <div class="card__data">
+                        <span class="card__description">Processador AMD Ryzen 7 5800X, 3.8GHz (4.7GHz Max Turbo)</span>
+                        <h2 class="card__title">R$ 1.200,00</h2>
+                        <a href="#" class="card__button">Saiba mais</a>
+                    </div>
+
+                </article>
+
+                <article class="card__article swiper-slide">
+                    <div class="card__image">
+                        <img src="../assets/Hardwares/GPUs/MSI_RTX_4060TI_8GB/FrontLeftAndBoxPic.jpg" alt="image"
+                             class="card__img">
+                        <div class="card__shadow"></div>
+                    </div>
+
+                    <div class="card__data">
+                        <span class="card__description">Processador AMD Ryzen 7 5800X, 3.8GHz (4.7GHz Max Turbo)</span>
+                        <h2 class="card__title">R$ 1.200,00</h2>
+                        <a href="#" class="card__button">Saiba mais</a>
+                    </div>
+                </article>
+
+                <article class="card__article swiper-slide">
+                    <div class="card__image">
+                        <img src="../assets/Hardwares/CPUs/Intel_i5_12400F/FrontLeftPic.jpg" alt="image"
+                             class="card__img">
+                        <div class="card__shadow"></div>
+                    </div>
+
+                    <div class="card__data">
+                        <span class="card__description">Processador AMD Ryzen 7 5800X, 3.8GHz (4.7GHz Max Turbo)</span>
+                        <h2 class="card__title">R$ 1.200,00</h2>
+                        <a href="#" class="card__button">Saiba mais</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+
+        <div class="swiper-button-next">
+            <i class="ri-arrow-right-line"></i>
+        </div>
+
+        <div class="swiper-button-prev">
+            <i class="ri-arrow-left-line"></i>
+        </div>
+
+
+        <div class="swiper-pagination"></div>
+    </div>
+</section>
+
+<script th:src="@{/js/swiper-bundle.min.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

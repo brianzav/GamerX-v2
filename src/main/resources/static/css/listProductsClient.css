@@ -1,0 +1,84 @@
+/* Adicione todo o CSS que estava dentro da tag <style> do seu HTML aqui */
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+
+.card {
+  width: calc(20% - 10px); /* Ajuste o valor para se encaixar no seu design */
+  margin: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos CSS restantes */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+}
+
+header {
+  background-color: #ff8000;
+  color: #fff;
+  padding: 20px 0;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 24px;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 16px;
+}
+
+.card-img-top {
+  width: 100%;
+  height: auto;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  max-width: 300px; /* Limitando a largura máxima da imagem */
+  display: flex; /* Define o container da imagem como flex */
+  align-items: center; /* Alinha os itens flex verticalmente no centro */
+  margin: auto; /* Aplica margens automáticas para centralizar verticalmente */
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.card-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  font-size: 16px;
+  color: #888;
+  margin-bottom: 15px;
+}
+
+.btn-primary {
+  background-color: #ff8000;
+  color: #fff;
+  border: none;
+  padding: 8px 16

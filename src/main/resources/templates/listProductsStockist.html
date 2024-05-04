@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Produtos</title>
+    <link rel="stylesheet" th:href="@{/css/styleLisUsuario.css}">
+</head>
+<body>
+<div id="mainBusca">
+    <h1>Produtos</h1>
+    <form th:action="@{/stockist/products/search}" method="get" id="divBusca">
+        <input type="text" name="search" placeholder="Buscar produtos..." id="txtBusca">
+        <button type="submit" id="btnBusca">Buscar</button>
+    </form>
+
+</div>
+
+<table>
+    <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Quantidade em Estoque</th>
+        <th>Valor</th>
+        <th>Status</th>
+        <th>Ações</th>
+    </tr>
+
+    <tr th:each="product : ${products}">
+        <td th:text="${product.productID}"></td>
+        <td th:text="${product.productName}"></td>
+        <td th:text="${product.storage}"></td>
+        <td th:text="${product.price}"></td>
+        <td th:text="${product.active ? 'Ativo' : 'Desativado'}"></td>
+        <td>
+            <a th:href="@{/stockist/products/edit/{id}(id=${product.productID})}">Editar</a>
+        </td>
+    </tr>
+</table>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+            <a class="page-link" th:href="@{/stockist/products(page=${currentPage - 1})}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${i == currentPage} ? 'active'">
+            <a class="page-link" th:href="@{/stockist/products(page=${i})}" th:text="${i + 1}">1</a>
+        </li>
+        <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+            <a class="page-link" th:href="@{/stockist/products(page=${currentPage + 1})}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+</body>
+</html>

@@ -1,19 +1,42 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard do Administrador</title>
+
+    <link rel="stylesheet" th:href="@{/css/dash.css}">
+    <link rel="stylesheet" th:href="@{/css/styleCard.css}">
+    <link rel="stylesheet" th:href="@{/css/swiper-bundle.min.css}">
+
+    <link th:href="@{https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css}" rel="stylesheet" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
+
 </head>
 <body>
 
-<h1>Dashboard do Administrador</h1>
+<header>
 
-<nav>
-    <ul>
-        <li><a href="/admin/users">Listar Usuários</a></li>
-        <li><a href="/admin/products">Listar Produtos</a></li>
-        <li><a href="/admin/orders">Listar Pedidos</a></li>
-    </ul>
-</nav>
+    <div class="divHeader">
+        <img src="../assets/Banners/logo.png"style="max-width: 7%;height: auto;">
+        <nav>
 
+            <a href="/admin/products"> Listar Produto</a>
+            <a href="/admin/users"> Listar Usuário</a>
+            <a href="/admin/orders">Listar Pedidos</a>
+            <span></span>
+
+        </nav>
+    </div>
+</header>
+
+<!-- Removido o carrossel e os cards de produtos -->
+
+<!-- Mantido o restante do seu HTML sem os cards de produtos -->
+
+<script th:src="@{/js/swiper-bundle.min.js}"></script>
+<script th:src="@{/js/main.js}"></script>
 </body>
 </html>
