@@ -1,0 +1,54 @@
+body {
+    background-color: #fff;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+}
+.container {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+h2, h4, h3 {
+    color: #ff8000;
+}
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #ff8000;
+    color: white;
+}
+button {
+    border: none;
+    padding: 5px 10px;
+    margin: 5px;
+    cursor: pointer;
+    background-color: #ff8000;
+    color: white;
+}
+button:hover {
+    background-color: #cc6600;
+}
+select {
+    padding: 5px;
+    border: 1px solid #ddd;
+    background-color: white;
+    color: #333;
+}
+.btn-success {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+.btn-success:hover {
+    background-color: #45a049;
+    border-color: #45a049;
+}
