@@ -49,7 +49,7 @@ nav span {
     position: absolute;
     top: 0;
     left: 0;
-    width: 150px;
+    width: 138px;
     height: 100%;
     background: linear-gradient(45deg, #020202, #FF6500);
     border-radius: 10px;
@@ -58,7 +58,8 @@ nav span {
 
 nav a:nth-child(1):hover~span {
     left: 100;
-    width: 150px;
+    width: 138px;
+
 }
 
 nav a:nth-child(2):hover~span {
@@ -116,7 +117,6 @@ nav a:nth-child(3):hover~span {
 .login-container {
     position: relative;
     padding-left: 20px;
-    z-index: 9999;
 }
 
 .login-form {

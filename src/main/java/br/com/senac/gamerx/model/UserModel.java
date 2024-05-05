@@ -37,7 +37,7 @@ public class UserModel {
     }
 
     public enum Role {
-        ADMIN("admin"), ESTOQUISTA("estoquista"), CLIENTE("cliente");
+        ADMIN("admin"), STOCKIST("estoquista");
 
         Role(String role) {
         }

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrinho de Compras</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+<div class="container mt-5">
+  <h2>Seu Carrinho</h2>
+  <div th:if="${#lists.isEmpty(cart.items)}">
+    <p>Seu carrinho está vazio.</p>
+  </div>
+  <div th:if="${not #lists.isEmpty(cart.items)}">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Produto</th>
+        <th>Preço</th>
+        <th>Quantidade</th>
+        <th>Subtotal</th>
+        <th>Ações</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="item : ${cart.items}">
+        <td th:text="${item.product.productName}">Nome do Produto</td>
+        <td th:text="${item.product.price}">Preço</td>
+        <td>
+          <button onclick="changeQuantity(this, -1)">-</button>
+          <span th:text="${item.quantity}">1</span>
+          <button onclick="changeQuantity(this, 1)">+</button>
+        </td>
+        <td th:text="${item.product.price * item.quantity}">Subtotal</td>
+        <td>
+          <form th:action="@{/client/cart/remove}" method="post">
+            <input type="hidden" name="itemId" th:value="${item.id}" />
+            <button type="submit" class="btn btn-danger">Remover</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div th:if="${not #lists.isEmpty(cart.items)}">
+    <h4>Opções de Frete:</h4>
+    <select id="shippingOptions" onchange="updateShipping()">
+      <option value="25">Normal (5-4 dias) - R$25</option>
+      <option value="40">Express (3-2 dias) - R$40</option>
+      <option value="100">Entrega Flash (1 dia) - R$100</option>
+    </select>
+    <h3>Total: <span id="total">0</span></h3>
+  </div>
+  <div th:if="${not #lists.isEmpty(cart.items)}">
+    <button class="btn btn-success">Finalizar Compra</button>
+  </div>
+</div>
+
+<script>
+let shippingCost = 25; // Valor inicial de frete
+
+function changeQuantity(element, change) {
+    let quantityElement = element.parentNode.querySelector('span');
+    let quantity = parseInt(quantityElement.innerText) + change;
+    if (quantity < 1) quantity = 1;
+    quantityElement.innerText = quantity;
+    updateSubtotals();
+}
+
+function updateSubtotals() {
+    const rows = document.querySelectorAll('tbody tr');
+    let total = 0;
+    rows.forEach(row => {
+        const price = parseFloat(row.cells[1].innerText);
+        const quantity = parseInt(row.cells[2].querySelector('span').innerText);
+        const subtotal = price * quantity;
+        row.cells[3].innerText = subtotal.toFixed(2);
+        total += subtotal;
+    });
+    document.getElementById('total').innerText = (total + shippingCost).toFixed(2);
+}
+
+function updateShipping() {
+    shippingCost = parseFloat(document.getElementById('shippingOptions').value);
+    updateSubtotals();
+}
+
+document.addEventListener('DOMContentLoaded', updateSubtotals);
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

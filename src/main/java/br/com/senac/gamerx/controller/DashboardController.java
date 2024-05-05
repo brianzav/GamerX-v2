@@ -10,11 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class DashboardController {
-    private final UserRepository userRepository;
-
     @Autowired
     public DashboardController(UserRepository userRepository) {
-        this.userRepository = userRepository;
     }
 
     @GetMapping("/dashboard")
@@ -23,8 +20,8 @@ public class DashboardController {
 
         if (loggedInUser != null && loggedInUser.getRole() == UserModel.Role.ADMIN) {
             return "adminDashboard";
-        } else if (loggedInUser != null) {
-            return "userDashboard";
+        } else if (loggedInUser != null && loggedInUser.getRole() == UserModel.Role.STOCKIST ) {
+            return "stockistDashboard";
         } else {
             return "redirect:/auth/login";
         }

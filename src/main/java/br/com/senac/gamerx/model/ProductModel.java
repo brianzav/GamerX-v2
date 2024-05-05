@@ -24,7 +24,7 @@ import java.util.List;
 public class ProductModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long productID;
+    private Long productID;
 
     @NotBlank(message = "Attribute productname cannot be null")
     @Size(max = 200, message = "Attribute productname can have at maximum 200 characters")
@@ -34,7 +34,8 @@ public class ProductModel {
     @DecimalMin(value = "0.0", inclusive = false)
     private double price;
 
-    private List<String> productImages = new ArrayList<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ProductImages> productImages = new ArrayList<>();
 
     @Size(max = 2000, message = "Attribute productname can have at maximum 200 characters")
     private String description;

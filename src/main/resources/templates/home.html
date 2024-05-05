@@ -7,8 +7,9 @@
     <link rel="stylesheet" th:href="@{/css/dash.css}">
     <link rel="stylesheet" th:href="@{/css/styleCard.css}">
     <link rel="stylesheet" th:href="@{/css/swiper-bundle.min.css}">
-    <script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
-    <link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous"
+            defer></script>
+
     <style>
         .login-form, .user-options {
             display: none;
@@ -27,10 +28,8 @@
     <div class="divHeader">
         <img src="../assets/Banners/logo.png" style="max-width: 7%; height: auto;">
         <nav>
-            
             <a href="/client/products">Listar Produtos</a>
-            <a href="javascript:void(0)" onclick="toggleLoginForm()">Fazer Login</a>
-            <span></span>
+            <a href="/client/cart">Meu carrinho</a>
             <div th:if="${loggedUser != null}">
                 <a href="javascript:void(0)" onclick="toggleUserMenu()">
                     Bem-vindo, <span th:text="${loggedUser.nomeCompleto}">Usuário</span>
@@ -50,14 +49,14 @@
                 </div>
             </div>
             <div th:if="${loggedUser == null}" class="login-container">
-                
+
+                <a href="javascript:void(0)" onclick="toggleLoginForm()">Fazer Login</a>
                 <div class="login-form">
                     <form th:action="@{/client/login}" method="post">
                         <input type="email" name="email" placeholder="Email" required>
                         <input type="password" name="password" placeholder="Senha" required>
                         <button type="submit">Entrar</button>
                     </form>
-                    <a th:href="@{/client/forgot-password}" class="action-link">Esqueci minha senha</a> |
                     <a th:href="@{/client/register}" class="action-link">Cadastrar</a>
                 </div>
             </div>
@@ -189,3 +188,4 @@
 <script th:src="@{/js/main.js}"></script>
 </body>
 </html>
+

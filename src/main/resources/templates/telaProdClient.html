@@ -6,13 +6,15 @@
     <title th:text="${product.productName}">Nome do Produto</title>
     <link rel="stylesheet" th:href="@{/css/stylePrd.css}">
     <link rel="stylesheet" th:href="@{/css/opcoes.css}">
+    <link rel="stylesheet" th:href="@{/css/viewCart.css}">
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
 <header>
     <div class="divHeader">
         <nav>
-            <a href="#">Início</a>
+            <a href="/client/home">Início</a>
             <a href="/client/products">Listar Produtos</a>
             <a href="#">Computadores</a>
             <a href="#">Placas mãe</a>
@@ -23,7 +25,6 @@
 
 <main class="container">
     <div class="left-side">
-
         <div id="productCarousel" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                 <div th:each="image, stat : ${images}" class="carousel-item" th:classappend="${stat.first} ? 'active' : ''">
@@ -45,23 +46,33 @@
             <h1 th:text="${product.productName}">Nome do Produto</h1>
             <p th:text="${product.description}">Descrição do Produto</p>
             <span class="price" th:text="${product.price}">Preço do Produto</span>
-            <div class="options">
-                <div class="amount">
-                    <div class="minus">
-                        <img src="/assets/Svg/icon-minus.svg">
+            <form th:action="@{/client/cart/add}" method="post">
+                <input type="hidden" name="productID" th:value="${product.productID}" />
+                <div class="options">
+                    <div class="amount">
+                        <button type="button" onclick="changeQuantity(-1)">-</button>
+                        <span id="quantity">1</span>
+                        <button type="button" onclick="changeQuantity(1)">+</button>
+                        <input type="hidden" id="quantityInput" name="quantity" value="1" />
                     </div>
-                    <span>0</span>
-                    <div class="plus">
-                        <img src="/assets/Svg/icon-plus.svg">
-                    </div>
-                    <a href="" class="button"><img src="/assets/Svg/icon-cart.svg">add to cart</a>
+                    <button type="submit" class="btn btn-primary">Adicionar ao carrinho</button>
                 </div>
-            </div>
-
+            </form>
         </div>
     </div>
-
 </main>
+
+<script>
+function changeQuantity(change) {
+    var quantitySpan = document.getElementById('quantity');
+    var quantityInput = document.getElementById('quantityInput');
+    var currentQuantity = parseInt(quantitySpan.innerText);
+    currentQuantity += change;
+    if (currentQuantity < 1) currentQuantity = 1; // Assegura que a quantidade não seja menor que 1
+    quantitySpan.innerText = currentQuantity;
+    quantityInput.value = currentQuantity;
+}
+</script>
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
