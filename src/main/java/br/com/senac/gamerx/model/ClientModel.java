@@ -16,7 +16,6 @@ public class ClientModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String nomeCompleto;
     private String email;
     private String cpf;

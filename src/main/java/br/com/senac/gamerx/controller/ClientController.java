@@ -1,11 +1,10 @@
 package br.com.senac.gamerx.controller;
 
 import br.com.senac.gamerx.dto.ProductDTO;
-import br.com.senac.gamerx.model.AddressModel;
-import br.com.senac.gamerx.model.ClientModel;
-import br.com.senac.gamerx.model.ProductModel;
+import br.com.senac.gamerx.model.*;
 import br.com.senac.gamerx.repository.ClientRepository;
 import br.com.senac.gamerx.repository.ProductRepository;
+import br.com.senac.gamerx.repository.ShoppingCartRepository;
 import br.com.senac.gamerx.service.ClientService;
 import br.com.senac.gamerx.service.HashingService;
 import jakarta.servlet.http.HttpSession;
@@ -30,6 +29,9 @@ public class ClientController {
     private ClientRepository clientRepository;
 
     @Autowired
+    private ShoppingCartRepository shoppingCartRepository;
+
+    @Autowired
     private ClientService clientService;
 
     @Autowired
@@ -51,16 +53,6 @@ public class ClientController {
         model.addAttribute("products", productDTOs);
         return "listProductsClient";
     }
-
-    @GetMapping("/products/view/{id}")
-    public String viewProduct(@PathVariable Long id, Model model) {
-        ProductModel product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado."));
-        model.addAttribute("product", product);
-        model.addAttribute("images", product.getProductImages());
-        return "telaProdClient";
-    }
-
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -237,5 +229,73 @@ public class ClientController {
 
 
 
+    @GetMapping("/cart")
+    public String viewCart(HttpSession session, Model model) {
+        ClientModel client = (ClientModel) session.getAttribute("loggedUser");
+        ShoppingCartModel cart = shoppingCartRepository.findByClientId(client.getId())
+                .orElse(new ShoppingCartModel()); // Assegure que um novo carrinho vazio seja criado se nenhum for encontrado
+        model.addAttribute("cart", cart);
+        return "viewCart";
+    }
+
+
+
+    @PostMapping("/cart/add")
+    public String addToCart(@RequestParam Long productID, @RequestParam(defaultValue = "1") int quantity, HttpSession session) {
+        ClientModel client = (ClientModel) session.getAttribute("loggedUser");
+        ShoppingCartModel cart = shoppingCartRepository.findByClientId(client.getId())
+                .orElseGet(() -> {
+                    ShoppingCartModel newCart = new ShoppingCartModel();
+                    newCart.setClient(client);
+                    return newCart;
+                });
+
+        Optional<CartItemModel> existingItem = cart.getItems().stream()
+                .filter(item -> item.getProduct().getProductID().equals(productID))
+                .findFirst();
+
+        if (existingItem.isPresent()) {
+            existingItem.get().setQuantity(existingItem.get().getQuantity() + quantity);
+        } else {
+            ProductModel product = productRepository.findById(productID)
+                    .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado."));
+            CartItemModel newItem = new CartItemModel();
+            newItem.setProduct(product);
+            newItem.setQuantity(quantity);
+            newItem.setShoppingCart(cart);
+            cart.getItems().add(newItem);
+        }
+
+        shoppingCartRepository.save(cart);
+        return "redirect:/client/cart";
+    }
+
+    @PostMapping("/cart/remove")
+    public String removeItemFromCart(@RequestParam Long itemId, HttpSession session) {
+        ClientModel client = (ClientModel) session.getAttribute("loggedUser");
+        ShoppingCartModel cart = shoppingCartRepository.findByClientId(client.getId()).orElse(null);
+
+        if (cart != null) {
+            cart.getItems().removeIf(item -> item.getId().equals(itemId));
+            if (cart.getItems().isEmpty()) {
+                shoppingCartRepository.delete(cart); // Opcional, depende da sua lógica de negócio
+                session.setAttribute("cart", new ShoppingCartModel()); // Garantir que a view receba um carrinho vazio
+            } else {
+                shoppingCartRepository.save(cart);
+            }
+        }
+
+        return "redirect:/client/cart";
+    }
+
+    @GetMapping("/products/view/{id}")
+    public String viewProduct(@PathVariable Long id, Model model) {
+        ProductModel product = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado."));
+        System.out.println("Product ID: " + product.getProductID());
+        model.addAttribute("product", product);
+        model.addAttribute("images", product.getProductImages());
+        return "telaProdClient";
+    }
 
 }

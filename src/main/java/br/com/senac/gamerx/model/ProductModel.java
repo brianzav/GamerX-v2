@@ -24,7 +24,7 @@ import java.util.List;
 public class ProductModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long productID;
+    private Long productID;
 
     @NotBlank(message = "Attribute productname cannot be null")
     @Size(max = 200, message = "Attribute productname can have at maximum 200 characters")

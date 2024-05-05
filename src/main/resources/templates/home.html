@@ -28,6 +28,8 @@
         <img src="../assets/Banners/logo.png" style="max-width: 7%; height: auto;">
         <nav>
             <a href="/client/products">Listar Produtos</a>
+            <a href="/client/cart">Meu carrinho</a>
+
             <div th:if="${loggedUser != null}">
                 <a href="javascript:void(0)" onclick="toggleUserMenu()">
                     Bem-vindo, <span th:text="${loggedUser.nomeCompleto}">Usuário</span>
@@ -54,7 +56,6 @@
                         <input type="password" name="password" placeholder="Senha" required>
                         <button type="submit">Entrar</button>
                     </form>
-                    <a th:href="@{/client/forgot-password}" class="action-link">Esqueci minha senha</a> |
                     <a th:href="@{/client/register}" class="action-link">Cadastrar</a>
                 </div>
             </div>
