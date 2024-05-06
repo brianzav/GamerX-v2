@@ -1,31 +1,40 @@
 html, body {
-    height: 100%;
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(#c54f00, #000000);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background-image: url(../assets/Banners/logo.png);
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center;
+    background-color: #333;
 }
-
 h1 {
-    color: #FFF;
+    color: #f7f7f7;
     margin-bottom: 30px;
+    justify-content: center;
+    display: flex;
+}
+.container{
+    align-items:start;
+    justify-content: center;
+    display: flex;
 }
 
 form {
     background: rgba(0, 0, 0, 0.7);
     padding: 20px;
     border-radius: 10px;
-    width: 90%;
+    width: 100%;
+    height: 80%;
     max-width: 500px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+    margin: 10px;
 }
 
 form div {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
+
 
 label {
     color: #FFF;
@@ -90,18 +99,4 @@ button[type="button"]:hover {
     display: none;
 }
 
-@media screen and (max-width: 768px) {
-    h1 {
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
 
-    form {
-        padding: 15px;
-        width: calc(100% - 30px);
-    }
-
-    input, select, button {
-        padding: 8px;
-    }
-}
