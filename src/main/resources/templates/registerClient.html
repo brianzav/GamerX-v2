@@ -6,7 +6,10 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+
+   
 <h1>Cadastro de Cliente</h1>
+<div class="container">
 <form th:action="@{/client/register}" th:object="${cliente}" method="post">
     <div>
         <label>Nome Completo:</label>
@@ -35,6 +38,8 @@
         <label>Senha:</label>
         <input type="password" th:field="*{senha}" required>
     </div>
+</form>
+    <form th:action="@{/client/register}" th:object="${cliente}" method="post">
     <div>
         <label>CEP:</label>
         <input type="text" id="cep" th:field="*{enderecos[0].cep}" required pattern="\d{5}-?\d{3}" placeholder="00000-000">
@@ -67,7 +72,9 @@
     <div>
         <button type="submit">Cadastrar</button>
     </div>
+
 </form>
+</div>
 
 <script>
     function buscarCep() {
