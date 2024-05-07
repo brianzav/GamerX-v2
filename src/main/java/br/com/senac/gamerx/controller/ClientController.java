@@ -71,16 +71,7 @@ public class ClientController {
             return "registerClient";
         }
         client.setSenha(hashingService.hashPassword(client.getSenha()));
-
-        if (!client.getEnderecos().isEmpty()) {
-            client.getEnderecos().forEach(endereco -> {
-                endereco.setCliente(client);
-                endereco.setEnderecoPadrao(true);
-            });
-        }
-
         clientRepository.save(client);
-        model.addAttribute("successMessage", "Cadastro realizado com sucesso!");
         return "redirect:/client/home";
     }
 
@@ -96,11 +87,19 @@ public class ClientController {
         Optional<ClientModel> optionalClient = clientRepository.findByEmail(email);
         if (optionalClient.isPresent() && hashingService.checkPassword(password, optionalClient.get().getSenha())) {
             session.setAttribute("loggedUser", optionalClient.get());
-            redirectAttributes.addFlashAttribute("loginSuccess", "Login successful");
-            return "redirect:/client/home";
+
+            ShoppingCartModel sessionCart = (ShoppingCartModel) session.getAttribute("cart");
+            if (sessionCart != null && sessionCart.getClient() == null) {
+                sessionCart.setClient(optionalClient.get());
+                shoppingCartRepository.save(sessionCart);
+            }
+
+            String redirectUrl = (String) session.getAttribute("redirectUrl");
+            session.removeAttribute("redirectUrl");
+            return "redirect:" + (redirectUrl != null ? redirectUrl : "/client/home");
         } else {
             redirectAttributes.addFlashAttribute("loginError", "Credenciais inválidas");
-            return "redirect:/client/home";
+            return "redirect:/client/login";
         }
     }
 
@@ -153,7 +152,6 @@ public class ClientController {
         return "manageAddresses";
     }
 
-
     @PostMapping("/manage-addresses/add")
     public String addAddress(@ModelAttribute AddressModel newAddress, HttpSession session) {
         ClientModel loggedUser = (ClientModel) session.getAttribute("loggedUser");
@@ -202,9 +200,6 @@ public class ClientController {
         return "redirect:/client/manage-addresses";
     }
 
-
-
-    //TODO ARRUMAR DELETAR E ATUALIZAR ENDEREC PADRAO
     @PostMapping("/manage-addresses/delete")
     public String deleteAddress(@RequestParam Long addressId, HttpSession session) {
         ClientModel loggedUser = (ClientModel) session.getAttribute("loggedUser");
@@ -227,28 +222,47 @@ public class ClientController {
         return "redirect:/client/manage-addresses";
     }
 
-
-
     @GetMapping("/cart")
     public String viewCart(HttpSession session, Model model) {
         ClientModel client = (ClientModel) session.getAttribute("loggedUser");
-        ShoppingCartModel cart = shoppingCartRepository.findByClientId(client.getId())
-                .orElse(new ShoppingCartModel()); // Assegure que um novo carrinho vazio seja criado se nenhum for encontrado
+        ShoppingCartModel cart;
+
+        // Verifica se o cliente está logado
+        if (client != null) {
+            // Cliente logado: Busca o carrinho no banco de dados ou cria um novo se não existir
+            cart = shoppingCartRepository.findByClientId(client.getId())
+                    .orElseGet(() -> {
+                        ShoppingCartModel newCart = new ShoppingCartModel();
+                        newCart.setClient(client);
+                        shoppingCartRepository.save(newCart);
+                        return newCart;
+                    });
+        } else {
+            // Cliente não logado: Busca o carrinho na sessão ou cria um novo se não existir
+            cart = (ShoppingCartModel) session.getAttribute("cart");
+            if (cart == null) {
+                cart = new ShoppingCartModel();
+                session.setAttribute("cart", cart);
+            }
+        }
+
         model.addAttribute("cart", cart);
         return "viewCart";
     }
 
 
-
     @PostMapping("/cart/add")
     public String addToCart(@RequestParam Long productID, @RequestParam(defaultValue = "1") int quantity, HttpSession session) {
         ClientModel client = (ClientModel) session.getAttribute("loggedUser");
-        ShoppingCartModel cart = shoppingCartRepository.findByClientId(client.getId())
-                .orElseGet(() -> {
-                    ShoppingCartModel newCart = new ShoppingCartModel();
-                    newCart.setClient(client);
-                    return newCart;
-                });
+        ShoppingCartModel cart = (ShoppingCartModel) session.getAttribute("cart");
+
+        if (cart == null) {
+            cart = new ShoppingCartModel();
+            if (client != null) {
+                cart.setClient(client);
+            }
+            session.setAttribute("cart", cart);
+        }
 
         Optional<CartItemModel> existingItem = cart.getItems().stream()
                 .filter(item -> item.getProduct().getProductID().equals(productID))
@@ -266,7 +280,9 @@ public class ClientController {
             cart.getItems().add(newItem);
         }
 
-        shoppingCartRepository.save(cart);
+        if (client != null) {
+            shoppingCartRepository.save(cart);
+        }
         return "redirect:/client/cart";
     }
 
@@ -296,6 +312,17 @@ public class ClientController {
         model.addAttribute("product", product);
         model.addAttribute("images", product.getProductImages());
         return "telaProdClient";
+    }
+
+    @GetMapping("/checkout")
+    public String checkout(HttpSession session, Model model) {
+        ClientModel client = (ClientModel) session.getAttribute("loggedUser");
+        if (client == null) {
+            session.setAttribute("redirectUrl", "/client/checkout");
+            return "redirect:/client/login";
+        }
+        // Continue to checkout page logic here
+        return "checkoutPage";  // Nome da sua página de checkout
     }
 
 }
