@@ -256,8 +256,18 @@ public class ClientController {
         }
 
         model.addAttribute("cart", cart);
+        model.addAttribute("userLoggedIn", client != null);
+        if (client != null) {
+            AddressModel defaultAddress = client.getEnderecos().stream()
+                    .filter(AddressModel::isEnderecoPadrao)
+                    .findFirst()
+                    .orElse(null);
+            model.addAttribute("defaultAddress", defaultAddress);
+        }
         return "viewCart";
     }
+
+
 
 
     @PostMapping("/cart/add")
@@ -327,12 +337,20 @@ public class ClientController {
     public String checkout(HttpSession session, Model model) {
         ClientModel client = (ClientModel) session.getAttribute("loggedUser");
         if (client == null) {
-            session.setAttribute("redirectUrl", "/client/checkout");
-            return "redirect:/client/login";
+            model.addAttribute("userLoggedIn", false);
+            return "checkoutPage"; // Nome da sua página de checkout
+        } else {
+            AddressModel defaultAddress = client.getEnderecos().stream()
+                    .filter(AddressModel::isEnderecoPadrao)
+                    .findFirst()
+                    .orElse(new AddressModel()); // Cria um novo endereço se não existir um padrão
+
+            model.addAttribute("userLoggedIn", true);
+            model.addAttribute("defaultAddress", defaultAddress);
+            return "checkoutPage";
         }
-        // Continue to checkout page logic here
-        return "checkoutPage";  // Nome da sua página de checkout
     }
+
 
     @GetMapping("/check-login")
     @ResponseBody
