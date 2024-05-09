@@ -71,7 +71,14 @@ public class ClientController {
             return "registerClient";
         }
         client.setSenha(hashingService.hashPassword(client.getSenha()));
+        if (!client.getEnderecos().isEmpty()) {
+            client.getEnderecos().forEach(endereco -> {
+                endereco.setCliente(client);
+                endereco.setEnderecoPadrao(true);
+            });
+        }
         clientRepository.save(client);
+        model.addAttribute("successMessage", "Cadastro realizado com sucesso!");
         return "redirect:/client/home";
     }
 
