@@ -6,6 +6,20 @@ body{
 
 .atencao{
 
-    background:#3f3f3f;
+    
+}
 
+.container{
+
+    display: flex;
+    background:#FFFFFF ;
+    max-width: 70%;
+    margin-top: 20px;
+    height: 500px;
+    align-items: center
+}
+
+.table{
+
+    justify-content: space-between;
 }
