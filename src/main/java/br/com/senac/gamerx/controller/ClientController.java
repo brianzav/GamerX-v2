@@ -15,7 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -331,5 +333,15 @@ public class ClientController {
         // Continue to checkout page logic here
         return "checkoutPage";  // Nome da sua página de checkout
     }
+
+    @GetMapping("/check-login")
+    @ResponseBody
+    public Map<String, Boolean> checkLogin(HttpSession session) {
+        boolean isLoggedIn = session.getAttribute("loggedUser") != null;
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("loggedIn", isLoggedIn);
+        return response;
+    }
+
 
 }
