@@ -388,7 +388,7 @@ public class ClientController {
     public String myOrders(HttpSession session, Model model) {
         ClientModel client = (ClientModel) session.getAttribute("loggedUser");
         if (client == null) {
-            return "redirect:/client/login";
+            return "redirect:/client/home";
         }
 
         List<OrderModel> orders = orderRepository.findByClientId(client.getId());
