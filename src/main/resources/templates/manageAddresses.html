@@ -69,7 +69,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 function buscarCep() {
-    var cep = document.getElementById('cep').value.replace(/\D/g, ''); // Remove caracteres não numéricos
+    var cep = document.getElementById('cep').value.replace(/\D/g, '');
     if (cep.length === 8) {
         $.ajax({
             url: `https://viacep.com.br/ws/${cep}/json/`,

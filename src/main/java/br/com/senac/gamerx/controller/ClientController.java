@@ -114,7 +114,7 @@ public class ClientController {
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate();  // Encerra a sessão
+        session.invalidate();
         return "redirect:/client/home";
     }
 
@@ -236,9 +236,8 @@ public class ClientController {
         ClientModel client = (ClientModel) session.getAttribute("loggedUser");
         ShoppingCartModel cart;
 
-        // Verifica se o cliente está logado
+
         if (client != null) {
-            // Cliente logado: Busca o carrinho no banco de dados ou cria um novo se não existir
             cart = shoppingCartRepository.findByClientId(client.getId())
                     .orElseGet(() -> {
                         ShoppingCartModel newCart = new ShoppingCartModel();
@@ -247,7 +246,6 @@ public class ClientController {
                         return newCart;
                     });
         } else {
-            // Cliente não logado: Busca o carrinho na sessão ou cria um novo se não existir
             cart = (ShoppingCartModel) session.getAttribute("cart");
             if (cart == null) {
                 cart = new ShoppingCartModel();
@@ -313,8 +311,8 @@ public class ClientController {
         if (cart != null) {
             cart.getItems().removeIf(item -> item.getId().equals(itemId));
             if (cart.getItems().isEmpty()) {
-                shoppingCartRepository.delete(cart); // Opcional, depende da sua lógica de negócio
-                session.setAttribute("cart", new ShoppingCartModel()); // Garantir que a view receba um carrinho vazio
+                shoppingCartRepository.delete(cart);
+                session.setAttribute("cart", new ShoppingCartModel());
             } else {
                 shoppingCartRepository.save(cart);
             }
@@ -338,12 +336,12 @@ public class ClientController {
         ClientModel client = (ClientModel) session.getAttribute("loggedUser");
         if (client == null) {
             model.addAttribute("userLoggedIn", false);
-            return "checkoutPage"; // Nome da sua página de checkout
+            return "checkoutPage";
         } else {
             AddressModel defaultAddress = client.getEnderecos().stream()
                     .filter(AddressModel::isEnderecoPadrao)
                     .findFirst()
-                    .orElse(new AddressModel()); // Cria um novo endereço se não existir um padrão
+                    .orElse(new AddressModel());
 
             model.addAttribute("userLoggedIn", true);
             model.addAttribute("defaultAddress", defaultAddress);

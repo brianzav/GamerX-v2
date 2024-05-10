@@ -68,7 +68,7 @@ function changeQuantity(change) {
     var quantityInput = document.getElementById('quantityInput');
     var currentQuantity = parseInt(quantitySpan.innerText);
     currentQuantity += change;
-    if (currentQuantity < 1) currentQuantity = 1; // Assegura que a quantidade não seja menor que 1
+    if (currentQuantity < 1) currentQuantity = 1;
     quantitySpan.innerText = currentQuantity;
     quantityInput.value = currentQuantity;
 }

@@ -37,7 +37,7 @@ public class AdminController {
     @GetMapping("/users")
     public String listUsers(@RequestParam(required = false) String keyword, Model model) {
         if (keyword != null && !keyword.isEmpty()) {
-            Pageable pageable = PageRequest.of(0, 10); // Define o número de resultados por página
+            Pageable pageable = PageRequest.of(0, 10);
             Page<UserModel> usersPage = userRepository.findByNomeContainingIgnoreCase(keyword, pageable);
             model.addAttribute("users", usersPage.getContent());
         } else {

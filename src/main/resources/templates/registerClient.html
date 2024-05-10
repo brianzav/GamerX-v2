@@ -74,7 +74,7 @@
 
 <script>
     function buscarCep() {
-        var cep = document.getElementById('cep').value.replace(/\D/g, ''); // Limpa o valor do CEP
+        var cep = document.getElementById('cep').value.replace(/\D/g, '');
         if (cep.length === 8) {
             $.ajax({
                 url: `https://viacep.com.br/ws/${cep}/json/`,

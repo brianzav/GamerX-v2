@@ -27,7 +27,7 @@ public class ShoppingCartModel {
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItemModel> items = new ArrayList<>();
 
-    // Método para calcular o total
+
     public BigDecimal getTotal() {
         return items.stream()
                 .map(item -> item.getProduct().getPrice().multiply(new BigDecimal(item.getQuantity())))
