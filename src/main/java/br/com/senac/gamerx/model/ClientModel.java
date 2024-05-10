@@ -17,12 +17,13 @@ public class ClientModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nomeCompleto;
+    @Column(unique = true, nullable = false)
     private String email;
+    @Column(unique = true, nullable = false)
     private String cpf;
     private LocalDate dataNascimento;
     private String genero;
     private String senha;
-
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<AddressModel> enderecos;
 
@@ -33,13 +34,12 @@ public class ClientModel {
         this.enderecos.add(enderecoInicial);
     }
 
-    public void adicionarEndereco(AddressModel address) {
-        enderecos.add(address);
-        address.setCliente(this);
+    public AddressModel getDefaultAddress() {
+        return enderecos.stream()
+                .filter(AddressModel::isEnderecoPadrao)
+                .findFirst()
+                .orElse(null);  // Retorna null se não houver endereço padrão
     }
 
-    public void removerEndereco(AddressModel address) {
-        enderecos.remove(address);
-        address.setCliente(null);
-    }
+
 }

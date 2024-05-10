@@ -3,6 +3,7 @@ package br.com.senac.gamerx.controller;
 import br.com.senac.gamerx.dto.ProductDTO;
 import br.com.senac.gamerx.model.*;
 import br.com.senac.gamerx.repository.ClientRepository;
+import br.com.senac.gamerx.repository.OrderRepository;
 import br.com.senac.gamerx.repository.ProductRepository;
 import br.com.senac.gamerx.repository.ShoppingCartRepository;
 import br.com.senac.gamerx.service.ClientService;
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,9 @@ public class ClientController {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Autowired
     private ShoppingCartRepository shoppingCartRepository;
@@ -231,6 +236,16 @@ public class ClientController {
         return "redirect:/client/manage-addresses";
     }
 
+    @GetMapping("/products/view/{id}")
+    public String viewProduct(@PathVariable Long id, Model model) {
+        ProductModel product = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado."));
+        System.out.println("Product ID: " + product.getProductID());
+        model.addAttribute("product", product);
+        model.addAttribute("images", product.getProductImages());
+        return "telaProdClient";
+    }
+
     @GetMapping("/cart")
     public String viewCart(HttpSession session, Model model) {
         ClientModel client = (ClientModel) session.getAttribute("loggedUser");
@@ -264,9 +279,6 @@ public class ClientController {
         }
         return "viewCart";
     }
-
-
-
 
     @PostMapping("/cart/add")
     public String addToCart(@RequestParam Long productID, @RequestParam(defaultValue = "1") int quantity, HttpSession session) {
@@ -321,33 +333,72 @@ public class ClientController {
         return "redirect:/client/cart";
     }
 
-    @GetMapping("/products/view/{id}")
-    public String viewProduct(@PathVariable Long id, Model model) {
-        ProductModel product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado."));
-        System.out.println("Product ID: " + product.getProductID());
-        model.addAttribute("product", product);
-        model.addAttribute("images", product.getProductImages());
-        return "telaProdClient";
-    }
-
     @GetMapping("/checkout")
     public String checkout(HttpSession session, Model model) {
         ClientModel client = (ClientModel) session.getAttribute("loggedUser");
         if (client == null) {
-            model.addAttribute("userLoggedIn", false);
-            return "checkoutPage";
-        } else {
-            AddressModel defaultAddress = client.getEnderecos().stream()
-                    .filter(AddressModel::isEnderecoPadrao)
-                    .findFirst()
-                    .orElse(new AddressModel());
-
-            model.addAttribute("userLoggedIn", true);
-            model.addAttribute("defaultAddress", defaultAddress);
-            return "checkoutPage";
+            return "redirect:/client/login";
         }
+
+        ShoppingCartModel cart = (ShoppingCartModel) session.getAttribute("cart");
+        if (cart == null || cart.getItems().isEmpty()) {
+            return "redirect:/client/cart";
+        }
+
+        AddressModel defaultAddress = client.getDefaultAddress();
+        model.addAttribute("userLoggedIn", true);
+        model.addAttribute("defaultAddress", defaultAddress);
+        model.addAttribute("cart", cart); // Assegure-se de passar o carrinho para poder calcular o total com frete na próxima página.
+        return "checkoutPage"; // Tela para escolher forma de pagamento.
     }
+
+    @PostMapping("/cart/checkout")
+    public String finalizeOrder(HttpSession session, @RequestParam("shippingOption") String shippingOption) {
+        ClientModel client = (ClientModel) session.getAttribute("loggedUser");
+        ShoppingCartModel cart = (ShoppingCartModel) session.getAttribute("cart");
+
+        if (client == null || cart == null || cart.getItems().isEmpty()) {
+            return "redirect:/client/login";
+        }
+
+        OrderModel order = new OrderModel();
+        order.setClient(client);
+        order.setTotal(cart.getTotal().add(new BigDecimal(shippingOption))); // Inclui custo de envio
+        order.setStatus("Aguardando pagamento");
+        order.setDeliveryAddress(client.getDefaultAddress());
+
+        for (CartItemModel item : cart.getItems()) {
+            OrderItemModel orderItem = new OrderItemModel();
+            orderItem.setProduct(item.getProduct());
+            orderItem.setQuantity(item.getQuantity());
+            orderItem.setOrder(order);
+            order.getItems().add(orderItem);
+        }
+
+        System.out.println("Saving order...");
+        orderRepository.save(order);
+        System.out.println("Order saved with ID: " + order.getId());
+        session.removeAttribute("cart"); // Limpar o carrinho após a compra
+        return "redirect:/client/my-orders";
+    }
+
+
+
+    @GetMapping("/my-orders")
+    public String myOrders(HttpSession session, Model model) {
+        ClientModel client = (ClientModel) session.getAttribute("loggedUser");
+        if (client == null) {
+            return "redirect:/client/login";
+        }
+
+        List<OrderModel> orders = orderRepository.findByClientId(client.getId());
+        if (orders.isEmpty()) {
+            System.out.println("No orders found for client ID: " + client.getId()); // Adicione um log para verificar
+        }
+        model.addAttribute("orders", orders);
+        return "myOrdersPage";
+    }
+
 
 
     @GetMapping("/check-login")
