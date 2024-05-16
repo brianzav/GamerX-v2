@@ -1,0 +1,25 @@
+
+body{
+    background: #F2F3F4;
+}
+
+
+.atencao{
+
+    
+}
+
+.container{
+
+    display: flex;
+    background:#FFFFFF ;
+    max-width: 70%;
+    margin-top: 20px;
+    height: 500px;
+    align-items: center
+}
+
+.table{
+
+    justify-content: space-between;
+}

@@ -30,6 +30,7 @@
         <nav>
             <a href="/client/products">Listar Produtos</a>
             <a href="/client/cart">Meu carrinho</a>
+            <a href="/client/my-orders">Meus pedidos</a>
             <div th:if="${loggedUser != null}">
                 <a href="javascript:void(0)" onclick="toggleUserMenu()">
                     Bem-vindo, <span th:text="${loggedUser.nomeCompleto}">Usuário</span>

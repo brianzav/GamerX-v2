@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forma de Pagamento</title>
+    <link rel="stylesheet" th:href="@{/css/dash.css}">
+    <link rel="stylesheet" th:href="@{/css/formaPagamento.css}">
+</head>
+<body>
+
+<div class="container">
+    <h2>Escolha a Forma de Pagamento</h2>
+    <div class="payment-methods">
+        <div class="payment-method" onclick="handleCreditCardPayment()">
+            <img src="../assets/Banners/cartaoCredito.png" alt="Cartão de Crédito">
+            <p>Cartão de Crédito</p>
+        </div>
+        <div class="payment-method" onclick="showQRCode()">
+            <img src="../assets/Banners/pix.png" alt="PIX">
+            <p>PIX</p>
+        </div>
+    </div>
+    <div class="qrcode-container">
+        <img id="qrcode" class="qrcode" src="../assets/Banners/pix.png" style="display: none;">
+    </div>
+</div>
+
+<script th:src="@{/js/formaPagamento.js}"></script>
+<script>
+    function handleCreditCardPayment() {
+    // Simulação de processamento de cartão de crédito.
+    alert("Pagamento com cartão de crédito processado!");
+
+    // Enviar uma solicitação POST para o endpoint finalizeOrder
+    fetch('/client/cart/checkout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'shippingOption=25', // Substitua 25 pelo valor real do custo de envio
+    })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url; // Redireciona para a página de pedidos
+        } else {
+            alert("Erro ao finalizar o pedido. Por favor, tente novamente.");
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao finalizar o pedido:', error);
+        alert('Erro ao finalizar o pedido. Por favor, tente novamente.');
+    });
+}
+
+</script>
+
+
+</body>
+</html>

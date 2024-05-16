@@ -16,7 +16,7 @@ public class ClientService {
     public ClientModel getClientWithAddresses(Long clientId) {
         ClientModel client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new NoSuchElementException("Cliente não encontrado com o ID: " + clientId));
-        client.getEnderecos().size(); // Acessando a coleção para inicializá-la
+        client.getEnderecos().size();
         return client;
     }
 }

@@ -1,1 +1,0 @@
-Os assets contidos nas pastas dentro deste diretório são imagens meramente ilustrativas de produtos padrões dentro do nosso projeto
