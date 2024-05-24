@@ -344,8 +344,8 @@ public class ClientController {
         AddressModel defaultAddress = client.getDefaultAddress();
         model.addAttribute("userLoggedIn", true);
         model.addAttribute("defaultAddress", defaultAddress);
-        model.addAttribute("cart", cart); // Assegure-se de passar o carrinho para poder calcular o total com frete na próxima página.
-        return "checkoutPage"; // Tela para escolher forma de pagamento.
+        model.addAttribute("cart", cart);
+        return "checkoutPage";
     }
 
     @GetMapping("/payment")
@@ -376,12 +376,11 @@ public class ClientController {
 
         OrderModel order = new OrderModel();
         order.setClient(client);
-        order.setTotal(cart.getTotal().add(new BigDecimal(shippingOption))); // Inclui custo de envio
+        order.setTotal(cart.getTotal().add(new BigDecimal(shippingOption)));
         order.setStatus("Processando pagamento");
 
         AddressModel deliveryAddress;
         if (logradouro != null && bairro != null && cidade != null && uf != null && numero != null && cep != null) {
-            // Usa o novo endereço fornecido
             deliveryAddress = new AddressModel();
             deliveryAddress.setLogradouro(logradouro);
             deliveryAddress.setBairro(bairro);
@@ -390,7 +389,7 @@ public class ClientController {
             deliveryAddress.setNumero(numero);
             deliveryAddress.setCep(cep);
         } else {
-            // Usa o endereço padrão
+
             deliveryAddress = client.getDefaultAddress();
         }
         order.setDeliveryAddress(deliveryAddress);
@@ -404,8 +403,8 @@ public class ClientController {
         }
 
         orderRepository.save(order);
-        session.setAttribute("order", order); // Adicionar o pedido na sessão para usar na página de pagamento
-        session.removeAttribute("cart"); // Limpar o carrinho após a compra
+        session.setAttribute("order", order);
+        session.removeAttribute("cart");
         return "redirect:/client/payment";
     }
 
@@ -422,7 +421,7 @@ public class ClientController {
 
     @PostMapping("/finalize-order")
     public String finalizeOrder(HttpSession session) {
-        session.removeAttribute("order"); // Limpar o pedido da sessão após a finalização
+        session.removeAttribute("order");
         return "redirect:/client/my-orders";
     }
 
