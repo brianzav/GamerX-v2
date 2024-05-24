@@ -2,10 +2,7 @@ package br.com.senac.gamerx.controller;
 
 import br.com.senac.gamerx.dto.ProductDTO;
 import br.com.senac.gamerx.model.*;
-import br.com.senac.gamerx.repository.ClientRepository;
-import br.com.senac.gamerx.repository.OrderRepository;
-import br.com.senac.gamerx.repository.ProductRepository;
-import br.com.senac.gamerx.repository.ShoppingCartRepository;
+import br.com.senac.gamerx.repository.*;
 import br.com.senac.gamerx.service.ClientService;
 import br.com.senac.gamerx.service.HashingService;
 import jakarta.servlet.http.HttpSession;
@@ -37,6 +34,9 @@ public class ClientController {
 
     @Autowired
     private ShoppingCartRepository shoppingCartRepository;
+
+    @Autowired
+    private AddressRepository addressRepository;
 
     @Autowired
     private ClientService clientService;
@@ -251,7 +251,6 @@ public class ClientController {
         ClientModel client = (ClientModel) session.getAttribute("loggedUser");
         ShoppingCartModel cart;
 
-
         if (client != null) {
             cart = shoppingCartRepository.findByClientId(client.getId())
                     .orElseGet(() -> {
@@ -352,8 +351,25 @@ public class ClientController {
         return "checkoutPage"; // Tela para escolher forma de pagamento.
     }
 
+    @GetMapping("/payment")
+    public String paymentPage(HttpSession session, Model model) {
+        OrderModel order = (OrderModel) session.getAttribute("order");
+        if (order == null) {
+            return "redirect:/client/cart";
+        }
+        model.addAttribute("order", order);
+        return "checkoutPage";
+    }
+
     @PostMapping("/cart/checkout")
-    public String finalizeOrder(HttpSession session, @RequestParam("shippingOption") String shippingOption) {
+    public String finalizeOrder(HttpSession session,
+                                @RequestParam("shippingOption") String shippingOption,
+                                @RequestParam(value = "logradouro", required = false) String logradouro,
+                                @RequestParam(value = "bairro", required = false) String bairro,
+                                @RequestParam(value = "cidade", required = false) String cidade,
+                                @RequestParam(value = "uf", required = false) String uf,
+                                @RequestParam(value = "numero", required = false) String numero,
+                                @RequestParam(value = "cep", required = false) String cep) {
         ClientModel client = (ClientModel) session.getAttribute("loggedUser");
         ShoppingCartModel cart = (ShoppingCartModel) session.getAttribute("cart");
 
@@ -364,8 +380,25 @@ public class ClientController {
         OrderModel order = new OrderModel();
         order.setClient(client);
         order.setTotal(cart.getTotal().add(new BigDecimal(shippingOption))); // Inclui custo de envio
-        order.setStatus("Aguardando pagamento");
-        order.setDeliveryAddress(client.getDefaultAddress());
+        order.setStatus("Processando pagamento");
+
+        AddressModel deliveryAddress;
+        if (logradouro != null && bairro != null && cidade != null && uf != null && numero != null && cep != null) {
+            // Usa o novo endereço fornecido
+            deliveryAddress = new AddressModel();
+            deliveryAddress.setLogradouro(logradouro);
+            deliveryAddress.setBairro(bairro);
+            deliveryAddress.setCidade(cidade);
+            deliveryAddress.setUf(uf);
+            deliveryAddress.setNumero(numero);
+            deliveryAddress.setCep(cep);
+            // Salva o novo endereço
+            addressRepository.save(deliveryAddress);
+        } else {
+            // Usa o endereço padrão
+            deliveryAddress = client.getDefaultAddress();
+        }
+        order.setDeliveryAddress(deliveryAddress);
 
         for (CartItemModel item : cart.getItems()) {
             OrderItemModel orderItem = new OrderItemModel();
@@ -375,14 +408,28 @@ public class ClientController {
             order.getItems().add(orderItem);
         }
 
-        System.out.println("Saving order...");
         orderRepository.save(order);
-        System.out.println("Order saved with ID: " + order.getId());
+        session.setAttribute("order", order); // Adicionar o pedido na sessão para usar na página de pagamento
         session.removeAttribute("cart"); // Limpar o carrinho após a compra
-        return "redirect:/client/my-orders";
+        return "redirect:/client/payment";
     }
 
 
+    @GetMapping("/order-summary")
+    public String orderSummary(HttpSession session, Model model) {
+        OrderModel order = (OrderModel) session.getAttribute("order");
+        if (order == null) {
+            return "redirect:/client/cart";
+        }
+        model.addAttribute("order", order);
+        return "orderSummaryPage";
+    }
+
+    @PostMapping("/finalize-order")
+    public String finalizeOrder(HttpSession session) {
+        session.removeAttribute("order"); // Limpar o pedido da sessão após a finalização
+        return "redirect:/client/my-orders";
+    }
 
     @GetMapping("/my-orders")
     public String myOrders(HttpSession session, Model model) {
@@ -399,8 +446,6 @@ public class ClientController {
         return "myOrdersPage";
     }
 
-
-
     @GetMapping("/check-login")
     @ResponseBody
     public Map<String, Boolean> checkLogin(HttpSession session) {
@@ -409,6 +454,5 @@ public class ClientController {
         response.put("loggedIn", isLoggedIn);
         return response;
     }
-
 
 }

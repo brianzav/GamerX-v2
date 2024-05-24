@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resumo do Pedido</title>
+  <link rel="stylesheet" th:href="@{/css/orderSummaryPage.css}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+  <h2>Resumo do Pedido</h2>
+  <div>
+    <h4>Lista de Produtos</h4>
+    <div th:each="item : ${order.items}">
+      <p>
+        <strong th:text="${item.product.productName}">Nome do Produto</strong>
+        <span>Quant.: </span><span th:text="${item.quantity}">1</span>
+        <span>Preço: </span><span th:text="${item.product.price}">R$ 0,00</span>
+      </p>
+    </div>
+    <h4>Resumo</h4>
+    <p>Total: <span th:text="${order.total}">R$ 0,00</span></p>
+  </div>
+  <form method="post" action="/client/finalize-order">
+    <button type="submit" class="btn btn-success">Finalizar Pedido</button>
+  </form>
+</div>
+</body>
+</html>

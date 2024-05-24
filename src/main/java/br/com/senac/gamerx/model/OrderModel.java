@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name = "OrderTable")
+@Table(name = "orders")
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderModel {
@@ -31,7 +31,7 @@ public class OrderModel {
 
     private String status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "delivery_address_id")
+    @ManyToOne(cascade = CascadeType.ALL)
     private AddressModel deliveryAddress;
 }
+

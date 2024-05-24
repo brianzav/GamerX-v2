@@ -44,23 +44,25 @@
     </div>
     <div class="credit-card-form" id="creditCardForm">
         <h3>Informações do Cartão de Crédito</h3>
-        <div class="form-group">
-            <label for="cardNumber">Número do Cartão</label>
-            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCardNumber(this)">
-        </div>
-        <div class="form-group">
-            <label for="cardExpiry">Data de Validade</label>
-            <input type="text" id="cardExpiry" placeholder="MM/AA" maxlength="5" oninput="formatCardExpiry(this)">
-        </div>
-        <div class="form-group">
-            <label for="cardCVC">Código de Segurança (CVV)</label>
-            <input type="text" id="cardCVC" placeholder="123" maxlength="3" oninput="formatCardCVC(this)">
-        </div>
-        <div class="form-group">
-            <label for="cardHolder">Nome do Titular</label>
-            <input type="text" id="cardHolder" placeholder="Nome como está no cartão">
-        </div>
-        <button class="btn btn-primary btn-validate" onclick="validateCreditCard()">Validar</button>
+        <form id="creditCardPaymentForm">
+            <div class="form-group">
+                <label for="cardNumber">Número do Cartão</label>
+                <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCardNumber(this)">
+            </div>
+            <div class="form-group">
+                <label for="cardExpiry">Data de Validade</label>
+                <input type="text" id="cardExpiry" name="expiryDate" placeholder="MM/AA" maxlength="5" oninput="formatCardExpiry(this)">
+            </div>
+            <div class="form-group">
+                <label for="cardCVC">Código de Segurança (CVV)</label>
+                <input type="text" id="cardCVC" name="cvv" placeholder="123" maxlength="3" oninput="formatCardCVC(this)">
+            </div>
+            <div class="form-group">
+                <label for="cardHolder">Nome do Titular</label>
+                <input type="text" id="cardHolder" name="cardHolderName" placeholder="Nome como está no cartão">
+            </div>
+            <button type="button" class="btn btn-primary btn-validate" onclick="validateCreditCard()">Validar</button>
+        </form>
     </div>
     <div class="qrcode-container">
         <img id="qrcode" class="qrcode" src="../assets/Banners/pix.png" style="display: none;">
@@ -76,24 +78,8 @@
     function handleCreditCardPayment() {
         alert("Pagamento com cartão de crédito processado!");
 
-        fetch('/client/cart/checkout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'shippingOption=25',
-        })
-        .then(response => {
-            if (response.redirected) {
-                window.location.href = response.url;
-            } else {
-                alert("Erro ao finalizar o pedido. Por favor, tente novamente.");
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao finalizar o pedido:', error);
-            alert('Erro ao finalizar o pedido. Por favor, tente novamente.');
-        });
+        // Simulação de redirecionamento para a página de resumo do pedido
+        window.location.href = '/client/order-summary';
     }
 
     function showQRCode() {
@@ -101,7 +87,7 @@
         qrCode.style.display = 'block';
         setTimeout(function() {
             qrCode.style.display = 'none';
-            window.location.href = '/client/my-orders';
+            window.location.href = '/client/order-summary';
         }, 15000);
     }
 
