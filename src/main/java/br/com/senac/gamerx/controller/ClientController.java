@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -392,8 +389,6 @@ public class ClientController {
             deliveryAddress.setUf(uf);
             deliveryAddress.setNumero(numero);
             deliveryAddress.setCep(cep);
-            // Salva o novo endereço
-            addressRepository.save(deliveryAddress);
         } else {
             // Usa o endereço padrão
             deliveryAddress = client.getDefaultAddress();
@@ -440,11 +435,16 @@ public class ClientController {
 
         List<OrderModel> orders = orderRepository.findByClientId(client.getId());
         if (orders.isEmpty()) {
-            System.out.println("No orders found for client ID: " + client.getId()); // Adicione um log para verificar
+            System.out.println("No orders found for client ID: " + client.getId());
         }
+
+        Date currentDate = new Date();
+        model.addAttribute("currentDate", currentDate);
+
         model.addAttribute("orders", orders);
         return "myOrdersPage";
     }
+
 
     @GetMapping("/check-login")
     @ResponseBody
@@ -453,6 +453,14 @@ public class ClientController {
         Map<String, Boolean> response = new HashMap<>();
         response.put("loggedIn", isLoggedIn);
         return response;
+    }
+
+    @GetMapping("/order-details/{orderId}")
+    public String orderDetails(@PathVariable Long orderId, Model model) {
+        OrderModel order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado: " + orderId));
+        model.addAttribute("order", order);
+        return "orderDetailsPage";
     }
 
 }

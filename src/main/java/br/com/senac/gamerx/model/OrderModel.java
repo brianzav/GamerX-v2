@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,13 @@ public class OrderModel {
     private String status;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "delivery_address_id")
     private AddressModel deliveryAddress;
-}
 
+    private LocalDateTime date;
+
+    @PrePersist
+    protected void onCreate() {
+        date = LocalDateTime.now();
+    }
+}
