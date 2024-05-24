@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meus Pedidos</title>
-  <link rel="stylesheet" th:href="@{/css/dash.css}">
+  <link rel="stylesheet" th:href="@{/css/myOrdersPage.css}">
 </head>
 <body>
 <div class="container">
@@ -12,15 +12,27 @@
   <div th:if="${orders.isEmpty()}">
     <p>Nenhum pedido encontrado.</p>
   </div>
-  <div th:each="order : ${orders}">
-    <div class="order-info">
-      <p>Número do Pedido: <span th:text="${order.id}"></span></p>
-      <p>Data do Pedido: <span th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}"></span></p>
-      <p>Status: <span th:text="${order.status}"></span></p>
-      <p>Valor Total: R$<span th:text="${order.total}"></span></p>
-      <a th:href="@{/client/order-details/{orderId}(orderId=${order.id})}" class="btn btn-primary">Detalhes</a>
-    </div>
-  </div>
+  <table th:if="${not orders.isEmpty()}">
+    <thead>
+    <tr>
+      <th>Número do Pedido</th>
+      <th>Data do Pedido</th>
+      <th>Status</th>
+      <th>Valor Total</th>
+      <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orders}">
+      <td th:text="${order.id}">Número do Pedido</td>
+      <td th:text="${#temporals.format(order.date, 'dd/MM/yyyy')}">Data do Pedido</td>
+      <td th:text="${order.status}">Status</td>
+      <td>R$<span th:text="${order.total}">Valor Total</span></td>
+      <td><a th:href="@{/client/order-details/{orderId}(orderId=${order.id})}" class="btn btn-primary">Detalhes</a></td>
+    </tr>
+    </tbody>
+  </table>
+  <a th:href="@{/client/home}" class="btn btn-secondary">Voltar à Home</a>
 </div>
 </body>
 </html>

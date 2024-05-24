@@ -1,7 +1,6 @@
 package br.com.senac.gamerx.controller;
 
 import br.com.senac.gamerx.model.UserModel;
-import br.com.senac.gamerx.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,8 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class DashboardController {
+
     @Autowired
-    public DashboardController(UserRepository userRepository) {
+    public DashboardController() {
     }
 
     @GetMapping("/dashboard")
@@ -19,9 +19,9 @@ public class DashboardController {
         UserModel loggedInUser = (UserModel) session.getAttribute("user");
 
         if (loggedInUser != null && loggedInUser.getRole() == UserModel.Role.ADMIN) {
-            return "adminDashboard";
-        } else if (loggedInUser != null && loggedInUser.getRole() == UserModel.Role.STOCKIST ) {
-            return "stockistDashboard";
+            return "redirect:/admin/dashboard";
+        } else if (loggedInUser != null && loggedInUser.getRole() == UserModel.Role.STOCKIST) {
+            return "redirect:/stockist/dashboard";
         } else {
             return "redirect:/auth/login";
         }

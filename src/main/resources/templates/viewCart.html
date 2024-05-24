@@ -56,7 +56,24 @@
     <div th:if="${userLoggedIn}">
       <h4>Endereço de Entrega:</h4>
       <p th:text="${defaultAddress.logradouro + ', ' + defaultAddress.numero + ' - ' + defaultAddress.bairro + ', ' + defaultAddress.cidade + ' - ' + defaultAddress.uf}"></p>
-      <a href="#" class="btn btn-link">Selecionar outro</a>
+      <button class="btn btn-link" onclick="toggleAddressForm()">Selecionar outro</button>
+      <div id="newAddressForm" style="display: none;">
+        <h4>Novo Endereço de Entrega:</h4>
+        <input type="text" id="cep" placeholder="Digite seu CEP" pattern="\d{5}-?\d{3}" required>
+        <button type="button" onclick="buscarCep()">Buscar CEP</button>
+        <div id="enderecoInfo" style="display:none;">
+          <p id="logradouro"></p>
+          <p id="bairro"></p>
+          <p id="cidade"></p>
+          <p id="uf"></p>
+          <input type="text" id="newNumero" name="numero" placeholder="Número" required>
+          <input type="hidden" id="newLogradouro" name="logradouro">
+          <input type="hidden" id="newBairro" name="bairro">
+          <input type="hidden" id="newCidade" name="cidade">
+          <input type="hidden" id="newUf" name="uf">
+          <input type="hidden" id="newCep" name="cep">
+        </div>
+      </div>
     </div>
     <div th:if="${!userLoggedIn}">
       <h4>Informe seu CEP para entrega:</h4>
@@ -67,9 +84,24 @@
         <p id="bairro"></p>
         <p id="cidade"></p>
         <p id="uf"></p>
+        <input type="text" id="newNumero" name="numero" placeholder="Número" required>
+        <input type="hidden" id="newLogradouro" name="logradouro">
+        <input type="hidden" id="newBairro" name="bairro">
+        <input type="hidden" id="newCidade" name="cidade">
+        <input type="hidden" id="newUf" name="uf">
+        <input type="hidden" id="newCep" name="cep">
       </div>
     </div>
-    <button class="btn btn-success" onclick="finalizePurchase()">Finalizar Compra</button>
+    <form id="checkoutForm" th:action="@{/client/cart/checkout}" method="post">
+      <input type="hidden" name="shippingOption" id="shippingOptionInput" value="25">
+      <input type="hidden" name="logradouro" id="logradouroInput">
+      <input type="hidden" name="bairro" id="bairroInput">
+      <input type="hidden" name="cidade" id="cidadeInput">
+      <input type="hidden" name="uf" id="ufInput">
+      <input type="hidden" name="numero" id="numeroInput">
+      <input type="hidden" name="cep" id="cepInput">
+      <button type="button" class="btn btn-success" onclick="finalizePurchase()">Finalizar Compra</button>
+    </form>
   </div>
 </div>
 
@@ -113,6 +145,15 @@
 <script>
 let shippingCost = parseFloat(document.getElementById('shippingOptions').value);
 
+function toggleAddressForm() {
+    var form = document.getElementById('newAddressForm');
+    if (form.style.display === 'none') {
+        form.style.display = 'block';
+    } else {
+        form.style.display = 'none';
+    }
+}
+
 function changeQuantity(element, change) {
     let quantityElement = element.parentNode.querySelector('span');
     let quantity = parseInt(quantityElement.innerText) + change;
@@ -139,6 +180,7 @@ updateSubtotals();
 document.getElementById('shippingOptions').addEventListener('change', function() {
     shippingCost = parseFloat(this.value);
     updateSubtotals();
+    document.getElementById('shippingOptionInput').value = this.value;
 });
 
 function buscarCep() {
@@ -154,6 +196,16 @@ function buscarCep() {
                     document.getElementById('bairro').innerText = 'Bairro: ' + data.bairro;
                     document.getElementById('cidade').innerText = 'Cidade: ' + data.localidade;
                     document.getElementById('uf').innerText = 'UF: ' + data.uf;
+                    document.getElementById('newLogradouro').value = data.logradouro;
+                    document.getElementById('newBairro').value = data.bairro;
+                    document.getElementById('newCidade').value = data.localidade;
+                    document.getElementById('newUf').value = data.uf;
+                    document.getElementById('newCep').value = data.cep;
+                    document.getElementById('logradouroInput').value = data.logradouro;
+                    document.getElementById('bairroInput').value = data.bairro;
+                    document.getElementById('cidadeInput').value = data.localidade;
+                    document.getElementById('ufInput').value = data.uf;
+                    document.getElementById('cepInput').value = data.cep;
                 } else {
                     alert('CEP não encontrado!');
                 }
@@ -174,7 +226,7 @@ function finalizePurchase() {
     })
     .then(data => {
         if (data.loggedIn) {
-            window.location.href = '/client/checkout';
+            document.getElementById('checkoutForm').submit();
         } else {
             $('#loginModal').modal('show');
         }

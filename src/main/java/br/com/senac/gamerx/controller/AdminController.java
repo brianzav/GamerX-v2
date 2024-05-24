@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -34,8 +36,25 @@ public class AdminController {
         this.hashingService = hashingService;
     }
 
+    private boolean isAdminLoggedIn(HttpSession session) {
+        UserModel admin = (UserModel) session.getAttribute("user");
+        return admin != null && admin.getRole() == UserModel.Role.ADMIN;
+    }
+
+    @GetMapping("/dashboard")
+    public String adminDashboard(Model model, HttpSession session) {
+        if (!isAdminLoggedIn(session)) {
+            return "redirect:/auth/login";
+        }
+        return "adminDashboard";
+    }
+
     @GetMapping("/users")
-    public String listUsers(@RequestParam(required = false) String keyword, Model model) {
+    public String listUsers(@RequestParam(required = false) String keyword, Model model, HttpSession session) {
+        if (!isAdminLoggedIn(session)) {
+            return "redirect:/auth/login";
+        }
+
         if (keyword != null && !keyword.isEmpty()) {
             Pageable pageable = PageRequest.of(0, 10);
             Page<UserModel> usersPage = userRepository.findByNomeContainingIgnoreCase(keyword, pageable);
@@ -47,13 +66,16 @@ public class AdminController {
     }
 
     @PostMapping("/users/update")
-    public String updateUser(@ModelAttribute UserModel user, RedirectAttributes redirectAttributes) {
+    public String updateUser(@ModelAttribute UserModel user, RedirectAttributes redirectAttributes, HttpSession session) {
+        if (!isAdminLoggedIn(session)) {
+            return "redirect:/auth/login";
+        }
+
         UserModel existingUser = userRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com email: " + user.getEmail()));
         user.setActive(existingUser.isActive());
 
         if (user.getRole() == null || user.getRole().describeConstable().isEmpty()) {
-
             user.setRole(existingUser.getRole());
         }
         if (!user.getPassword().isEmpty()) {
@@ -69,7 +91,11 @@ public class AdminController {
     }
 
     @PostMapping("/users/toggle-status/{email}")
-    public String toggleUserStatus(@PathVariable("email") String userEmail, RedirectAttributes redirectAttributes) {
+    public String toggleUserStatus(@PathVariable("email") String userEmail, RedirectAttributes redirectAttributes, HttpSession session) {
+        if (!isAdminLoggedIn(session)) {
+            return "redirect:/auth/login";
+        }
+
         UserModel user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com email: " + userEmail));
 
@@ -82,7 +108,11 @@ public class AdminController {
     }
 
     @GetMapping("/users/edit/{email}")
-    public String editUser(@PathVariable String email, Model model) {
+    public String editUser(@PathVariable String email, Model model, HttpSession session) {
+        if (!isAdminLoggedIn(session)) {
+            return "redirect:/auth/login";
+        }
+
         UserModel user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com email: " + email));
         model.addAttribute("user", user);
@@ -90,7 +120,11 @@ public class AdminController {
     }
 
     @GetMapping("/products")
-    public String listProducts(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(required = false) String search) {
+    public String listProducts(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(required = false) String search, HttpSession session) {
+        if (!isAdminLoggedIn(session)) {
+            return "redirect:/auth/login";
+        }
+
         Page<ProductModel> productPage;
         if (search != null && !search.isEmpty()) {
             productPage = productRepository.findByProductNameContainingIgnoreCaseOrderByCreatedAtDesc(search, PageRequest.of(page, 10));
@@ -104,7 +138,11 @@ public class AdminController {
     }
 
     @PostMapping("/products")
-    public String saveProduct(@ModelAttribute ProductModel product, @RequestParam("images") MultipartFile[] images, RedirectAttributes redirectAttributes) {
+    public String saveProduct(@ModelAttribute ProductModel product, @RequestParam("images") MultipartFile[] images, RedirectAttributes redirectAttributes, HttpSession session) {
+        if (!isAdminLoggedIn(session)) {
+            return "redirect:/auth/login";
+        }
+
         for (MultipartFile image : images) {
             if (!image.isEmpty()) {
                 String filename = StringUtils.cleanPath(image.getOriginalFilename());
@@ -122,7 +160,11 @@ public class AdminController {
     }
 
     @PostMapping("/products/toggle-status/{id}")
-    public String toggleProductStatus(@PathVariable("id") Long productId, RedirectAttributes redirectAttributes) {
+    public String toggleProductStatus(@PathVariable("id") Long productId, RedirectAttributes redirectAttributes, HttpSession session) {
+        if (!isAdminLoggedIn(session)) {
+            return "redirect:/auth/login";
+        }
+
         ProductModel product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Produto inválido: " + productId));
 
@@ -135,7 +177,11 @@ public class AdminController {
     }
 
     @GetMapping("products/edit/{id}")
-    public String editProduct(@PathVariable("id") Long id, Model model) {
+    public String editProduct(@PathVariable("id") Long id, Model model, HttpSession session) {
+        if (!isAdminLoggedIn(session)) {
+            return "redirect:/auth/login";
+        }
+
         ProductModel product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado: " + id));
         model.addAttribute("product", product);
@@ -143,7 +189,11 @@ public class AdminController {
     }
 
     @PostMapping("products/update")
-    public String updateProduct(@ModelAttribute ProductModel product, RedirectAttributes redirectAttributes) {
+    public String updateProduct(@ModelAttribute ProductModel product, RedirectAttributes redirectAttributes, HttpSession session) {
+        if (!isAdminLoggedIn(session)) {
+            return "redirect:/auth/login";
+        }
+
         ProductModel existingProduct = productRepository.findById(product.getProductID())
                 .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado: " + product.getProductID()));
 
@@ -159,13 +209,15 @@ public class AdminController {
     }
 
     @GetMapping("/products/view/{id}")
-    public String viewProduct(@PathVariable Long id, Model model) {
+    public String viewProduct(@PathVariable Long id, Model model, HttpSession session) {
+        if (!isAdminLoggedIn(session)) {
+            return "redirect:/auth/login";
+        }
+
         ProductModel product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado."));
         model.addAttribute("product", product);
         model.addAttribute("images", product.getProductImages());
         return "telaProd";
     }
-
 }
-

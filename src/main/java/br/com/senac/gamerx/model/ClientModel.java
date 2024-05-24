@@ -38,7 +38,7 @@ public class ClientModel {
         return enderecos.stream()
                 .filter(AddressModel::isEnderecoPadrao)
                 .findFirst()
-                .orElse(null);  // Retorna null se não houver endereço padrão
+                .orElse(null);
     }
 
 
