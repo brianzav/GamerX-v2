@@ -2,37 +2,25 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard do Administrador</title>
-
-    <link rel="stylesheet" th:href="@{/css/dash.css}">
-    <link rel="stylesheet" th:href="@{/css/styleCard.css}">
-    <link rel="stylesheet" th:href="@{/css/swiper-bundle.min.css}">
-
-    <link th:href="@{https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css}" rel="stylesheet" crossorigin="anonymous">
-
-    <script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
-    <link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
-
+    <link rel="stylesheet" th:href="@{/css/adminDashboard.css}">
 </head>
 <body>
-
 <header>
-
-    <div class="divHeader">
-        <img src="../assets/Banners/logo.png" style="max-width: 7%; height: auto;">
+    <div class="header-container">
+        <img src="../assets/Banners/logo.png" alt="Logo" class="logo">
         <nav>
-            <a href="/admin/products">Listar Produto</a>
-            <a href="/admin/users">Listar Usuário</a>
-            <a href="/admin/orders">Listar Pedidos</a>
-            <form th:action="@{/auth/logout}" method="post" style="display:inline;">
-                <button type="submit" class="btn btn-link" style="display:inline; padding: 0; border: none; background: none; cursor: pointer; color: blue;">Logout</button>
+            <a href="/admin/products" class="nav-link">Listar Produtos</a>
+            <a href="/admin/users" class="nav-link">Listar Usuários</a>
+            <form th:action="@{/auth/logout}" method="post" style="display: inline;">
+                <button type="submit" class="nav-link logout" style="background: none; border: none; cursor: pointer; color: white;">Logout</button>
             </form>
         </nav>
     </div>
 </header>
-
-<script th:src="@{/js/swiper-bundle.min.js}"></script>
-<script th:src="@{/js/main.js}"></script>
+<main class="container">
+    <h2>Dashboard do Administrador</h2>
+    <p>Bem-vindo ao seu dashboard. Aqui você pode gerenciar produtos e usuários.</p>
+</main>
 </body>
 </html>

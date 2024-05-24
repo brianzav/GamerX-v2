@@ -12,7 +12,9 @@
         <nav>
             <a href="/stockist/products" class="nav-link">Listar Produtos</a>
             <a href="/stockist/orders" class="nav-link">Listar Pedidos</a>
-            <a href="/auth/logout" class="nav-link logout">Logout</a>
+            <form th:action="@{/auth/logout}" method="post" style="display: inline;">
+                <button type="submit" class="nav-link logout" style="background: none; border: none; cursor: pointer; color: #fff;">Logout</button>
+            </form>
         </nav>
     </div>
 </header>

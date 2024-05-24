@@ -37,19 +37,22 @@ public class AdminController {
     }
 
     private boolean isAdminLoggedIn(HttpSession session) {
-        UserModel admin = (UserModel) session.getAttribute("loggedAdmin");
-        return admin != null;
+        UserModel admin = (UserModel) session.getAttribute("user");
+        return admin != null && admin.getRole() == UserModel.Role.ADMIN;
     }
 
-    private String redirectToLogin(HttpSession session, String originalUrl) {
-        session.setAttribute("originalUrl", originalUrl);
-        return "redirect:/auth/login";
+    @GetMapping("/dashboard")
+    public String adminDashboard(Model model, HttpSession session) {
+        if (!isAdminLoggedIn(session)) {
+            return "redirect:/auth/login";
+        }
+        return "adminDashboard";
     }
 
     @GetMapping("/users")
     public String listUsers(@RequestParam(required = false) String keyword, Model model, HttpSession session) {
         if (!isAdminLoggedIn(session)) {
-            return redirectToLogin(session, "/admin/users");
+            return "redirect:/auth/login";
         }
 
         if (keyword != null && !keyword.isEmpty()) {
@@ -65,7 +68,7 @@ public class AdminController {
     @PostMapping("/users/update")
     public String updateUser(@ModelAttribute UserModel user, RedirectAttributes redirectAttributes, HttpSession session) {
         if (!isAdminLoggedIn(session)) {
-            return redirectToLogin(session, "/admin/users/update");
+            return "redirect:/auth/login";
         }
 
         UserModel existingUser = userRepository.findByEmail(user.getEmail())
@@ -90,7 +93,7 @@ public class AdminController {
     @PostMapping("/users/toggle-status/{email}")
     public String toggleUserStatus(@PathVariable("email") String userEmail, RedirectAttributes redirectAttributes, HttpSession session) {
         if (!isAdminLoggedIn(session)) {
-            return redirectToLogin(session, "/admin/users/toggle-status/" + userEmail);
+            return "redirect:/auth/login";
         }
 
         UserModel user = userRepository.findByEmail(userEmail)
@@ -107,7 +110,7 @@ public class AdminController {
     @GetMapping("/users/edit/{email}")
     public String editUser(@PathVariable String email, Model model, HttpSession session) {
         if (!isAdminLoggedIn(session)) {
-            return redirectToLogin(session, "/admin/users/edit/" + email);
+            return "redirect:/auth/login";
         }
 
         UserModel user = userRepository.findByEmail(email)
@@ -119,7 +122,7 @@ public class AdminController {
     @GetMapping("/products")
     public String listProducts(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(required = false) String search, HttpSession session) {
         if (!isAdminLoggedIn(session)) {
-            return redirectToLogin(session, "/admin/products");
+            return "redirect:/auth/login";
         }
 
         Page<ProductModel> productPage;
@@ -137,7 +140,7 @@ public class AdminController {
     @PostMapping("/products")
     public String saveProduct(@ModelAttribute ProductModel product, @RequestParam("images") MultipartFile[] images, RedirectAttributes redirectAttributes, HttpSession session) {
         if (!isAdminLoggedIn(session)) {
-            return redirectToLogin(session, "/admin/products");
+            return "redirect:/auth/login";
         }
 
         for (MultipartFile image : images) {
@@ -159,7 +162,7 @@ public class AdminController {
     @PostMapping("/products/toggle-status/{id}")
     public String toggleProductStatus(@PathVariable("id") Long productId, RedirectAttributes redirectAttributes, HttpSession session) {
         if (!isAdminLoggedIn(session)) {
-            return redirectToLogin(session, "/admin/products/toggle-status/" + productId);
+            return "redirect:/auth/login";
         }
 
         ProductModel product = productRepository.findById(productId)
@@ -176,7 +179,7 @@ public class AdminController {
     @GetMapping("products/edit/{id}")
     public String editProduct(@PathVariable("id") Long id, Model model, HttpSession session) {
         if (!isAdminLoggedIn(session)) {
-            return redirectToLogin(session, "/admin/products/edit/" + id);
+            return "redirect:/auth/login";
         }
 
         ProductModel product = productRepository.findById(id)
@@ -188,7 +191,7 @@ public class AdminController {
     @PostMapping("products/update")
     public String updateProduct(@ModelAttribute ProductModel product, RedirectAttributes redirectAttributes, HttpSession session) {
         if (!isAdminLoggedIn(session)) {
-            return redirectToLogin(session, "/admin/products/update");
+            return "redirect:/auth/login";
         }
 
         ProductModel existingProduct = productRepository.findById(product.getProductID())
@@ -208,7 +211,7 @@ public class AdminController {
     @GetMapping("/products/view/{id}")
     public String viewProduct(@PathVariable Long id, Model model, HttpSession session) {
         if (!isAdminLoggedIn(session)) {
-            return redirectToLogin(session, "/admin/products/view/" + id);
+            return "redirect:/auth/login";
         }
 
         ProductModel product = productRepository.findById(id)
@@ -217,5 +220,4 @@ public class AdminController {
         model.addAttribute("images", product.getProductImages());
         return "telaProd";
     }
-
 }

@@ -53,9 +53,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/login")
-    public String showLoginForm(Model model, HttpSession session) {
-        String originalUrl = (String) session.getAttribute("originalUrl");
-        model.addAttribute("originalUrl", originalUrl);
+    public String showLoginForm(Model model) {
         return "loginAdmin";
     }
 
@@ -65,12 +63,7 @@ public class AuthenticationController {
         if (userOptional.isPresent()) {
             UserModel user = userOptional.get();
             if (hashingService.checkPassword(password, user.getPassword())) {
-                session.setAttribute("loggedAdmin", user);
-                String originalUrl = (String) session.getAttribute("originalUrl");
-                if (originalUrl != null) {
-                    session.removeAttribute("originalUrl");
-                    return "redirect:" + originalUrl;
-                }
+                session.setAttribute("user", user);
                 return "redirect:/dashboard";
             } else {
                 model.addAttribute("loginError", "Senha incorreta");
@@ -87,5 +80,4 @@ public class AuthenticationController {
         session.invalidate();
         return "redirect:/auth/login";
     }
-
 }
