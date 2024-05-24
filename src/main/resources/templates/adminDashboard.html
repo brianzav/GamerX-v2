@@ -20,14 +20,14 @@
 <header>
 
     <div class="divHeader">
-        <img src="../assets/Banners/logo.png"style="max-width: 7%;height: auto;">
+        <img src="../assets/Banners/logo.png" style="max-width: 7%; height: auto;">
         <nav>
-
-            <a href="/admin/products"> Listar Produto</a>
-            <a href="/admin/users"> Listar Usuário</a>
+            <a href="/admin/products">Listar Produto</a>
+            <a href="/admin/users">Listar Usuário</a>
             <a href="/admin/orders">Listar Pedidos</a>
-            <span></span>
-
+            <form th:action="@{/auth/logout}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-link" style="display:inline; padding: 0; border: none; background: none; cursor: pointer; color: blue;">Logout</button>
+            </form>
         </nav>
     </div>
 </header>

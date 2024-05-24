@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Listar Pedidos</title>
+  <link rel="stylesheet" th:href="@{/css/listOrdersStockist.css}">
+</head>
+<body>
+<div class="container">
+  <h2>Lista de Pedidos</h2>
+  <div th:if="${orders.isEmpty()}">
+    <p>Nenhum pedido encontrado.</p>
+  </div>
+  <table th:if="${not orders.isEmpty()}">
+    <thead>
+    <tr>
+      <th>ID do Pedido</th>
+      <th>Data</th>
+      <th>Status</th>
+      <th>Total</th>
+      <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orders}">
+      <td th:text="${order.id}">ID</td>
+      <td th:text="${#temporals.format(order.date, 'dd/MM/yyyy')}">Data</td>
+      <td th:text="${order.status}">Status</td>
+      <td th:text="${order.total}">Total</td>
+      <td>
+        <a th:href="@{/stockist/orders/edit/{id}(id=${order.id})}" class="btn btn-primary">Editar</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

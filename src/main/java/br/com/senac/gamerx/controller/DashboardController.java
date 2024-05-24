@@ -16,11 +16,11 @@ public class DashboardController {
 
     @GetMapping("/dashboard")
     public String userDashboard(Model model, HttpSession session) {
-        UserModel loggedInUser = (UserModel) session.getAttribute("user");
+        UserModel loggedInUser = (UserModel) session.getAttribute("loggedAdmin");
 
         if (loggedInUser != null && loggedInUser.getRole() == UserModel.Role.ADMIN) {
             return "adminDashboard";
-        } else if (loggedInUser != null && loggedInUser.getRole() == UserModel.Role.STOCKIST ) {
+        } else if (loggedInUser != null && loggedInUser.getRole() == UserModel.Role.STOCKIST) {
             return "stockistDashboard";
         } else {
             return "redirect:/auth/login";

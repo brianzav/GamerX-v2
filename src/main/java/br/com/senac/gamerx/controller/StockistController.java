@@ -1,6 +1,8 @@
 package br.com.senac.gamerx.controller;
 
+import br.com.senac.gamerx.model.OrderModel;
 import br.com.senac.gamerx.model.ProductModel;
+import br.com.senac.gamerx.repository.OrderRepository;
 import br.com.senac.gamerx.repository.ProductRepository;
 import br.com.senac.gamerx.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ public class StockistController {
     private UserRepository userRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
     @GetMapping("/products")
     public String listProducts(Model model, @RequestParam(defaultValue = "0") int page) {
@@ -48,4 +52,32 @@ public class StockistController {
         return "redirect:/stockist/products";
     }
 
+    @GetMapping("/orders")
+    public String listOrders(Model model, @RequestParam(defaultValue = "0") int page) {
+        Page<OrderModel> orderPage = orderRepository.findAll(PageRequest.of(page, 10));
+        model.addAttribute("orders", orderPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", orderPage.getTotalPages());
+        return "listOrdersStockist";
+    }
+
+    @GetMapping("/orders/edit/{id}")
+    public String editOrder(@PathVariable("id") Long id, Model model) {
+        OrderModel order = orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado: " + id));
+        model.addAttribute("order", order);
+        return "editOrderStockist";
+    }
+
+    @PostMapping("/orders/update")
+    public String updateOrderStatus(@ModelAttribute OrderModel order, RedirectAttributes redirectAttributes) {
+        OrderModel existingOrder = orderRepository.findById(order.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado: " + order.getId()));
+        existingOrder.setStatus(order.getStatus());
+
+        orderRepository.save(existingOrder);
+        redirectAttributes.addFlashAttribute("successMessage", "Status do pedido atualizado com sucesso!");
+
+        return "redirect:/stockist/orders";
+    }
 }

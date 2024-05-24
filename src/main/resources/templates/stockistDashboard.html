@@ -2,15 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard do Usuário</title>
+    <title>Dashboard do Estoquista</title>
+    <link rel="stylesheet" th:href="@{/css/stockistDashboard.css}">
 </head>
 <body>
-<h2>Dashboard do Estoquista</h2>
-<p>Bem-vindo ao seu dashboard. Aqui você pode gerenciar produtos.</p>
-<nav>
-    <a href="/stockist/products"> Listar Produto</a>
-    <span></span>
-</nav>
-<p>TODO.</p>
+<header>
+    <div class="header-container">
+        <img src="../assets/Banners/logo.png" alt="Logo" class="logo">
+        <nav>
+            <a href="/stockist/products" class="nav-link">Listar Produtos</a>
+            <a href="/stockist/orders" class="nav-link">Listar Pedidos</a>
+            <a href="/auth/logout" class="nav-link logout">Logout</a>
+        </nav>
+    </div>
+</header>
+<main class="container">
+    <h2>Dashboard do Estoquista</h2>
+    <p>Bem-vindo ao seu dashboard. Aqui você pode gerenciar produtos e pedidos.</p>
+</main>
 </body>
 </html>
