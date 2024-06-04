@@ -25,12 +25,14 @@
 </head>
 <body>
 <header>
-    <div class="divHeader">
+    
+    <div class ="divHeader">
         <img src="../assets/Banners/logo.png" style="max-width: 7%; height: auto;">
         <nav>
             <a href="/client/products">Listar Produtos</a>
             <a href="/client/cart">Meu carrinho</a>
             <a href="/client/my-orders">Meus pedidos</a>
+            
             <div th:if="${loggedUser != null}">
                 <a href="javascript:void(0)" onclick="toggleUserMenu()">
                     Bem-vindo, <span th:text="${loggedUser.nomeCompleto}">Usuário</span>
@@ -61,6 +63,7 @@
                     <a th:href="@{/client/register}" class="action-link">Cadastrar</a>
                 </div>
             </div>
+            <span></span>
         </nav>
     </div>
 </header>
@@ -81,8 +84,8 @@
 <div class="swiffy-slider">
     <ul class="slider-container">
         <li><img src="../assets/Banners/A50.png" style="max-width: 100%;height: auto;"></li>
-        <li><img src="../assets/Banners/lianli.png" style="max-width: 100%;height: auto;"></li>
-        <li><img src="../assets/Banners/Wooting 60HE.png" style="max-width: 100%;height: auto;"></li>
+
+        <li><img src="../assets/Banners/Wooting.png" style="max-width: 100%;height: auto;"></li>
     </ul>
     <button type="button" class="slider-nav"></button>
     <button type="button" class="slider-nav slider-nav-next"></button>

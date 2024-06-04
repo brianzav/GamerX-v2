@@ -5,8 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meus Pedidos</title>
   <link rel="stylesheet" th:href="@{/css/myOrdersPage.css}">
+  <link rel="stylesheet" th:href="@{/css/dash.css}">
 </head>
 <body>
+
+  <header>
+
+    <div class="divHeader">
+        <img src="../assets/Banners/logo.png"style="max-width: 7%;height: auto; margin-left: 30%">
+    </div>
+</header>
+
 <div class="container">
   <h2>Seus Pedidos</h2>
   <div th:if="${orders.isEmpty()}">

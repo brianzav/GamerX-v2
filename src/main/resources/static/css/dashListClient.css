@@ -49,7 +49,7 @@ nav span {
     position: absolute;
     top: 0;
     left: 0;
-    width: 120px;
+    width: 115px;
     height: 100%;
     background: linear-gradient(45deg, #020202, #FF6500);
     border-radius: 10px;
@@ -58,12 +58,13 @@ nav span {
 
 nav a:nth-child(1):hover~span {
     left: 100;
-    width: 120px;
+    width: 115px;
+
 }
 
 nav a:nth-child(2):hover~span {
-    left: 130px;
-    width: 125px;
+    left: 127px;
+    width: 135px;
 }
 
 nav a:nth-child(3):hover~span {
