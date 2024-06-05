@@ -38,6 +38,8 @@ public class OrderModel {
 
     private LocalDateTime date;
 
+    private String paymentType;
+
     @PrePersist
     protected void onCreate() {
         date = LocalDateTime.now();

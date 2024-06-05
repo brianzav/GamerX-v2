@@ -31,6 +31,7 @@
     </div>
     <h4>Resumo</h4>
     <p>Total: <span th:text="${order.total}">R$ 0,00</span></p>
+    <p>Forma de Pagamento: <span th:text="${order.paymentType}">Tipo de Pagamento</span></p>
   </div>
   <form method="post" action="/client/finalize-order">
     <button type="submit" class="btn btn-success">Finalizar Pedido</button>
