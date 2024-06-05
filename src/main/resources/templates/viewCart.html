@@ -12,11 +12,10 @@
 </head>
 <body>
 
-  <header>
-
-    <div class="divHeader">
-        <img src="../assets/Banners/logo.png"style="max-width: 7%;height: auto; margin-left: 30%">
-    </div>
+<header>
+  <div class="divHeader">
+    <img src="../assets/Banners/logo.png" style="max-width: 7%; height: auto; margin-left: 30%">
+  </div>
 </header>
 <div class="container mt-5">
   <h2>Seu Carrinho</h2>
@@ -150,99 +149,105 @@
 </div>
 
 <script>
-let shippingCost = parseFloat(document.getElementById('shippingOptions').value);
+    let shippingCost = parseFloat(document.getElementById('shippingOptions').value);
 
-function toggleAddressForm() {
-    var form = document.getElementById('newAddressForm');
-    if (form.style.display === 'none') {
-        form.style.display = 'block';
-    } else {
-        form.style.display = 'none';
-    }
-}
-
-function changeQuantity(element, change) {
-    let quantityElement = element.parentNode.querySelector('span');
-    let quantity = parseInt(quantityElement.innerText) + change;
-    if (quantity < 1) quantity = 1;
-    quantityElement.innerText = quantity;
-    updateSubtotals();
-}
-
-function updateSubtotals() {
-    const rows = document.querySelectorAll('tbody tr');
-    let total = 0;
-    rows.forEach(row => {
-        const price = parseFloat(row.cells[1].innerText);
-        const quantity = parseInt(row.cells[2].querySelector('span').innerText);
-        const subtotal = price * quantity;
-        row.cells[3].innerText = subtotal.toFixed(2);
-        total += subtotal;
-    });
-    document.getElementById('total').innerText = (total + shippingCost).toFixed(2);
-}
-
-updateSubtotals();
-
-document.getElementById('shippingOptions').addEventListener('change', function() {
-    shippingCost = parseFloat(this.value);
-    updateSubtotals();
-    document.getElementById('shippingOptionInput').value = this.value;
-});
-
-function buscarCep() {
-    var cep = document.getElementById('cep').value.replace(/\D/g, '');
-    if (cep.length === 8) {
-        $.ajax({
-            url: `https://viacep.com.br/ws/${cep}/json/`,
-            type: 'GET',
-            success: function(data) {
-                if (!data.erro) {
-                    document.getElementById('enderecoInfo').style.display = 'block';
-                    document.getElementById('logradouro').innerText = 'Logradouro: ' + data.logradouro;
-                    document.getElementById('bairro').innerText = 'Bairro: ' + data.bairro;
-                    document.getElementById('cidade').innerText = 'Cidade: ' + data.localidade;
-                    document.getElementById('uf').innerText = 'UF: ' + data.uf;
-                    document.getElementById('newLogradouro').value = data.logradouro;
-                    document.getElementById('newBairro').value = data.bairro;
-                    document.getElementById('newCidade').value = data.localidade;
-                    document.getElementById('newUf').value = data.uf;
-                    document.getElementById('newCep').value = data.cep;
-                    document.getElementById('logradouroInput').value = data.logradouro;
-                    document.getElementById('bairroInput').value = data.bairro;
-                    document.getElementById('cidadeInput').value = data.localidade;
-                    document.getElementById('ufInput').value = data.uf;
-                    document.getElementById('cepInput').value = data.cep;
-                } else {
-                    alert('CEP não encontrado!');
-                }
-            },
-            error: function() {
-                alert('Erro ao buscar o CEP!');
-            }
-        });
-    } else {
-        alert('CEP deve conter 8 dígitos.');
-    }
-}
-
-function finalizePurchase() {
-    fetch('/client/check-login')
-    .then(response => {
-        return response.json();
-    })
-    .then(data => {
-        if (data.loggedIn) {
-            document.getElementById('checkoutForm').submit();
+    function toggleAddressForm() {
+        var form = document.getElementById('newAddressForm');
+        if (form.style.display === 'none') {
+            form.style.display = 'block';
         } else {
-            $('#loginModal').modal('show');
+            form.style.display = 'none';
         }
-    })
-    .catch(error => {
-        console.error('Erro ao verificar o login:', error);
-        alert('Erro ao verificar o status de login.');
+    }
+
+    function changeQuantity(element, change) {
+        let quantityElement = element.parentNode.querySelector('span');
+        let quantity = parseInt(quantityElement.innerText) + change;
+        if (quantity < 1) quantity = 1;
+        quantityElement.innerText = quantity;
+        updateSubtotals();
+    }
+
+    function updateSubtotals() {
+        const rows = document.querySelectorAll('tbody tr');
+        let total = 0;
+        rows.forEach(row => {
+            const price = parseFloat(row.cells[1].innerText);
+            const quantity = parseInt(row.cells[2].querySelector('span').innerText);
+            const subtotal = price * quantity;
+            row.cells[3].innerText = subtotal.toFixed(2);
+            total += subtotal;
+        });
+        document.getElementById('total').innerText = (total + shippingCost).toFixed(2);
+    }
+
+    updateSubtotals();
+
+    document.getElementById('shippingOptions').addEventListener('change', function() {
+        shippingCost = parseFloat(this.value);
+        updateSubtotals();
+        document.getElementById('shippingOptionInput').value = this.value;
     });
-}
-</script>
+
+    function buscarCep() {
+        var cep = document.getElementById('cep').value.replace(/\D/g, '');
+        if (cep.length === 8) {
+            $.ajax({
+                url: `https://viacep.com.br/ws/${cep}/json/`,
+                type: 'GET',
+                success: function(data) {
+                    if (!data.erro) {
+                        document.getElementById('enderecoInfo').style.display = 'block';
+                        document.getElementById('logradouro').innerText = 'Logradouro: ' + data.logradouro;
+                        document.getElementById('bairro').innerText = 'Bairro: ' + data.bairro;
+                        document.getElementById('cidade').innerText = 'Cidade: ' + data.localidade;
+                        document.getElementById('uf').innerText = 'UF: ' + data.uf;
+                        document.getElementById('newLogradouro').value = data.logradouro;
+                        document.getElementById('newBairro').value = data.bairro;
+                        document.getElementById('newCidade').value = data.localidade;
+                        document.getElementById('newUf').value = data.uf;
+                        document.getElementById('newCep').value = data.cep;
+                        document.getElementById('logradouroInput').value = data.logradouro;
+                        document.getElementById('bairroInput').value = data.bairro;
+                        document.getElementById('cidadeInput').value = data.localidade;
+                        document.getElementById('ufInput').value = data.uf;
+                        document.getElementById('cepInput').value = data.cep;
+                    } else {
+                        alert('CEP não encontrado!');
+                    }
+                },
+                error: function() {
+                    alert('Erro ao buscar o CEP!');
+                }
+            });
+        } else {
+            alert('CEP deve conter 8 dígitos.');
+        }
+    }
+
+    function finalizePurchase() {
+        fetch('/client/check-login')
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            if (data.loggedIn) {
+                document.getElementById('logradouroInput').value = document.getElementById('newLogradouro').value;
+                document.getElementById('bairroInput').value = document.getElementById('newBairro').value;
+                document.getElementById('cidadeInput').value = document.getElementById('newCidade').value;
+                document.getElementById('ufInput').value = document.getElementById('newUf').value;
+                document.getElementById('numeroInput').value = document.getElementById('newNumero').value;
+                document.getElementById('cepInput').value = document.getElementById('newCep').value;
+                document.getElementById('checkoutForm').submit();
+            } else {
+                $('#loginModal').modal('show');
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao verificar o login:', error);
+            alert('Erro ao verificar o status de login.');
+        });
+    }
+  </script>
 </body>
 </html>

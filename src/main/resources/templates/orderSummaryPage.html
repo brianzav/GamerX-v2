@@ -6,16 +6,14 @@
   <title>Resumo do Pedido</title>
   <link rel="stylesheet" th:href="@{/css/orderSummaryPage.css}">
   <link rel="stylesheet" th:href="@{/css/dash.css}">
-
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
 
-  <header>
-
-    <div class="divHeader">
-        <img src="../assets/Banners/logo.png"style="max-width: 7%;height: auto; margin-left: 30%">
-    </div>
+<header>
+  <div class="divHeader">
+    <img src="../assets/Banners/logo.png" style="max-width: 7%;height: auto; margin-left: 30%">
+  </div>
 </header>
 
 <div class="container mt-5">
@@ -32,6 +30,8 @@
     <h4>Resumo</h4>
     <p>Total: <span th:text="${order.total}">R$ 0,00</span></p>
     <p>Forma de Pagamento: <span th:text="${order.paymentType}">Tipo de Pagamento</span></p>
+    <h4>Endereço de Entrega</h4>
+    <p th:text="${deliveryAddress.logradouro} + ', ' + ${deliveryAddress.numero} + ' - ' + ${deliveryAddress.bairro} + ', ' + ${deliveryAddress.cidade} + ' - ' + ${deliveryAddress.uf}"></p>
   </div>
   <form method="post" action="/client/finalize-order">
     <button type="submit" class="btn btn-success">Finalizar Pedido</button>
