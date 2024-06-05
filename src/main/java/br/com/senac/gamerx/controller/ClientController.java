@@ -405,7 +405,6 @@ public class ClientController {
         orderRepository.save(order);
         session.setAttribute("order", order);
 
-        shoppingCartRepository.delete(cart);
         session.removeAttribute("cart");
 
         return "redirect:/client/payment";
@@ -463,6 +462,7 @@ public class ClientController {
         OrderModel order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado: " + orderId));
         model.addAttribute("order", order);
+        model.addAttribute("deliveryAddress", order.getDeliveryAddress());
         return "orderDetailsPage";
     }
 

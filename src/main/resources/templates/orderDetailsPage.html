@@ -9,14 +9,23 @@
 <body>
 <div class="container">
   <h2>Detalhes do Pedido</h2>
-  <div>
+  <div class="order-info">
     <h4>Informações do Pedido</h4>
-    <p>Número do Pedido: <span th:text="${order.id}"></span></p>
-    <p>Data do Pedido: <span th:text="${#temporals.format(order.date, 'dd/MM/yyyy')}"></span></p>
-    <p>Status: <span th:text="${order.status}"></span></p>
-    <p>Valor Total: R$<span th:text="${order.total}"></span></p>
+    <p><strong>Número do Pedido:</strong> <span th:text="${order.id}"></span></p>
+    <p><strong>Data do Pedido:</strong> <span th:text="${#temporals.format(order.date, 'dd/MM/yyyy')}"></span></p>
+    <p><strong>Status:</strong> <span th:text="${order.status}"></span></p>
   </div>
-  <div>
+  <div class="address-info">
+    <h4>Endereço de Entrega</h4>
+    <p><strong><span th:text="${deliveryAddress.logradouro}">Logradouro</span>, <span th:text="${deliveryAddress.numero}">Número</span></strong></p>
+    <p><strong><span th:text="${deliveryAddress.bairro}">Bairro</span>, <span th:text="${deliveryAddress.cidade}">Cidade</span> - <span th:text="${deliveryAddress.uf}">UF</span></strong></p>
+    <p><strong>CEP:</strong> <span th:text="${deliveryAddress.cep}">CEP</span></p>
+  </div>
+  <div class="payment-info">
+    <h4>Método de Pagamento</h4>
+    <p><strong th:text="${order.paymentType}">Método de Pagamento</strong></p>
+  </div>
+  <div class="products-info">
     <h4>Produtos</h4>
     <table>
       <thead>
@@ -29,13 +38,17 @@
       </thead>
       <tbody>
       <tr th:each="item : ${order.items}">
-        <td><img th:src="@{${item.product.productImages[0].imagePath}}" alt="Imagem do Produto" style="width: 100px; height: 100px; object-fit: cover;"></td>
+        <td><img th:src="@{${item.product.productImages[0].imagePath}}" alt="Imagem do Produto" class="product-image"></td>
         <td th:text="${item.product.productName}">Nome do Produto</td>
         <td th:text="${item.quantity}">1</td>
         <td th:text="${item.product.price}">R$ 0,00</td>
       </tr>
       </tbody>
     </table>
+  </div>
+  <div class="total-info">
+    <h4>Total</h4>
+    <p><strong>Valor Total:</strong> R$<span th:text="${order.total}"></span></p>
   </div>
   <a th:href="@{/client/my-orders}" class="btn btn-primary">Voltar</a>
 </div>
