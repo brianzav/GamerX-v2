@@ -378,7 +378,7 @@ public class ClientController {
         order.setClient(client);
         order.setTotal(cart.getTotal().add(new BigDecimal(shippingOption)));
         order.setStatus("Processando pagamento");
-        order.setPaymentType("CREDIT_CARD");  // Define sempre como "CREDIT_CARD"
+        order.setPaymentType("CREDIT_CARD");
 
         AddressModel deliveryAddress;
         if (logradouro != null && bairro != null && cidade != null && uf != null && numero != null && cep != null) {
@@ -404,9 +404,13 @@ public class ClientController {
 
         orderRepository.save(order);
         session.setAttribute("order", order);
+
+        shoppingCartRepository.delete(cart);
         session.removeAttribute("cart");
+
         return "redirect:/client/payment";
     }
+
 
     @GetMapping("/order-summary")
     public String orderSummary(HttpSession session, Model model) {
