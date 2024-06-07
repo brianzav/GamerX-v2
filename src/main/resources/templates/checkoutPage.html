@@ -29,7 +29,12 @@
     </style>
 </head>
 <body>
+    <header>
 
+        <div class="divHeader">
+            <img src="../assets/Banners/logo.png"style="max-width: 7%;height: auto; margin-left: 30%">
+        </div>
+    </header>
 <div class="container">
     <h2>Escolha a Forma de Pagamento</h2>
     <div class="payment-methods">
@@ -65,14 +70,14 @@
         </form>
     </div>
     <div class="qrcode-container">
-        <img id="qrcode" class="qrcode" src="../assets/Banners/pix.png" style="display: none;">
+        <img id="qrcode" class="qrcode" src="../assets/Banners/qrcode.png" style="display: none;">
     </div>
 </div>
 
-<script th:src="@{/js/formaPagamento.js}"></script>
 <script>
     function showCreditCardForm() {
         document.getElementById('creditCardForm').style.display = 'block';
+        document.getElementById('qrcode').style.display = 'none';
     }
 
     function handleCreditCardPayment() {
@@ -84,10 +89,11 @@
     function showQRCode() {
         var qrCode = document.getElementById('qrcode');
         qrCode.style.display = 'block';
+        document.getElementById('creditCardForm').style.display = 'none';
         setTimeout(function() {
             qrCode.style.display = 'none';
             window.location.href = '/client/order-summary';
-        }, 15000);
+        }, 25000);
     }
 
     function validateCreditCard() {

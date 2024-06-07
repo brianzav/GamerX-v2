@@ -85,7 +85,7 @@ public class StockistController {
         if (!isStockistLoggedIn(session)) {
             return "redirect:/auth/login";
         }
-        Page<OrderModel> orderPage = orderRepository.findAll(PageRequest.of(page, 10));
+        Page<OrderModel> orderPage = orderRepository.findAllByOrderByDateDesc(PageRequest.of(page, 10));
         model.addAttribute("orders", orderPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", orderPage.getTotalPages());

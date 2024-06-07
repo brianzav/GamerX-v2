@@ -27,12 +27,6 @@ body {
   background-color: #f5f5f5;
 }
 
-header {
-  background-color: #ff8000;
-  color: #fff;
-  padding: 20px 0;
-  text-align: center;
-}
 
 header h1 {
   font-size: 24px;
@@ -82,3 +76,4 @@ nav a {
   color: #fff;
   border: none;
   padding: 8px 16
+}

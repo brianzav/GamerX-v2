@@ -378,6 +378,7 @@ public class ClientController {
         order.setClient(client);
         order.setTotal(cart.getTotal().add(new BigDecimal(shippingOption)));
         order.setStatus("Processando pagamento");
+        order.setPaymentType("Cartão de crédito"); //LEMBRAR
 
         AddressModel deliveryAddress;
         if (logradouro != null && bairro != null && cidade != null && uf != null && numero != null && cep != null) {
@@ -389,7 +390,6 @@ public class ClientController {
             deliveryAddress.setNumero(numero);
             deliveryAddress.setCep(cep);
         } else {
-
             deliveryAddress = client.getDefaultAddress();
         }
         order.setDeliveryAddress(deliveryAddress);
@@ -404,7 +404,9 @@ public class ClientController {
 
         orderRepository.save(order);
         session.setAttribute("order", order);
+
         session.removeAttribute("cart");
+
         return "redirect:/client/payment";
     }
 
@@ -416,6 +418,7 @@ public class ClientController {
             return "redirect:/client/cart";
         }
         model.addAttribute("order", order);
+        model.addAttribute("deliveryAddress", order.getDeliveryAddress());
         return "orderSummaryPage";
     }
 
@@ -459,6 +462,7 @@ public class ClientController {
         OrderModel order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado: " + orderId));
         model.addAttribute("order", order);
+        model.addAttribute("deliveryAddress", order.getDeliveryAddress());
         return "orderDetailsPage";
     }
 
