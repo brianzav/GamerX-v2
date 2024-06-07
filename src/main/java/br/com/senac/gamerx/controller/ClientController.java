@@ -378,7 +378,7 @@ public class ClientController {
         order.setClient(client);
         order.setTotal(cart.getTotal().add(new BigDecimal(shippingOption)));
         order.setStatus("Processando pagamento");
-        order.setPaymentType("Cartão de crédito");
+        order.setPaymentType("Cartão de crédito"); //LEMBRAR
 
         AddressModel deliveryAddress;
         if (logradouro != null && bairro != null && cidade != null && uf != null && numero != null && cep != null) {
